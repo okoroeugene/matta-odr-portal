@@ -1,0 +1,48 @@
+<div class="content">
+    <!-- <div class="brand"><a class="link" href="index-2.html">AdminCa</a></div> -->
+    <div style="height:100px;"></div>
+    <div class="ibox">
+        <div class="lock-header m-b-20">Have you opened a file with us?</div>
+        <div class="ibox-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <img class="img-circle center" src="../Images/u1.png" width="110px" />
+                </div>
+            </div>
+            <div class="row">
+                <form class="col-12" id="lock-form" action="#" method="post">
+                    <h5 class="font-strong m-b-10 text-center">James Brown</h5>
+                    <p class="font-13 text-center">Please enter your MATTA PIN to enter the ODR Portal</p>
+                    <div class="form-group">
+                        <input ng-model="filecode" class="form-control" type="text" name="filecode" placeholder="Enter a Valid File Number">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success btn-block" ng-click="checkCode()" type="button">
+                            <i class="ti-unlock m-r-5"></i>Enter Portal</button>
+                    </div>
+                    <p>Don't have a code?<a href="/open-file"> Open file here</a></p>
+                    <p>Mediator?<a href="/login"> Enter here</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="font-13 text-center text-white m-t-10 m-b-10">AdminCa. Save your time. Choose the best © 2017</div>
+</div>
+
+
+<script type="text/javascript">
+    $(function(){
+      $('#lock-form').validate({
+          errorClass:"help-block",
+          rules: {
+              password: {required:true}
+          },
+          highlight:function(e){$(e).closest(".form-group").addClass("has-error")},
+          unhighlight:function(e){$(e).closest(".form-group").removeClass("has-error")},
+          errorPlacement:function(e,r){
+              var i=$(r).parents(".input-group, .check-list");
+              i.length ? i.after(e) : r.after(e)
+          },
+      });
+    });
+  </script>

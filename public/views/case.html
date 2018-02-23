@@ -1,0 +1,331 @@
+<div style="font-size: 12px!Important;">
+    <!-- <div class="page-heading">
+        <h1 class="page-title">Online Dispute Resolution Portal</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="index-2.html">Portal</a>
+            </li>
+            <li class="breadcrumb-item active">Case</li>
+        </ol>
+    </div> -->
+    <div class="page-content fade-in-up">
+        <div class="row">
+            <div class="col-lg-3 col-md-4">
+                <div class="ibox">
+                    <div class="ibox-body text-center">
+                        <!-- <div class="m-t-20">
+                            <img style="width: 80px; height: 75px;" class="img-circle" src="../Images/matta_1.jpg">
+                        </div> -->
+                        <div ng-show="userLoader">
+                            <div class="text-loader-lg"></div>
+                            <hr>
+                            <div class="text-loader-lg"></div>
+                            <br>
+                            <div class="text-loader-lg"></div>
+                            <br>
+                            <div class="text-loader-lg"></div>
+                            <br>
+                            <div class="text-loader-lg"></div>
+                            <br>
+                        </div>
+
+                        <div ng-show="userData">
+                            <span>
+                                <b>CASE</b>
+                                <span>: {{showData.ComplaintId.Complaint}}</span>
+                            </span>
+                            <hr>
+                            <span>
+                                <b>Name</b>
+                                <span>: {{showData.ComplaintId.UName}}</span>
+                                <span ng-if="role != 'invitee'">
+                                    <br>
+                                    <b>File Number</b>
+                                    <span>: {{showData.ComplaintId.FileCode}}</span>
+                                </span>
+                                <br>
+                                <b>Email</b>
+                                <span>: {{showData.ComplaintId.UEmail}}</span>
+                                <br>
+                                <span>
+                                    <b>Status</b>
+                                    </h5>
+                                    <span class="badge badge-success badge-pill m-r-5 m-b-5">In Progress</span>
+                                    <!-- <div class="m-b-20 text-muted">Web Developer</div> -->
+                                    <hr>
+                                    <div class="row">
+                                        <div class="btn-group-justified col-md-12">
+                                            <input type="button" style="font-size: 12px;" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal"
+                                                class="btn btn-success" href="javascript:;" value="Message">
+                                            <input type="button" style="font-size: 12px;" ng-if="role == 'mediator'" class="btn btn-default" href="javascript:;" value="Close Case">
+                                        </div>
+                                    </div>
+                                </span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="ibox">
+                    <div class="ibox-body text-center">
+                        <div ng-show="userLoader">
+                            <div class="text-loader-lg"></div>
+                            <br>
+                            <div class="text-loader-lg"></div>
+                            <br>
+                        </div>
+
+                        <span ng-show="userData">
+                            <b>Third Party Name</b>
+                            <span>: {{showData.ComplaintId.TPName}}</span>
+                            <br>
+                            <b>Email</b>
+                            <span>: {{showData.ComplaintId.TPEmail}}</span>
+                            <div ng-if="role == 'mediator'">
+                                <hr>
+                                <div class="row">
+                                    <div class="btn-group-justified col-md-12">
+                                        <a ng-if="IsInvited == false" ng-click="btnInvite(showData._id)" style="font-size: 12px;" class="btn btn-success" href="javascript:;">Invite Third Party</a>
+                                        <!-- <a style="font-size: 12px;" class="btn btn-default" href="javascript:;">Close Case</a> -->
+                                    </div>
+                                    <span ng-if="IsInvited == true" class="badge badge-success m-r-5 m-b-5" style="text-align:center;">Invited</span>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-4">
+                <div class="ibox">
+                    <div class="ibox-body">
+
+                        <div class="text-center">
+                            <button data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myUploadModal" class="btn btn-default labeled">
+                                <span class="btn-label">
+                                    <i class="fa fa-upload"></i>
+                                </span>Upload</button>
+                        </div>
+                        <hr/>
+                        <!-- <h3 class="text-center">Case</h3> -->
+                        <div class="cd-timeline-dark center-orientation timeline-2" id="cd-timeline">
+                            <!-- <div class="loader"></div> -->
+                            <div ng-show="textContent" ng-repeat="data in showChat" class="cd-timeline-block">
+                                <div ng-if="data.Mediator_Name != null" class="cd-timeline-icon bg-green text-white">
+                                    <i class="fa fa-file-text"></i>
+                                </div>
+                                <div ng-if="data.TP_Name != null" style="background-color:#7f8c8d!Important;" class="cd-timeline-icon bg-purple text-white">
+                                    <i class="fa fa-briefcase"></i>
+                                </div>
+                                <a href="#data._id"></a>
+                                <div class="cd-timeline-content">
+                                    <h4 ng-if="data.Mediator_Name != null">{{data.Mediator_Name}}</h4>
+                                    <h4 ng-if="data.TP_Name != null">{{data.TP_Name}}</h4>
+                                    <p>
+                                        <span ng-if="data.Content != null" style="white-space: pre-line!Important;">{{data.Content}}</span>
+                                        <img ng-if="data.File != null" src="../uploads/{{data.File}}">
+                                    </p>
+                                    <!-- <a class="btn btn-success btn-sm" href="javascript:;">More ...</a> -->
+                                    <span class="cd-date">{{data.Date | date : "MMM d, y h:mm a"}}</span>
+                                </div>
+                            </div>
+
+                            <div ng-show="contentLoader">
+                                <div ng-repeat="i in [1, 2, 3, 4, 5]" class="cd-timeline-block">
+                                    <div class="cd-timeline-icon bg-green text-white">
+                                        <i class="fa fa-file-text"></i>
+                                    </div>
+                                    <div class="cd-timeline-content">
+                                        <h4>
+                                            <div class="text-loader-lg"></div>
+                                        </h4>
+                                        <p>
+                                            <span>
+                                                <div class="text-loader-lg"></div>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<style>
+    .modal-backdrop {
+        background-color: #4BB2C5;
+    }
+</style>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Mediation Chat</h4>
+            </div>
+            <div class="modal-body">
+                <div id="summernote" id="txtContent" data-plugin="summernote" data-air-mode="true">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button ng-style="backgroundColor" class="btn btn-success" ng-click="btnChat()" type="button">
+                    <i ng-show="searchButtonText == chat" class="fa fa-cog fa-spin"></i> Chat</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="myUploadModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Upload File</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <input type="hidden" name="caseId" value="{{showData._id}}">
+                    <input type="file" name="file" id="previewFile" multiple>
+                    <!-- <button class="btn btn-primary" ng-click="preview()">Click</button> -->
+                    <!-- <div class="dz-default dz-message">
+                        <span>
+                            <div class="text-center m-b-10">
+                                <i class="fa fa-cloud-upload text-info" style="font-size:50px"></i>
+                            </div>
+                            <strong>Drop files here or click to upload. </strong>
+                            <br> </span>
+                    </div> -->
+                </div>
+                <div id="previewContent" style="display: none;">
+                    <hr>
+                    <span>
+                        <h3 style="text-align:center;">Preview</h3>
+                    </span>
+                    <hr>
+                    <!-- <div ng-show="fileLoad" class="row">
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                            <div class="imgContent"></div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                            <div class="imgContent"></div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                            <div class="imgContent"></div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                            <div class="imgContent"></div>
+                        </div>
+                    </div> -->
+                    <form enctype="multipart/form-data" action="/uploadfile" method="post">
+                        <div class="row" id="preview"></div>
+                        <br>
+                        <input style="font-size: 12px;" type="text" placeholder="Add Caption" id="caption" ng-model="caption" class="form-control">
+                        </textarea>
+                        <br>
+                        <div class="pull-right">
+                            <button class="btn btn-success btn-rounded m-b-5" onclick="uploadFile()" type="button">
+                                <i class="ti-comment-alt"></i> Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <!-- <button ng-style="backgroundColor" class="btn btn-success" ng-click="btnUpload()" type="button">
+                    <i ng-show="searchButtonText == chat" class="fa fa-cog fa-spin"></i> Chat</button> -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- <script src="../content/dashboard/vendors/dropzone/dist/min/dropzone.min.js" type="text/javascript"></script> -->
+<script type="text/javascript">
+    // Dropzone.options.mydropzone = {
+    //     paramName: "file", // The name that will be used to transfer the file
+    //     maxFilesize: 5, // MB
+    //     dictDefaultMessage: '<div class="text-center m-b-10"><i class="fa fa-cloud-upload text-info" style="font-size:50px"></i></div> <strong>Drop files here or click to upload. </strong></br> (This is just a demo dropzone. Selected files are not actually uploaded.)',
+    //     init: function () {
+    //         this.on("addedfile", function (file) {
+    //             //'<input type="file" name="'+this._getParamName(0)+'" '+(this.options.uploadMultiple?'multiple="multiple"':void 0)+' />
+    //             var removeButton = Dropzone.createElement("<a href='javascript:;'' class='btn btn-danger btn-sm btn-block'>Clear</a>");
+    //             //var removeButton = Dropzone.createElement("<a href='javascript:;' class='dropzone-close'></a>");
+    //             var _this = this;
+    //             removeButton.addEventListener("click", function (e) {
+    //                 e.preventDefault();
+    //                 e.stopPropagation();
+    //                 _this.removeFile(file);
+    //             });
+    //             file.previewElement.appendChild(removeButton);
+    //         });
+    //     }
+    // }
+
+
+    $(function () {
+        $("[name='timeline1-option']").change(function () {
+            +this.value ? $('.timeline-1').addClass('center-orientation') : $('.timeline-1').removeClass('center-orientation');
+        });
+        $("[name='timeline2-option']").change(function () {
+            +this.value ? $('.timeline-2').addClass('center-orientation') : $('.timeline-2').removeClass('center-orientation');
+        });
+    })
+
+    $(function () {
+        $('#summernote').summernote();
+        $('#summernote_air').summernote({ airMode: true });
+    });
+
+    var files = [];
+    $("document").ready(function () {
+        $("#previewFile").change(function () {
+            // $scope.fileLoad = true;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                var file = $(this).get(0).files[i];
+                files.push($(this).get(0).files[i]);
+                // $scope.fileLoad = false;
+                // $scope.fileLoaded = true;
+                $('#previewContent').css('display', 'block');
+                $('#preview').append("<div class='col-md-3 col-sm-6 col-xs-6'>" +
+                    "<img id='upload' class='img-responsive img-thumbnail' style='width: 120px; height: 120px; object-fit: contain' src='" + URL.createObjectURL(event.target.files[i]) + "'>" +
+                    "</div>");
+            }
+        });
+    });
+
+    function uploadFile() {
+        var req = {
+            'files': files,
+            'caption': $('#caption').val()
+        }
+        var caption = $('#caption').val();
+        // var formdata = new FormData();
+        // formdata.append("caption", $('#caption').val());
+        // $.each(files, function (key, value) {
+        //     formdata.append("file-" + key, value);
+        // });
+        // $.ajax({
+        //     url: '/uploadfile',
+        //     type: 'POST',
+        //     data: req,
+        //     processData: false,
+        //     contentType: false
+        // });
+        $.post('/uploadfile?caption=' + caption, files, function (response) {
+            console.log(response.data);
+            // $scope.previewFile = response.data;
+        });
+    }
+
+</script>

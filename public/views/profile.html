@@ -1,0 +1,204 @@
+<div class="page-heading">
+    <h1 class="page-title">Profile</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="index-2.html">Home</a>
+        </li>
+        <li class="breadcrumb-item active">Profile</li>
+    </ol>
+</div>
+<div class="page-content fade-in-up" style="font-size: 12px;">
+    <div class="row">
+        <div class="col-lg-3 col-md-4">
+            <div class="ibox">
+                <div class="ibox-body text-center">
+                    <div class="m-t-20">
+                        <img class="img-circle" style="width: 100px; height: 100px;" src="../Images/u1.png" />
+                    </div>
+                    <h5 class="font-strong m-b-10 m-t-10">{{showUserName}}</h5>
+                    <div class="m-b-20 text-muted">Mediator</div>
+                    <!-- @*<div class="profile-social m-b-20"><a href="javascript:;"><i class="fa fa-twitter"></i></a><a href="javascript:;"><i class="fa fa-facebook"></i></a><a href="javascript:;"><i class="fa fa-pinterest"></i></a><a href="javascript:;"><i class="fa fa-dribbble"></i></a></div>*@ -->
+                    <div>
+                        <button class="btn btn-info btn-rounded m-b-5" data-toggle="modal" data-target="#myModal">
+                            <i class="fa fa-plus"></i> Change Pic</button>
+                        <!-- @*<button class="btn btn-default btn-rounded m-b-5">Message</button>*@ -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-8">
+            <div class="ibox">
+                <div class="ibox-body">
+                    <ul class="nav nav-tabs tabs-line">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#tab-1" data-toggle="tab">
+                                <i class="ti-bar-chart"></i> New Cases
+                                <span class="badge badge-danger badge-circle m-r-5 m-b-5">8</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#tab-2" data-toggle="tab">
+                                <i class="ti-settings"></i> Pending Cases
+                                <span class="badge badge-warning badge-circle m-r-5 m-b-5">8</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#tab-3" data-toggle="tab">
+                                <i class="ti-announcement"></i> Resolved Cases
+                                <span class="badge badge-success badge-circle m-r-5 m-b-5">8</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="tab-1">
+                            <h4 class="text-info m-b-20 m-t-20">
+                                <i class="fa fa-plus"></i> New Cases</h4>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>S/N</th>
+                                        <th>User</th>
+                                        <th>Complaint</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="data in allcomplaints" ng-if="data.ComplaintId.Status == 0">
+                                        <td>{{$index +1}}</td>
+                                        <td>{{data.ComplaintId.TPName}}</td>
+                                        <td>{{data.ComplaintId.Complaint}}</td>
+                                        <td>{{data.ComplaintId.DateGenerated | date : "MMM d, y"}}</td>
+                                        <td>
+                                            <button ng-click="btnAccept(data._id)" class="btn btn-success btn-circle">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="tab-2">
+                            <h4 class="text-info m-b-20 m-t-20">
+                                <i class="fa fa-plus"></i> Pending Cases</h4>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>S/N</th>
+                                        <th>User</th>
+                                        <th>Complaint</th>
+                                        <th width="91px">Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="data in allcomplaints" ng-if="data.ComplaintId.Status == 1">
+                                        <td>{{$index +1}}</td>
+                                        <td>{{data.ComplaintId.TPName}}</td>
+                                        <td>{{data.ComplaintId.Complaint}}</td>
+                                        <td>{{data.ComplaintId.DateGenerated | date : "MMM d, y"}}</td>
+                                        <td>
+                                            <button ng-click="btnCase(data._id)" class="btn btn-success btn-circle">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="tab-3">
+                            <h4 class="text-info m-b-20 m-t-20">
+                                <i class="fa fa-plus"></i> New Cases</h4>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>S/N</th>
+                                        <th>User</th>
+                                        <th>Complaint</th>
+                                        <th width="91px">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr ng-repeat="data in allcomplaints" ng-if="data.ComplaintId.Status == 2">
+                                        <td>{{$index +1}}</td>
+                                        <td>{{data.ComplaintId.TPName}}</td>
+                                        <td>{{data.ComplaintId.Complaint}}</td>
+                                        <td>{{data.ComplaintId.DateGenerated | date : "MMM d, y"}}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Change Profile Picture</h4>
+                </div>
+                <form method="post" enctype="multipart/form-data" action="#">
+
+                    <div class="modal-body">
+                        <div class="page-content fade-in-up">
+                            <div class="ibox">
+                                <div class="ibox-head">
+                                    <div class="ibox-title">File Upload </div>
+                                </div>
+                                <div class="ibox-body">
+                                    <form method="post" class="dropzone dz-clickable" id="mydropzone" action="/upload">
+
+                                        <div class="dz-default dz-message">
+                                            <span>
+                                                <div class="text-center m-b-10">
+                                                    <i class="fa fa-cloud-upload text-info" style="font-size:50px"></i>
+                                                </div>
+                                                <strong>Drop files here or click to upload. </strong>
+                                                <br> (This is just a demo dropzone. Selected files are not actually uploaded.)</span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button class="btn btn-success" ng-click="btnUpload()" type="button"> Upload</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    Dropzone.options.mydropzone = {
+        paramName: "file", // The name that will be used to transfer the file
+        maxFilesize: 5, // MB
+        dictDefaultMessage: '<div class="text-center m-b-10"><i class="fa fa-cloud-upload text-info" style="font-size:50px"></i></div> <strong>Drop files here or click to upload. </strong></br> (This is just a demo dropzone. Selected files are not actually uploaded.)',
+        init: function () {
+            this.on("addedfile", function (file) {
+                //'<input type="file" name="'+this._getParamName(0)+'" '+(this.options.uploadMultiple?'multiple="multiple"':void 0)+' />
+                var removeButton = Dropzone.createElement("<a href='javascript:;'' class='btn btn-danger btn-sm btn-block'>Clear</a>");
+                //var removeButton = Dropzone.createElement("<a href='javascript:;' class='dropzone-close'></a>");
+                var _this = this;
+                removeButton.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    _this.removeFile(file);
+                });
+                file.previewElement.appendChild(removeButton);
+            });
+        }
+    }
+</script>

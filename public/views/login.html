@@ -1,0 +1,44 @@
+<div style="height:100px;"></div>
+    <div class="ibox">
+        <div class="lock-header m-b-20">Login</div>
+        <div class="ibox-body">
+            <div class="row">
+                <!-- <div class="alert alert-danger" ng-if="loginError != null">
+                    <span>Invalid Login Credential!</span>
+                </div> -->
+                <form class="col-12" id="lock-form" action="/login" method="post">
+                    <p class="font-13 text-center">Please enter your MATTA PIN to enter the ODR Portal</p>
+                    <div class="form-group">
+                        <input ng-model="email" class="form-control" type="text" name="email" placeholder="Enter Email Address ">
+                    </div>
+                    <div class="form-group">
+                        <input ng-model="password" class="form-control" type="password" name="password" placeholder="Enter Password">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success btn-block" ng-click="btnLogin()" type="button">
+                            <i class="ti-unlock m-r-5"></i>Login</button>
+                    </div>
+                    <p>Don't have an Account?<a href="/register"> Register here</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+<script type="text/javascript">
+    $(function(){
+      $('#lock-form').validate({
+          errorClass:"help-block",
+          rules: {
+              email: {required: true},
+              password: {required:true}
+          },
+          highlight:function(e){$(e).closest(".form-group").addClass("has-error")},
+          unhighlight:function(e){$(e).closest(".form-group").removeClass("has-error")},
+          errorPlacement:function(e,r){
+              var i=$(r).parents(".input-group, .check-list");
+              i.length ? i.after(e) : r.after(e)
+          },
+      });
+    });
+  </script>
