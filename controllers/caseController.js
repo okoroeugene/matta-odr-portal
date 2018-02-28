@@ -15,6 +15,9 @@ module.exports.viewCase = function (req, res) {
     model.CaseModel.findById(req.params.id)
         .populate('ComplaintId')
         .exec(function (err, data, next) {
+            if (data.Status == 0) {
+                res.redirect('/pending');
+            }
             var role = utility.UserRole.GetRoleName(req);
             if (data) {
                 //Authenticate Mediator Role
@@ -140,18 +143,23 @@ module.exports.inviteUser = function (req, res) {
 }
 
 module.exports.uploadfile = function (req, res) {
-    // res.json('file' + req.body.files[1]);
-    var caption = req.query.caption;
-    var files = JSON.stringify(req.body);
     var key = crypto.randomBytes(16).toString("hex");
     var caption = req.body.caption;
-    // utility.uploadFile.apiUpload(files, key);
-
-    console.log(req.body)
-    var code;
+    // console.log(req.files);
+    var ImageFile = [];
+    if (req.files) {
+        var files = req.files;
+        utility.uploadFile.apiUpload(req.files, key);
+        files.forEach(item => {
+            ImageFile.push({
+                'filename': item.filename
+            });
+        });
+    }
+    
     var mediator;
     var role = utility.UserRole.GetRoleName(req);
-    var _chat = new model.ChatModel({ CaseId: req.body.caseId, Content: caption, File: req.body, Date: currentDate });
+    var _chat = new model.ChatModel({ CaseId: req.params.id, Content: caption, File: ImageFile, Date: currentDate });
     if (role == 'user' || role == 'invitee') {
         _chat.TP_Name = req.session.name;
         _chat.Mediator_Name = null;
@@ -166,21 +174,6 @@ module.exports.uploadfile = function (req, res) {
         else res.json({ status: 1, key: data._id });
     });
 };
-
-// module.exports.previewfile = function (req, res) {
-//     var ImageFile = [];
-//     var key = crypto.randomBytes(16).toString("hex");
-//     if (req.body.names) {
-//         var files = req.body.names;
-//         utility.uploadFile.previewUpload(req, key);
-//         for (var i = 0; i < files.length; ++i) {
-//             ImageFile.push({
-//                 'filename': key + files[i]
-//             });
-//         }
-//         res.json(ImageFile);
-//     }
-// };
 
 module.exports.checkinvite = function (req, res) {
     var caseId = req.params.id;

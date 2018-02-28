@@ -142,7 +142,10 @@
                 var form = $(this);
                 var v = form.serializeJSON();
                 $.post("/new-complaint", v , function (response) {
-                    if (response == 1) toastr.success('Submitted!');
+                    if (response == 1) {
+                        toastr.success('Submitted!');
+                        window.location.href = '/pending';
+                    }
                     if (response == 0) toastr["error"]("Sorry, An error occured while processing your request.");
                     $(':input[type="submit"]').prop('disabled', true);
                 });

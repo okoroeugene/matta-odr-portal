@@ -14,7 +14,7 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
         // $scope.start();
         $http.get('/user').then(function (response) {
             // console.log(response.data);
-            if (response.data === 0) window.location = '/';
+            if (response.data === 0) $scope.showUserName = 'Fake User';
             else {
                 $scope.showUserName = response.data;
                 // $scope.page = 'user';

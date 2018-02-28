@@ -94,10 +94,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-9 col-md-4">
-                <div class="ibox">
-                    <div class="ibox-body">
 
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                <pagination ng-show="textContent" boundary-links="true" max-size="5" items-per-page="itemsPerPage" total-items="chats.length"
+                    ng-model="currentPage" ng-change="pageChanged()">
+                </pagination>
+                <div style="display:none;" class="loader"></div>
+                <div class="ibox" id="container">
+                    <div class="ibox-body">
                         <div class="text-center">
                             <button data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myUploadModal" class="btn btn-default labeled">
                                 <span class="btn-label">
@@ -107,52 +111,89 @@
                         <hr/>
                         <!-- <h3 class="text-center">Case</h3> -->
                         <div class="cd-timeline-dark center-orientation timeline-2" id="cd-timeline">
-                            <!-- <div class="loader"></div> -->
-                            <div ng-show="textContent" ng-repeat="data in showChat" class="cd-timeline-block">
+                            <div ng-show="textContent" ng-repeat="data in filteredData" class="cd-timeline-block">
                                 <div ng-if="data.Mediator_Name != null" class="cd-timeline-icon bg-green text-white">
                                     <i class="fa fa-file-text"></i>
                                 </div>
                                 <div ng-if="data.TP_Name != null" style="background-color:#7f8c8d!Important;" class="cd-timeline-icon bg-purple text-white">
                                     <i class="fa fa-briefcase"></i>
                                 </div>
-                                <a href="#data._id"></a>
+                                <a href="data._id"></a>
                                 <div class="cd-timeline-content">
                                     <h4 ng-if="data.Mediator_Name != null">{{data.Mediator_Name}}</h4>
                                     <h4 ng-if="data.TP_Name != null">{{data.TP_Name}}</h4>
                                     <p>
                                         <span ng-if="data.Content != null" style="white-space: pre-line!Important;">{{data.Content}}</span>
-                                        <img ng-if="data.File != null" src="../uploads/{{data.File}}">
+                                        <div class="row">
+                                            <div class="col-md-4" style="padding-right: 0px; padding-left: 0px;" ng-if="data.File != null" ng-repeat="(key, value) in data.File track by $index">
+                                                <img ng-if="$index <= 1" id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width: 200px; height:120px;"
+                                                    src="../uploads/{{value.filename}}">
+                                                <img ng-if="$index == 2" id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width: 200px; height:120px; opacity:0.3"
+                                                    src="../uploads/{{value.filename}}">
+                                                <img ng-if="$index > 3" class="img-responsive img-thumbnail" style="display:none;" src="../uploads/{{value.filename}}">
+                                                <div ng-if="$index == 2" ng-click="myImg(value.filename)" class="centered myImgLink">
+                                                    <h1 style="color: rgb(84, 84, 84);">+ {{data.File.length - 2}}</h1>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </p>
                                     <!-- <a class="btn btn-success btn-sm" href="javascript:;">More ...</a> -->
                                     <span class="cd-date">{{data.Date | date : "MMM d, y h:mm a"}}</span>
                                 </div>
                             </div>
 
-                            <div ng-show="contentLoader">
-                                <div ng-repeat="i in [1, 2, 3, 4, 5]" class="cd-timeline-block">
-                                    <div class="cd-timeline-icon bg-green text-white">
-                                        <i class="fa fa-file-text"></i>
-                                    </div>
-                                    <div class="cd-timeline-content">
-                                        <h4>
+                            <div id="myImgModal" class="modalImg">
+                                <span class="close">&times;</span>
+                                <img style="width:300px; margin-top:60px;" class="imgModal-content" id="img01">
+                                <button id="prev-btn" class="btn btn-warning">Prev</button>
+                                <button id="next-btn" class="btn btn-primary">Next</button>
+                            </div>
+
+                            <div ng-show="contentLoader" ng-repeat="i in [1, 2]" class="cd-timeline-block">
+                                <div class="cd-timeline-icon bg-green text-white">
+                                    <i class="fa fa-file-text"></i>
+                                </div>
+                                <div class="cd-timeline-content">
+                                    <h4>
+                                        <div class="text-loader-lg"></div>
+                                    </h4>
+                                    <p>
+                                        <span>
                                             <div class="text-loader-lg"></div>
-                                        </h4>
-                                        <p>
-                                            <span>
-                                                <div class="text-loader-lg"></div>
-                                            </span>
-                                        </p>
-                                    </div>
+                                        </span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <pagination ng-show="textContent" boundary-links="true" max-size="5" items-per-page="itemsPerPage" total-items="chats.length"
+                    ng-model="currentPage" ng-change="pageChanged()">
+                </pagination>
             </div>
+
+            <!-- <div class="col-lg-9 col-md-4">
+                <div class="ibox">
+                    <div class="ibox-body">
+                        <div class="cd-timeline-dark center-orientation timeline-2" id="cd-timeline">
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
         </div>
 
 
     </div>
+</div>
+
+<div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px;
+    top: 0px; width: 100%; height: 100%; background-color: #666666; z-index: 30001;
+    opacity: .8; filter: alpha(opacity=70);display:none">
+    <p style="position: absolute; top: 30%; left: 45%; color: White;">
+        Loading, please wait...
+        <img style="width: 50px; height: 50px;" src="~/Images/load.gif" />
+    </p>
 </div>
 
 <style>
@@ -194,8 +235,10 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <input type="hidden" name="caseId" value="{{showData._id}}">
-                    <input type="file" name="file" id="previewFile" multiple>
+                    <form enctype="multipart/form-data" action="/uploadfile" method="post">
+                        <input type="hidden" id="caseId" value="{{showData._id}}">
+                        <input type="file" name="Images" id="previewFile" multiple>
+                    </form>
                     <!-- <button class="btn btn-primary" ng-click="preview()">Click</button> -->
                     <!-- <div class="dz-default dz-message">
                         <span>
@@ -226,17 +269,20 @@
                             <div class="imgContent"></div>
                         </div>
                     </div> -->
-                    <form enctype="multipart/form-data" action="/uploadfile" method="post">
-                        <div class="row" id="preview"></div>
-                        <br>
-                        <input style="font-size: 12px;" type="text" placeholder="Add Caption" id="caption" ng-model="caption" class="form-control">
-                        </textarea>
-                        <br>
-                        <div class="pull-right">
-                            <button class="btn btn-success btn-rounded m-b-5" onclick="uploadFile()" type="button">
-                                <i class="ti-comment-alt"></i> Upload</button>
-                        </div>
-                    </form>
+
+                    <div class="row" id="preview"></div>
+                    <br>
+                    <input style="font-size: 12px;" type="text" placeholder="Add Caption" id="caption" ng-model="caption" class="form-control">
+                    </textarea>
+                    <br>
+                    <div class="progress" style="display:none;margin-top:10px;">
+                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">0%</div>
+                    </div>
+                    <br>
+                    <div class="pull-right">
+                        <button class="btn btn-success btn-rounded m-b-5" id="uploadFile" type="button">
+                            <i class="ti-comment-alt"></i> Upload</button>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -286,46 +332,5 @@
         $('#summernote').summernote();
         $('#summernote_air').summernote({ airMode: true });
     });
-
-    var files = [];
-    $("document").ready(function () {
-        $("#previewFile").change(function () {
-            // $scope.fileLoad = true;
-            for (var i = 0; i < $(this).get(0).files.length; ++i) {
-                var file = $(this).get(0).files[i];
-                files.push($(this).get(0).files[i]);
-                // $scope.fileLoad = false;
-                // $scope.fileLoaded = true;
-                $('#previewContent').css('display', 'block');
-                $('#preview').append("<div class='col-md-3 col-sm-6 col-xs-6'>" +
-                    "<img id='upload' class='img-responsive img-thumbnail' style='width: 120px; height: 120px; object-fit: contain' src='" + URL.createObjectURL(event.target.files[i]) + "'>" +
-                    "</div>");
-            }
-        });
-    });
-
-    function uploadFile() {
-        var req = {
-            'files': files,
-            'caption': $('#caption').val()
-        }
-        var caption = $('#caption').val();
-        // var formdata = new FormData();
-        // formdata.append("caption", $('#caption').val());
-        // $.each(files, function (key, value) {
-        //     formdata.append("file-" + key, value);
-        // });
-        // $.ajax({
-        //     url: '/uploadfile',
-        //     type: 'POST',
-        //     data: req,
-        //     processData: false,
-        //     contentType: false
-        // });
-        $.post('/uploadfile?caption=' + caption, files, function (response) {
-            console.log(response.data);
-            // $scope.previewFile = response.data;
-        });
-    }
 
 </script>

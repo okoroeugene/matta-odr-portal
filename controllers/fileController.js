@@ -6,15 +6,20 @@ var currentDate = new Date();
 var crypto = require('crypto');
 
 module.exports.verifyCode = function (req, res) {
+    var returnUrl = req.session.returnUrl;
     var code = req.body.FileCode;
-    // console.log(code);
     model.FileModel.findOne({ 'FileCode': code }, function (err, data) {
         // console.log(data);
         if (data) {
             req.session.code = code;
             req.session.name = data.Name;
             req.session.key = data.Key;
-            res.json(1);
+            if (returnUrl != undefined) {
+                res.json({ status: 3, url: returnUrl });
+            }
+            else {
+                res.json(1);
+            }
         }
         else {
             model.InviteeModel.findOne({ SecretToken: code }, function (err, data) {
@@ -25,7 +30,12 @@ module.exports.verifyCode = function (req, res) {
                 else if (data) {
                     req.session.SecretToken = code;
                     req.session.name = data.FullName;
-                    res.json({ status: 2, id: data.CaseId })
+                    if (returnUrl != undefined) {
+                        res.json({ status: 3, url: returnUrl });
+                    }
+                    else {
+                        res.json({ status: 2, id: data.CaseId })
+                    }
                 }
                 else res.json(0);
             });

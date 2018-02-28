@@ -21,19 +21,23 @@ var fileCtrl = require('./controllers/fileController');
 var authCtrl = require('./controllers/authController');
 var profileCtrl = require('./controllers/profileController');
 
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(flash())
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/views/auth.html')
 });
-
+app.get('/verify', function (req, res) {
+    var returnUrl = req.query.returnUrl;
+    if (returnUrl != undefined) {
+        req.session.returnUrl = returnUrl;
+    }
+    res.sendFile(__dirname + '/public/views/auth.html')
+});
 app.get('/login', function (req, res) {
     res.sendFile(__dirname + '/public/views/auth.html')
 });
-
 app.post('/login', authCtrl.authenticateUser);
-
 app.get('/register', function (req, res) {
     res.sendFile(__dirname + '/public/views/auth.html')
 });
@@ -67,5 +71,8 @@ app.get('/complaints', utility.Authorize.mediator, profileCtrl.getMediatorCases)
 app.post('/createcase', caseCtrl.acceptCase);
 app.post('/InviteThirdParty', caseCtrl.inviteUser);
 app.get('/checkinvite/:id', caseCtrl.checkinvite);
-app.post('/uploadfile', utility.Authorize.all, caseCtrl.uploadfile)
+app.post('/uploadfile/:id', upload.array('uploadfile', 6), utility.Authorize.all, caseCtrl.uploadfile)
+app.get('/pending', utility.Authorize.user, function (req, res) {
+    res.sendFile(__dirname + '/public/views/layout.html')
+});
 // app.post('/previewfile', upload.array('Images', 6), utility.Authorize.all, caseCtrl.previewfile)

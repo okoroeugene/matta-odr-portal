@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['ui.router', 'angular-loading-bar', 'ngAnimate', 'ngFlash', 'oitozero.ngSweetAlert'])
+var myApp = angular.module('myApp', ['ui.router', 'ui.bootstrap', 'angular-loading-bar', 'ngAnimate', 'ngFlash', 'oitozero.ngSweetAlert'])
     .config(function (cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeSpinner = true;
     })
@@ -19,17 +19,38 @@ myApp.directive('fileModel', ['$parse', function ($parse) {
     };
 }]);
 
+myApp.directive('updateTitle', ['$rootScope', '$timeout',
+    function ($rootScope, $timeout) {
+        return {
+            link: function (scope, element) {
+
+                var listener = function (event, toState) {
+
+                    var title = 'Default Title';
+                    if (toState.data && toState.data.pageTitle) title = toState.data.pageTitle;
+
+                    $timeout(function () {
+                        element.text(title);
+                    }, 0, false);
+                };
+
+                $rootScope.$on('$stateChangeSuccess', listener);
+            }
+        };
+    }
+]);
+
 // myapp.config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {
 //     usSpinnerConfigProvider.setDefaults({color: 'blue'});
 // }]);
 
 myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'FlashProvider', function ($stateProvider, $urlRouterProvider, $locationProvider, FlashProvider) {
     // $locationProvider.hashPrefix('');
-//     usSpinnerConfigProvider.setTheme('bigBlue', {color: 'green', radius: 20});
-//     usSpinnerConfigProvider.setTheme('smallRed', {color: 'red', radius: 6});
-//     FlashProvider.setTemplate(`
-//     <div class="my-flash">{{ flash.text }}</div>
-// `);
+    //     usSpinnerConfigProvider.setTheme('bigBlue', {color: 'green', radius: 20});
+    //     usSpinnerConfigProvider.setTheme('smallRed', {color: 'red', radius: 6});
+    //     FlashProvider.setTemplate(`
+    //     <div class="my-flash">{{ flash.text }}</div>
+    // `);
 
     $locationProvider.html5Mode(true);
     $stateProvider
@@ -38,9 +59,9 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
         .state('index', {
             url: '/',
             data: {
-                pageTitle: 'Verify User'
+                pageTitle: 'Welcometo MATTA DOR'
             },
-            templateUrl: '../views/verify.html',
+            templateUrl: '../views/index.html',
             controller: 'authController'
         })
 
@@ -62,14 +83,14 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
             controller: 'authController'
         })
 
-        // .state('verify', {
-        //     url: '/verify',
-        //     data: {
-        //         pageTitle: 'Verify User'
-        //     },
-        //     templateUrl: '../views/verify.html',
-        //     controller: 'portalController'
-        // })
+        .state('verify', {
+            url: '/verify',
+            data: {
+                pageTitle: 'Verify User'
+            },
+            templateUrl: '../views/verify.html',
+            controller: 'authController'
+        })
 
         //route for new blog post
         .state('portal', {
@@ -118,6 +139,15 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
             controller: 'caseController'
         })
 
+        .state('pending', {
+            url: '/pending',
+            data: {
+                pageTitle: 'Analysing Case'
+            },
+            templateUrl: '../views/pending.html',
+            controller: 'portalController'
+        })
+
         .state('error', {
             url: '/error',
             data: {
@@ -138,28 +168,8 @@ myApp.run(['$rootScope', '$location', '$anchorScroll', function ($rootScope, $lo
     //     // $location.hash($routeParams.scrollTo);
     //     // $anchorScroll();
     // });
-    $rootScope.$on('$stateChangeSuccess', function() {
+    $rootScope.$on('$stateChangeSuccess', function () {
         document.body.scrollTop = document.documentElement.scrollTop = 0;
-     });
+    });
 }]);
 
-myApp.directive('updateTitle', ['$rootScope', '$timeout',
-    function ($rootScope, $timeout) {
-        return {
-            link: function (scope, element) {
-
-                var listener = function (event, toState) {
-
-                    var title = 'Default Title';
-                    if (toState.data && toState.data.pageTitle) title = toState.data.pageTitle;
-
-                    $timeout(function () {
-                        element.text(title);
-                    }, 0, false);
-                };
-
-                $rootScope.$on('$stateChangeSuccess', listener);
-            }
-        };
-    }
-]);

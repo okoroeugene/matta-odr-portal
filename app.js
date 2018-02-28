@@ -14,6 +14,8 @@ var auth = require('./services/session');
 var model = require('./models/entitymodels');
 module.exports.myPath = __dirname + '/public';
 var routes = require('./routes');
+var multer = require('multer');
+module.exports.multer = multer;
 
 app.use(express.static(path.join(__dirname, 'public')));
 

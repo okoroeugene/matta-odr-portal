@@ -54,13 +54,15 @@ module.exports.UserRole = {
 module.exports.Authorize = {
     user: function (req, res, next) {
         if (req.session.code == undefined) {
-            res.redirect('/error');
+            var url = req.url;
+            res.redirect('/verify?returnUrl=' + url);
         }
         else next();
     },
     mediator: function (req, res, next) {
         if (req.user == undefined) {
-            res.redirect('/error');
+            var url = req.url;
+            res.redirect('/verify?returnUrl=' + url);
         }
         else next();
     },
@@ -78,7 +80,8 @@ module.exports.Authorize = {
     // },
     all: function (req, res, next) {
         if (req.session.code == undefined && req.user == undefined && req.session.SecretToken == undefined) {
-            res.redirect('/error');
+            var url = req.url;
+            res.redirect('/login?returnUrl=' + url);
         }
         else next();
     }
@@ -115,11 +118,9 @@ module.exports.uploadFile = {
         if (err) return 0;
         else {
             files.forEach(item => {
-                console.log(item);
-                var newFile = key + item;
-                // var path = item.path;
-                var file = rootPath + '/uploads/' + newFile;
-                fs.writeFile(file, newFile, function (response) {
+                var newFile = key + item.originalname;
+                var path = item.path;
+                fs.rename(newFile, path, function (response) {
                     if (err) console.log(err);
                 });
             });

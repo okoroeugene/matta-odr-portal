@@ -71,7 +71,7 @@ var CaseSchema = new Schema({
 
 var ChatSchema = new Schema({
     Content: String,
-    File: String,
+    File: [],
     TP_Name: { type: String }, //TP means third party
     Mediator_Name: { type: String },
     CaseId: { type: String, required: true, ref: 'Case' },
