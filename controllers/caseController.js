@@ -1,66 +1,28 @@
 const index = require('../app');
 var app = index.myApp;
 var model = require('../models/entitymodels');
-var utility = require('../repositories/utility');
+var utility = require('../Helpers/utility');
 var currentDate = new Date();
 var rootPath = index.myPath;
-var mail = require('../services/mail');
+var mail = require('../Helpers/mail');
 var crypto = require('crypto');
 var path = require('path');
+var caseService = require('../services/caseService');
 
 module.exports.viewCase = function (req, res) {
-    if (req.params.id == undefined) {
-        res.redirect('/error');
-    }
-    model.CaseModel.findById(req.params.id)
-        .populate('ComplaintId')
-        .exec(function (err, data, next) {
-            if (data.Status == 0) {
-                res.redirect('/pending');
-            }
-            var role = utility.UserRole.GetRoleName(req);
-            if (data) {
-                //Authenticate Mediator Role
-                if (role == 'mediator' && data.MediatorId != req.user.id) res.redirect('/error');
-                else res.sendFile(rootPath + '/views/layout.html')
-                //Authenticate User
-                if (role == 'user') {
-                    model.FileModel.findOne({ FileCode: data.ComplaintId.FileCode }, function (err, file) {
-                        if (file) {
-                            if (file.Key != req.session.key) res.redirect('/error');
-                            else res.sendFile(rootPath + '/views/layout.html')
-                        }
-                        else res.redirect('/error');
-                    });
-                }
-                if (role == 'invitee') {
-                    model.InviteeModel.findOne({ SecretToken: req.session.SecretToken }, function (err, inv) {
-                        if (inv.CaseId != data._id) res.redirect('/error');
-                        else res.sendFile(rootPath + '/views/layout.html')
-                    });
-                }
-            }
-            else res.redirect('/error');
-        });
+    var ID = req.params.id;
+    var _result = caseService.ValidateCaseView(req, res, ID);
 }
 
 module.exports.chat = function (req, res) {
     var code;
     var mediator;
     var role = utility.UserRole.GetRoleName(req);
-    var _chat = new model.ChatModel({ CaseId: req.params.id, Content: req.body.Content, Date: currentDate });
-    if (role == 'user' || role == 'invitee') {
-        _chat.TP_Name = req.session.name;
-        _chat.Mediator_Name = null;
-    }
-    if (role == 'mediator') {
-        mediator = req.user.FullName;
-        _chat.TP_Name = null;
-        _chat.Mediator_Name = mediator;
-    }
-    _chat.save(function (err, data) {
-        if (err) res.json({ status: 0, message: err.message });
-        else res.json({ status: 1, key: data._id });
+    caseService.AddCaseChat(req, res, null, function (data) {
+        if (data)
+            res.json({ status: 1, result: data });
+        else
+            res.json({ status: 0, message: 'Something went wrong!!' });
     });
 }
 
@@ -78,36 +40,28 @@ module.exports.chatDetails = function (req, res) {
     if (ID == 'undefined' || ID == null) {
         res.json(0);
     }
-    else {
-        model.ChatModel.find()
-            .where('CaseId')
-            .in(ID)
-            .populate('CaseId')
-            .exec(function (err, data) {
-                res.json(data);
-            })
-    }
+    caseService.GetAllChatsByCaseId(ID, function (data) {
+        res.json(data);
+    });
 }
 
 exports.acceptCase = function (req, res) {
     if (req.user != undefined) {
-        model.ComplaintModel.findByIdAndUpdate(req.body.complaintId, { Status: 1 }, function (err, data) {
-            if (err) res.json({ status: 0, message: err.message });
-            // else {
-            //     console.log(data);
-            // }
-        });
-        model.CaseModel.create({
-            MediatorId: req.user._id,
-            Mediator_Name: req.user.FullName,
-            ComplaintId: req.body.complaintId,
-            Date: currentDate
-        }, function (err, data) {
-            if (err) res.json({ status: 0, message: err.message });
-            else {
-                res.json({ status: 1, message: data.id });
-            }
-        });
+        // model.ComplaintModel.findByIdAndUpdate(req.body.complaintId, { Status: 2 }).populate('FileCode')
+        model.ComplaintModel.findById(req.body.complaintId).populate('FileId')
+            .exec(function (err, data) {
+                var mediatorId = req.user._id;
+                var mediatorName = req.user.FullName;
+                var ID = req.body.complaintId;
+                caseService.AddCaseAndUpdate(mediatorId, mediatorName, ID, data.FileId.Key, function (data) {
+                    if (data) {
+                        res.json({ status: 1, message: data.id });
+                    }
+                    else {
+                        res.json({ status: 0, message: 'Something went wrong!!' });
+                    }
+                });
+            })
     }
     else {
         res.redirect('/error');
@@ -116,62 +70,27 @@ exports.acceptCase = function (req, res) {
 
 
 module.exports.inviteUser = function (req, res) {
-    //send email
-    // string html = ''
     var caseId = req.body.caseId;
     model.CaseModel.findById(caseId)
         .populate('ComplaintId')
         .exec(function (err, data) {
             // console.log(data);
-            if (data) {
-                var inviteeName = data.ComplaintId.TPName;
-                var path = rootPath + '/views/Invite.html';
-                var secretToken = utility.randomNumber.generateRan(8);
-                var _res = mail.mail(path, secretToken, data.ComplaintId.TPEmail, inviteeName, 'MATTA needs you!');
-                var invite = model.InviteeModel.create({
-                    FullName: data.ComplaintId.TPName, //TP means third party
-                    Email: data.ComplaintId.TPEmail,
-                    SecretToken: secretToken,
-                    CaseId: req.body.caseId,
-                    DateInvited: currentDate
-                }, function (err, data) {
-                    if (err) res.json({ status: 0, message: err.message });
-                    else res.json({ status: 1 });
-                });
-            }
+            caseService.SendMailToInvitee(data, caseId, function (_result) {
+                if (_result) res.json({ status: 1 });
+                else res.json({ status: 0 });
+            });
         });
 }
 
 module.exports.uploadfile = function (req, res) {
-    var key = crypto.randomBytes(16).toString("hex");
-    var caption = req.body.caption;
-    // console.log(req.files);
-    var ImageFile = [];
-    if (req.files) {
-        var files = req.files;
-        utility.uploadFile.apiUpload(req.files, key);
-        files.forEach(item => {
-            ImageFile.push({
-                'filename': item.filename
-            });
+    caseService.uploadcasefiles(req, res, function (files) {
+        var caseId = req.params.id;
+        var caption = req.body.caption;
+        var role = utility.UserRole.GetRoleName(req);
+        caseService.AddCaseChat(req, res, files, function (data) {
+            if(data) res.json({ status: 1, result: data });
+            else res.json({ status: 0, message: 'Something went wrong!!' });
         });
-    }
-    
-    var mediator;
-    var role = utility.UserRole.GetRoleName(req);
-    var _chat = new model.ChatModel({ CaseId: req.params.id, Content: caption, File: ImageFile, Date: currentDate });
-    if (role == 'user' || role == 'invitee') {
-        _chat.TP_Name = req.session.name;
-        _chat.Mediator_Name = null;
-    }
-    if (role == 'mediator') {
-        mediator = req.user.FullName;
-        _chat.TP_Name = null;
-        _chat.Mediator_Name = mediator;
-    }
-    _chat.save(function (err, data) {
-        if (err) res.json({ status: 0, message: err.message });
-        else res.json({ status: 1, key: data._id });
     });
 };
 
@@ -182,6 +101,8 @@ module.exports.checkinvite = function (req, res) {
         else res.json(0);
     });
 }
+
+
 
 //UPDATE ANY DATA
 // app.get('/g', function (req, res) {

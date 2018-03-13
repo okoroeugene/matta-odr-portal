@@ -1,19 +1,125 @@
 <div style="font-size: 12px!Important;">
+    <div data-ng-init="PaymentStatusInit()"></div>
     <div class="page-content fade-in-up">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="loader loaderP" style="width: 220px; height: 220px; left: 44.4%; top: 30%;"></div>
+                <div ng-show="NotAssignedPayment" class="loader loaderP" style="width: 220px; height: 220px; left: 44.4%; top: 30%;"></div>
                 <div class="ibox" id="container">
                     <div class="ibox-body" style="min-height: 500px;">
-                        <h2 class="text-center">Analysisng Case</h3>
-                            <hr>
-                            <h1 class="text-center">72%</h1>
-                            <h1 class="pendText" style="position:relative; top:280px; padding-left:150px;padding-right:150px; text-align:center;" class="text-center">
-                                Be Patient, we are Analyzing your case. We will get back to you shortly.
-                            </h1>
-                            <div class="cd-timeline-dark center-orientation timeline-2" id="cd-timeline">
+                        <div ng-show="NotAssignedPayment">
+                            <h2 class="text-center">Analysisng Case</h3>
+                                <hr>
+                                <h1 class="text-center">72%</h1>
+                                <h1 class="pendText" style="position:relative; top:280px; padding-left:150px;padding-right:150px; text-align:center;" class="text-center">
+                                    Be Patient, we are Analyzing your case. We will get back to you shortly.
+                                </h1>
+                                <div class="cd-timeline-dark center-orientation timeline-2" id="cd-timeline">
 
-                            </div>
+                                </div>
+                        </div>
+
+                        <div ng-show="AssignedPayment">
+                            <h2 class="text-center">Make Payment</h3>
+                                <hr>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <p>
+                                    <!-- <i class="fa fa-arrow-circle-o-right"></i> -->
+                                    <h3 class="text-center">File Number:
+                                        <span style="color:rgb(131, 133, 135)">{{result.FileCode}}</span>
+                                    </h3>
+                                    <h3 class="text-center">Amount Due:
+                                        <span style="color:rgb(131, 133, 135)">&#8358;{{result.Amount}}</span>
+                                    </h3>
+                                    <h3 class="text-center">Valid Till:
+                                        <span style="color:rgb(131, 133, 135)">{{}}</span>
+                                    </h3>
+                                    <br>
+                                    <div class="col-md-12 text-center">
+                                        <script src="https://js.paystack.co/v1/inline.js"></script>
+                                        <button class="btn btn-info btn-lg" id="btnPayment" onclick="payWithPaystack()">Make Payment</button>
+                                    </div>
+
+                                </p>
+                        </div>
+
+                        <div ng-show="Paid">
+                            <h2 class="text-center">Welcome to MATTA ODR</h3>
+                                <hr>
+                                <!-- <h1 class="text-center">72%</h1> -->
+                                <!-- <h1 ng-show="PaidandNotAccepted" class="pendText" style="position:relative; top:180px; padding-left:150px;padding-right:150px; text-align:center;" class="text-center">
+                                    Awaiting Approval
+                                </h1> -->
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="ibox">
+                                            <div class="ibox-body" style="min-height: 500px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                                                <h1 ng-show="PaidandNotAccepted" class="pendText" style="position:relative; top:180px; text-align:center; text-shadow: 0 0 2px#5ea8d1;"
+                                                    class="text-center">
+                                                    <blink>Awaiting Approval from our Mediators</blink>
+                                                </h1>
+                                                <div class="col-md-12" ng-show="PaidandAccepted">
+                                                    <!-- <img style="border-radius: 50%;width: 65px;height: 60px;box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" class="img-circle center" src="../images/avatar_1.png" width="210px" /> -->
+                                                    <p>
+                                                        <h4>Name:
+                                                            <span style="font-weight:300;">{{result.UName}}</span>
+                                                        </h4>
+                                                        <hr>
+                                                        <h4>File Number:
+                                                            <span style="font-weight:300;">{{result.FileCode}}</span>
+                                                        </h4>
+                                                        <hr>
+                                                        <h4>Third Party Name:
+                                                            <span style="font-weight:300;">{{result.TPName}}</span>
+                                                        </h4>
+                                                        <hr>
+                                                        <h4>Assigned Mediator:
+                                                            <span style="font-weight:300;">{{mediatorname}}</span>
+                                                        </h4>
+                                                    </p>
+
+                                                    <br>
+                                                    <br>
+                                                    <div class="text-center">
+                                                        <button style="padding: 1.9rem 5rem;" class="btn btn-success btn-lg col-md-12" ng-click="btnGotoCase(caseId)" type="button">
+                                                            </i> Proceed to Case Portal</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!-- <div ng-show="PaidandNotAccepted" class="loader loaderP" style="width: 220px; height: 220px; left: 44.4%; top: 30%;"></div> -->
+
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                                            <h3 class="text-center" style="margin-top:15px; font-weight: bold;">TIP OF THE DAY</h3>
+                                            <img class="card-img-top" style="object-fit:contain;" src="../content/dashboard/assets/img/blog/storm.jpg" style="padding: 15px;">
+                                            <div class="card-body">
+                                                <h4 class="card-title">Divorce Advice for men</h4>
+                                                <!-- <div class="text-muted card-subtitle">subtitle</div> -->
+                                                <p class="card-text">
+                                                    <ul>
+                                                        <li style="font-size: 15px; font-weight: 300;">Maximize your time with your kids</li>
+                                                        <li style="font-size: 15px; font-weight: 300;">Keep your emotions in check</li>
+                                                        <li style="font-size: 15px; font-weight: 300;">Mediate from the start</li>
+                                                    </ul>
+                                                </p>
+                                                <!-- <button class="btn btn-default btn-sm">
+                                                    <i class="fa fa-plus"></i> Add</button> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="cd-timeline-dark center-orientation timeline-2" id="cd-timeline">
+
+                                </div> -->
+                        </div>
                     </div>
                     <div class="ibox-footer">
                         <div class="col-md-12">
@@ -29,3 +135,63 @@
         </div>
     </div>
 </div>
+
+
+<script type="text/javascript">
+    function payWithPaystack() {
+        $('#btnPayment').prop('disabled', true);
+        $.get("/verifypayment", function (response) {
+            if (response.status == 2) {
+                var MyEmail = response.result.Email;
+                var Phone = response.result.Phone;
+                var Value = response.result.Amount * 100;
+                var handler = PaystackPop.setup({
+                    key: 'pk_test_c7fae17b0fc0dc90a958362549dd64ea8fb43a53',
+                    email: MyEmail,
+                    amount: Value,
+                    ref: '' + Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+                    metadata: {
+                        custom_fields: [
+                            {
+                                display_name: "Mobile Number",
+                                variable_name: "mobile_number",
+                                value: Phone
+                            }
+                        ]
+                    },
+                    callback: function (data) {
+                        $.post("/makecomplaintpayment/" + response.result.CasePaymentId, function (response) {
+                            if (response == 1) {
+                                toastr.success('Payment Successful!');
+                                setTimeout(() => {
+                                    window.location.href = '/pending';
+                                }, 2000);
+                            }
+                            else toastr["error"]("Sorry," + 'Something went wrong!');
+                            $(':input[type="submit"]').prop('disabled', true);
+                        });
+                    },
+                    onClose: function () {
+                        alert('window closed');
+                        $('#btnPayment').prop('disabled', false);
+                    }
+                });
+                handler.openIframe();
+            }
+            else if (response.status == 1) toastr["error"]("Sorry," + " " + "You have already made payment");
+            // $(':input[type="submit"]').prop('disabled', true);
+        });
+    }
+
+</script>
+
+
+<!-- <script>
+    $(document).ready(function () {
+        var socket = io.connect('http://localhost:3005');
+        socket.emit('notify');
+        socket.on('notifyCount', function (data) {
+            alert(data);
+        });
+    })
+</script> -->

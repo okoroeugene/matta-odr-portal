@@ -9,6 +9,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
             if (response.data == 1) $window.location = '/new-complaint';
             if (response.data.status == 2) $window.location = '/case/' + response.data.id;
             if (response.data.status == 3) $window.location = response.data.url;
+            if (response.data.status == 4) $window.location = '/case/' + response.data.caseId;
             else toastr["error"]("Error, Invalid Code!");
             // toastr.success('Submitted!');
         })
@@ -35,7 +36,10 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
                 toastr["error"]("Error," + " " + "Invalid Username or Password");
             }
             if (response.data.success == true) {
-                window.location.href = '/profile';
+                if (response.data.url != undefined)
+                    window.location.href = response.data.url;
+                else
+                    window.location.href = '/profile';
             }
 
             // toastr.success('Submitted!');

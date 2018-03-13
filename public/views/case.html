@@ -30,9 +30,29 @@
                         </div>
 
                         <div ng-show="userData">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <a title="Message" href="#" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal">
+                                        <i style="font-size: 30px;" class="fa fa-envelope"></i>
+                                    </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a title="View Case Details" href="#" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myCaseModal">
+                                        <i style="font-size: 35px;" class="fa fa-edit"></i>
+                                    </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a title="Upload Documents" href="#" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myUploadModal">
+                                        <i style="font-size: 30px;" class="fa fa-upload"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <hr>
                             <span>
                                 <b>CASE</b>
-                                <span>: {{showData.ComplaintId.Complaint}}</span>
+                                <span>: {{ showData.ComplaintId.Complaint | limitTo: 100 }}{{showData.ComplaintId.Complaint.length
+                                    > 20 ? '...' : ''}}
+                                </span>
                             </span>
                             <hr>
                             <span>
@@ -47,20 +67,21 @@
                                 <b>Email</b>
                                 <span>: {{showData.ComplaintId.UEmail}}</span>
                                 <br>
-                                <span>
-                                    <b>Status</b>
-                                    </h5>
-                                    <span class="badge badge-success badge-pill m-r-5 m-b-5">In Progress</span>
-                                    <!-- <div class="m-b-20 text-muted">Web Developer</div> -->
-                                    <hr>
-                                    <div class="row">
-                                        <div class="btn-group-justified col-md-12">
-                                            <input type="button" style="font-size: 12px;" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal"
-                                                class="btn btn-success" href="javascript:;" value="Message">
-                                            <input type="button" style="font-size: 12px;" ng-if="role == 'mediator'" class="btn btn-default" href="javascript:;" value="Close Case">
-                                        </div>
+                            </span>
+                            <span>
+                                <b>Status</b>
+                                </h5>
+                                <span class="badge badge-success badge-pill m-r-5 m-b-5">In Progress</span>
+                                <!-- <div class="m-b-20 text-muted">Web Developer</div> -->
+                                <hr>
+                                <div class="row">
+                                    <div class="btn-group-justified col-md-12">
+                                        <input type="button" style="font-size: 12px;" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal"
+                                            class="btn btn-success" href="javascript:;" value="Message">
+                                        <input type="button" style="font-size: 12px;" ng-if="role == 'mediator'" class="btn btn-default" href="javascript:;" value="Close Case">
                                     </div>
-                                </span>
+                                </div>
+                            </span>
                         </div>
 
                     </div>
@@ -85,7 +106,8 @@
                                 <hr>
                                 <div class="row">
                                     <div class="btn-group-justified col-md-12">
-                                        <a ng-if="IsInvited == false" ng-click="btnInvite(showData._id)" style="font-size: 12px;" class="btn btn-success" href="javascript:;">Invite Third Party</a>
+                                        <a ng-if="IsInvited == false" ng-click="btnInvite(showData._id)" id="btnInvite" style="font-size: 12px;" class="btn btn-success"
+                                            href="javascript:;">Invite Third Party</a>
                                         <!-- <a style="font-size: 12px;" class="btn btn-default" href="javascript:;">Close Case</a> -->
                                     </div>
                                     <span ng-if="IsInvited == true" class="badge badge-success m-r-5 m-b-5" style="text-align:center;">Invited</span>
@@ -96,34 +118,39 @@
             </div>
 
             <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                <pagination ng-show="textContent" boundary-links="true" max-size="5" items-per-page="itemsPerPage" total-items="chats.length"
+                <!-- <pagination ng-show="textContent" boundary-links="true" max-size="5" items-per-page="itemsPerPage" total-items="chats.length"
                     ng-model="currentPage" ng-change="pageChanged()">
-                </pagination>
+                </pagination> -->
                 <div style="display:none;" class="loader"></div>
                 <div class="ibox" id="container">
                     <div class="ibox-body">
-                        <div class="text-center">
+                        <!-- <div class="text-center">
                             <button data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myUploadModal" class="btn btn-default labeled">
                                 <span class="btn-label">
                                     <i class="fa fa-upload"></i>
                                 </span>Upload</button>
                         </div>
-                        <hr/>
+                        <hr/> -->
                         <!-- <h3 class="text-center">Case</h3> -->
                         <div class="cd-timeline-dark center-orientation timeline-2" id="cd-timeline">
                             <div ng-show="textContent" ng-repeat="data in filteredData" class="cd-timeline-block">
-                                <div ng-if="data.Mediator_Name != null" class="cd-timeline-icon bg-green text-white">
-                                    <i class="fa fa-file-text"></i>
+                                <div style="background-color:#28c913!Important;" ng-if="data.SenderId === data.CaseId.MediatorId" class="cd-timeline-icon bg-green text-white">
+                                    <span style="font-size: 30px;">{{data.SenderName.charAt(0)}}</span>
                                 </div>
-                                <div ng-if="data.TP_Name != null" style="background-color:#7f8c8d!Important;" class="cd-timeline-icon bg-purple text-white">
-                                    <i class="fa fa-briefcase"></i>
+                                <div style="background-color: #6f85d6!Important;" ng-if="data.SenderId === data.CaseId.UserId" style="background-color:#7f8c8d!Important;"
+                                    class="cd-timeline-icon bg-purple text-white">
+                                    <span style="font-size: 30px;">{{data.SenderName.charAt(0)}}</span>
                                 </div>
-                                <a href="data._id"></a>
+                                <div style="background-color: #f26fac!Important;" ng-if="data.SenderId !== data.CaseId.UserId && data.SenderId !== data.CaseId.MediatorId" style="background-color:#7f8c8d!Important;"
+                                    class="cd-timeline-icon bg-purple text-white">
+                                    <span style="font-size: 30px;">{{data.SenderName.charAt(0)}}</span>
+                                </div>
+                                <a id="{{data._id}}" href="#{{data._id}}"></a>
                                 <div class="cd-timeline-content">
-                                    <h4 ng-if="data.Mediator_Name != null">{{data.Mediator_Name}}</h4>
-                                    <h4 ng-if="data.TP_Name != null">{{data.TP_Name}}</h4>
+                                    <h4 ng-if="data.SenderName != null">{{data.SenderName}}</h4>
+                                    <!-- <h4 ng-if="data.TP_Name != null">{{data.TP_Name}}</h4> -->
                                     <p>
-                                        <span ng-if="data.Content != null" style="white-space: pre-line!Important;">{{data.Content}}</span>
+                                        <span ng-if="data.Content != null" ng-bind-html="data.Content"></span>
                                         <div class="row">
                                             <div class="col-md-4" style="padding-right: 0px; padding-left: 0px;" ng-if="data.File != null" ng-repeat="(key, value) in data.File track by $index">
                                                 <img ng-if="$index <= 1" id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width: 200px; height:120px;"
@@ -145,8 +172,11 @@
                             <div id="myImgModal" class="modalImg">
                                 <span class="close">&times;</span>
                                 <img style="width:300px; margin-top:60px;" class="imgModal-content" id="img01">
-                                <button id="prev-btn" class="btn btn-warning">Prev</button>
-                                <button id="next-btn" class="btn btn-primary">Next</button>
+                                <br>
+                                <i class="fa fa-arrow-left" style="font-size:60px; margin-left:45%;"></i>
+                                <i style="font-size:60px; margin-left:3%;" class="fa fa-arrow-right"></i>
+                                <!-- <button id="prev-btn" class="btn btn-warning">Prev</button>
+                                <button id="next-btn" class="btn btn-primary">Next</button> -->
                             </div>
 
                             <div ng-show="contentLoader" ng-repeat="i in [1, 2]" class="cd-timeline-block">
@@ -167,9 +197,10 @@
                         </div>
                     </div>
                 </div>
-                <pagination ng-show="textContent" boundary-links="true" max-size="5" items-per-page="itemsPerPage" total-items="chats.length"
+                <img src="../Images/loading_apple.gif" style="display:block; margin:auto; width:30px;">
+                <!-- <pagination ng-show="textContent" boundary-links="true" max-size="5" items-per-page="itemsPerPage" total-items="chats.length"
                     ng-model="currentPage" ng-change="pageChanged()">
-                </pagination>
+                </pagination> -->
             </div>
 
             <!-- <div class="col-lg-9 col-md-4">
@@ -185,62 +216,98 @@
 
 
     </div>
-</div>
 
-<div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px;
+    <div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px;
     top: 0px; width: 100%; height: 100%; background-color: #666666; z-index: 30001;
     opacity: .8; filter: alpha(opacity=70);display:none">
-    <p style="position: absolute; top: 30%; left: 45%; color: White;">
-        Loading, please wait...
-        <img style="width: 50px; height: 50px;" src="~/Images/load.gif" />
-    </p>
-</div>
+        <p style="position: absolute; top: 30%; left: 45%; color: White;">
+            Loading, please wait...
+            <img style="width: 50px; height: 50px;" src="~/Images/load.gif" />
+        </p>
+    </div>
 
-<style>
-    .modal-backdrop {
-        background-color: #4BB2C5;
-    }
-</style>
+    <style>
+        .modal-backdrop {
+            background-color: #4BB2C5;
+        }
+    </style>
 
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Mediation Chat</h4>
-            </div>
-            <div class="modal-body">
-                <div id="summernote" id="txtContent" data-plugin="summernote" data-air-mode="true">
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Mediation Chat</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="summernote" id="txtContent" data-plugin="summernote" data-air-mode="true">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button ng-style="backgroundColor" class="btn btn-success" ng-click="btnChat()" type="button">
+                        <i ng-show="searchButtonText == chat" class="fa fa-cog fa-spin"></i> Chat</button>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button ng-style="backgroundColor" class="btn btn-success" ng-click="btnChat()" type="button">
-                    <i ng-show="searchButtonText == chat" class="fa fa-cog fa-spin"></i> Chat</button>
-            </div>
+
         </div>
-
     </div>
-</div>
 
-<div id="myUploadModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Upload File</h4>
+    <div id="myCaseModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Case Details</h4>
+                </div>
+                <div class="modal-body">
+                    <span>
+                        <b>Name</b>
+                        <span>: {{showData.ComplaintId.UName}}</span>
+                        <span ng-if="role != 'invitee'">
+                            <hr>
+                            <b>File Number</b>
+                            <span>: {{showData.ComplaintId.FileCode}}</span>
+                        </span>
+                        <hr>
+                        <b>Email</b>
+                        <span>: {{showData.ComplaintId.UEmail}}</span>
+                        <hr>
+                    </span>
+                    <span>
+                        <b>CASE</b>
+                        <span>: {{showData.ComplaintId.Complaint}}</span>
+                    </span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <!-- <button ng-style="backgroundColor" class="btn btn-success" ng-click="btnChat()" type="button">
+                        <i ng-show="searchButtonText == chat" class="fa fa-cog fa-spin"></i> Chat</button> -->
+                </div>
             </div>
-            <div class="modal-body">
-                <div>
-                    <form enctype="multipart/form-data" action="/uploadfile" method="post">
-                        <input type="hidden" id="caseId" value="{{showData._id}}">
-                        <input type="file" name="Images" id="previewFile" multiple>
-                    </form>
-                    <!-- <button class="btn btn-primary" ng-click="preview()">Click</button> -->
-                    <!-- <div class="dz-default dz-message">
+
+        </div>
+    </div>
+
+    <div id="myUploadModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Upload File</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <form enctype="multipart/form-data" action="/uploadfile" method="post">
+                            <input type="hidden" id="caseId" value="{{showData._id}}">
+                            <input type="file" name="Images" id="previewFile" multiple>
+                        </form>
+                        <!-- <button class="btn btn-primary" ng-click="preview()">Click</button> -->
+                        <!-- <div class="dz-default dz-message">
                         <span>
                             <div class="text-center m-b-10">
                                 <i class="fa fa-cloud-upload text-info" style="font-size:50px"></i>
@@ -248,14 +315,14 @@
                             <strong>Drop files here or click to upload. </strong>
                             <br> </span>
                     </div> -->
-                </div>
-                <div id="previewContent" style="display: none;">
-                    <hr>
-                    <span>
-                        <h3 style="text-align:center;">Preview</h3>
-                    </span>
-                    <hr>
-                    <!-- <div ng-show="fileLoad" class="row">
+                    </div>
+                    <div id="previewContent" style="display: none;">
+                        <hr>
+                        <span>
+                            <h3 style="text-align:center;">Preview</h3>
+                        </span>
+                        <hr>
+                        <!-- <div ng-show="fileLoad" class="row">
                         <div class="col-md-3 col-sm-6 col-xs-6">
                             <div class="imgContent"></div>
                         </div>
@@ -270,30 +337,33 @@
                         </div>
                     </div> -->
 
-                    <div class="row" id="preview"></div>
-                    <br>
-                    <input style="font-size: 12px;" type="text" placeholder="Add Caption" id="caption" ng-model="caption" class="form-control">
-                    </textarea>
-                    <br>
-                    <div class="progress" style="display:none;margin-top:10px;">
-                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">0%</div>
-                    </div>
-                    <br>
-                    <div class="pull-right">
-                        <button class="btn btn-success btn-rounded m-b-5" id="uploadFile" type="button">
-                            <i class="ti-comment-alt"></i> Upload</button>
+                        <div class="row" id="preview"></div>
+                        <br>
+                        <input style="font-size: 12px;" type="text" placeholder="Add Caption" id="caption" ng-model="caption" class="form-control">
+                        </textarea>
+                        <br>
+                        <div class="progress" style="display:none;margin-top:10px;">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">0%</div>
+                        </div>
+                        <br>
+                        <div class="pull-right">
+                            <button class="btn btn-success btn-rounded m-b-5" id="uploadFile" type="button">
+                                <i class="ti-comment-alt"></i> Upload</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <!-- <button ng-style="backgroundColor" class="btn btn-success" ng-click="btnUpload()" type="button">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <!-- <button ng-style="backgroundColor" class="btn btn-success" ng-click="btnUpload()" type="button">
                     <i ng-show="searchButtonText == chat" class="fa fa-cog fa-spin"></i> Chat</button> -->
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
+
+
 
 
 <!-- <script src="../content/dashboard/vendors/dropzone/dist/min/dropzone.min.js" type="text/javascript"></script> -->
@@ -332,5 +402,7 @@
         $('#summernote').summernote();
         $('#summernote_air').summernote({ airMode: true });
     });
+
+    
 
 </script>

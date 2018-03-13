@@ -5,7 +5,7 @@
         <li class="breadcrumb-item">
             <a href="index-2.html">Home</a>
         </li>
-        <li class="breadcrumb-item active">New Compplaint</li>
+        <li class="breadcrumb-item active">New Complaint</li>
     </ol>
 </div>
 <div class="page-content fade-in-up">
@@ -22,7 +22,7 @@
                         <label>Full Name
                             <span class="danger">*</span>
                         </label>
-                        <input class="form-control required name" ng-model="fullname" type="text" name="name">
+                        <input class="form-control required name" ng-model="fullname" type="text" name="TPName">
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -30,7 +30,7 @@
                                 <label>Email
                                     <span class="danger">*</span>
                                 </label>
-                                <input class="form-control required email" ng-model="email" type="email" name="email">
+                                <input class="form-control required email" ng-model="email" type="email" name="TPEmail">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -38,7 +38,7 @@
                                 <label>Phone Number
                                     <span class="danger">*</span>
                                 </label>
-                                <input class="form-control required phone" ng-model="phone" type="text" name="phone">
+                                <input class="form-control required phone" ng-model="phone" type="text" name="TPPhone">
                             </div>
                         </div>
                     </div>
@@ -46,11 +46,11 @@
                         <label>Address
                             <span class="danger">*</span>
                         </label>
-                        <input class="form-control required address" ng-model="address" type="text" name="address">
+                        <input class="form-control required address" ng-model="address" type="text" name="TPAddress">
                     </div>
                     <div class="form-group">
                         <label>Website</label>
-                        <input class="form-control required" ng-model="website" type="text" name="website">
+                        <input class="form-control required" ng-model="website" type="text" name="TPWebsite">
                     </div>
                 </section>
                 <h6>Tell us about your Complaint</h6>
@@ -58,7 +58,7 @@
                     <h3>What exactly happened?</h3>
                     <div class="form-group">
                         <label>Complaint</label>
-                        <textarea rows="10" class="form-control required" type="text" name="complaint"></textarea>
+                        <textarea rows="10" class="form-control required" type="text" name="Complaint"></textarea>
                     </div>
                 </section>
                 <h6>Personal information</h6>
@@ -68,7 +68,7 @@
                         <label>Full Name
                             <span class="danger">*</span>
                         </label>
-                        <input class="form-control required name" ng-model="fullname" type="text" name="user_fullname">
+                        <input class="form-control required name" ng-model="fullname" type="text" name="UName">
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -76,7 +76,7 @@
                                 <label>Email
                                     <span class="danger">*</span>
                                 </label>
-                                <input class="form-control required email" ng-model="email" type="email" name="user_email">
+                                <input class="form-control required email" ng-model="email" type="email" name="UEmail">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -84,7 +84,7 @@
                                 <label>Phone Number
                                     <span class="danger">*</span>
                                 </label>
-                                <input class="form-control required phone" ng-model="phone" type="text" name="user_phone">
+                                <input class="form-control required phone" ng-model="phone" type="text" name="UPhone">
                             </div>
                         </div>
                     </div>
@@ -92,7 +92,7 @@
                         <label>Address
                             <span class="danger">*</span>
                         </label>
-                        <input class="form-control required address" ng-model="address" type="text" name="user_address">
+                        <input class="form-control required address" ng-model="address" type="text" name="UAddress">
                     </div>
                 </section>
                 <h6>Complete</h6>
@@ -144,7 +144,9 @@
                 $.post("/new-complaint", v , function (response) {
                     if (response == 1) {
                         toastr.success('Submitted!');
-                        window.location.href = '/pending';
+                        setTimeout(() => {
+                            window.location.href = '/pending';
+                        }, 2000);
                     }
                     if (response == 0) toastr["error"]("Sorry, An error occured while processing your request.");
                     $(':input[type="submit"]').prop('disabled', true);

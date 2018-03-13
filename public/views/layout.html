@@ -42,12 +42,20 @@
     .content-wrapper {
         margin-left: 0px;
     }
+
+    /* .slimScrollDiv {
+        height: auto !important;
+    }
+    .scroller {
+        height: auto !important;
+    } */
 </style>
 
-<body class="fixed-navbar has-animation drawer-sidebar" ng-controller="layoutController">
+<body class="fixed-navbar has-animation drawer-sidebar">
+    <div data-ng-init="notification()"></div>
     <div class="page-wrapper">
         <!-- START HEADER-->
-        <header class="header clf">
+        <header class="header clf" ng-controller="layoutController">
             <div class="page-brand">
                 <a class="link" href="/">
                     <!-- <span class="brand">Admin
@@ -71,73 +79,41 @@
             <!-- END TOP-LEFT TOOLBAR-->
             <!-- START TOP-RIGHT TOOLBAR-->
             <ul class="nav pull-right navbar-toolbar">
-                <li class="timeout-toggler">
+                <!-- <li class="timeout-toggler">
                     <a class="nav-link" data-toggle="modal" data-target="#session-dialog">
                         <i class="fa fa-android timeout-toggler-icon rel">
                             <span class="notify-signal"></span>
                         </i>
                     </a>
-                </li>
+                </li> -->
                 <li class="dropdown dropdown-inbox">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-envelope"></i>
-                        <span class="envelope-badge">9</span>
+                    <a id="readNotification" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bell rel"></i>
+                        <span style="display:none;" class="notification-counter">{{notificationData.count}}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                         <li class="dropdown-menu-header">
                             <div>
                                 <span>
-                                    <strong>9 New</strong> Messages</span>
-                                <a class="pull-right" href="mailbox.html">view all</a>
+                                    <strong>{{notificationData.count}} New</strong> Messages</span>
+                                <!-- <a class="pull-right" href="mailbox.html">view all</a> -->
                             </div>
                         </li>
-                        <li class="list-group list-group-divider scroller" data-height="240px" data-color="#71808f">
+                        <li style="font-size:12px;" class="list-group list-group-divider scroller" data-height="240px" data-color="#71808f">
+                            <p ng-if="notificationData.count === 0" style="color: rgb(204, 35, 35); text-align:center">No new Notifications</p>
                             <div>
-                                <a class="list-group-item">
+                                <a style="padding: 5px 9px 2px;" ng-repeat="data in notificationData.content" class="list-group-item">
                                     <div class="media">
                                         <div class="media-img">
                                             <img class="img-circle" src="../content/dashboard/assets/img/users/u1.jpg" />
                                         </div>
                                         <div class="media-body">
-                                            <div class="font-strong">Jeanne Gonzalez</div>
-                                            <div class="font-13">Your proposal interested me.</div>
-                                            <small class="text-muted">Just now</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="list-group-item">
-                                    <div class="media">
-                                        <div class="media-img">
-                                            <img class="img-circle" src="../content/dashboard/assets/img/users/u2.jpg" />
-                                        </div>
-                                        <div class="media-body">
-                                            <div class="font-strong">Becky Brooks</div>
-                                            <div class="font-13">Lorem Ipsum is simply.</div>
-                                            <small class="text-muted">18 mins</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="list-group-item">
-                                    <div class="media">
-                                        <div class="media-img">
-                                            <img class="img-circle" src="../content/dashboard/assets/img/users/u3.jpg" />
-                                        </div>
-                                        <div class="media-body">
-                                            <div class="font-strong">Frank Cruz</div>
-                                            <div class="font-13">Lorem Ipsum is simply.</div>
-                                            <small class="text-muted">18 mins</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="list-group-item">
-                                    <div class="media">
-                                        <div class="media-img">
-                                            <img class="img-circle" src="../content/dashboard/assets/img/users/u4.jpg" />
-                                        </div>
-                                        <div class="media-body">
-                                            <div class="font-strong">Rose Pearson</div>
-                                            <div class="font-13">Lorem Ipsum is simply.</div>
-                                            <small class="text-muted">3 hrs</small>
+                                            <div class="font-strong" ng-if="data.ChatId.SenderName != null">{{data.ChatId.SenderName}}</div>
+                                            <div class="font-13" ng-if="data.ChatId.File == null" style="font-size:11px;">{{data.ChatId.Content | removeHTMLTags}}</div>
+                                            <div class="font-13" ng-if="data.ChatId.File != null" style="font-size:11px;">{{data.ChatId.SenderName}}
+                                                <span style="font-style:italic; font-weight:bold;">sent an attachment</span>
+                                            </div>
+                                            <small class="text-muted">{{data.ChatId.Date | date : "MMM d, y h:mm a"}}</small>
                                         </div>
                                     </div>
                                 </a>
@@ -145,7 +121,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown dropdown-notification">
+                <!-- <li class="dropdown dropdown-notification">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-bell rel">
                             <span class="notify-signal"></span>
@@ -216,11 +192,11 @@
                             </div>
                         </li>
                     </ul>
-                </li>
+                </li> -->
                 <li class="dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
                         <span>{{showUserName}}</span>
-                        <img src="../content/dashboard/assets/img/users/u1.jpg">
+                        <img src="../Images/avatar_1.png">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="~/user/profile">
@@ -336,7 +312,7 @@
         </button>
     </form>
     <!-- END SEARCH PANEL-->
-    
+
     <div class="sidenav-backdrop backdrop"></div>
     <div class="preloader-backdrop">
         <div class="page-preloader">Loading</div>
@@ -380,6 +356,14 @@
     <script src="../content/dashboard/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <script src="../scripts/jquery.serializejson.min.js" type="text/javascript"></script>
     <script src="../scripts/jquery.form.js" type="text/javascript"></script>
+    <script src="../scripts/jquery.scrollIntoView.min.js" type="text/javascript"></script>
+    <script src="http://localhost:3005/scripts/socket.io.js" type="text/javascript"></script>
+    <script>
+        
+
+
+
+    </script>
 
     <!--Angular-->
     <script src="../scripts/angular.js"></script>
@@ -387,6 +371,7 @@
     <script src="../scripts/ui-bootstrap-tpls.min.js" type="text/javascript"></script>
     <script src="../scripts/angular-animate.js"></script>
     <script src="../scripts/angular-ui-router.min.js"></script>
+    <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
     <!-- <script src="../scripts/ngInfiniteScroll.min.js" type="text/javascript"></script> -->
     <!-- <script src="../scripts/angular-spinner.min.js"></script> -->
     <script src="../scripts/angular-flash.js"></script>
@@ -411,7 +396,7 @@
     <script src="../content/dashboard/vendors/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js" type="text/javascript"></script>
     <script src="../content/dashboard/vendors/jquery-sparkline/dist/jquery.sparkline.min.js" type="text/javascript"></script>
 
-    
+
     <script src="../content/dashboard/assets/js/scripts/dashboard_1_demo.js" type="text/javascript"></script>
     <script src="../content/dashboard/vendors/bootstrap-table/dist/bootstrap-table.min.js" type="text/javascript"></script>
     <script src="../content/dashboard/assets/js/scripts/sweetalert-demo.js" type="text/javascript"></script>

@@ -1,20 +1,6 @@
 myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpLoadingBar', '$http', '$timeout', '$location', '$anchorScroll', '$window', function ($scope, $state, $stateParams, cfpLoadingBar, $http, $timeout, $location, $anchorScroll, $window) {
 
     var currentId = $stateParams.id;
-    $scope.getUser = function () {
-        // $scope.start();
-        $scope.complete();
-        $http.get('/user').then(function (response) {
-            // console.log(response.data);
-            if (response.data === 0) window.location = '/';
-            else {
-                $scope.showUserName = response.data;
-                // $scope.page = 'user';
-            }
-        })
-    }
-
-    $scope.getUser();
 
     $scope.Complaints = function () {
         $http.get('/complaints').then(function (response) {
@@ -27,6 +13,14 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
     }
 
     $scope.Complaints();
+
+    $scope.getallcases = function(){
+        $http.get('/getallcases').then(function (response) {
+            $scope.allcases = response.data;
+        });
+    }
+
+    $scope.getallcases();
 
     $scope.btnAccept = function (complaintId) {
         swal({

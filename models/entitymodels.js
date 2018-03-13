@@ -6,7 +6,8 @@ var SALT_WORK_FACTOR = 10;
 var MediatorSchema = new Schema({
     FullName: { type: String, required: true },
     Email: { type: String, required: true },
-    Password: { type: String, required: true }
+    Password: { type: String, required: true },
+    NotificationLastRead: Date
 })
 
 MediatorSchema.pre('save', function (next) {
@@ -49,8 +50,9 @@ var ComplaintSchema = new Schema({
     UAddress: { type: String, required: true },
     UEmail: { type: String, required: true },
     DateGenerated: Date,
-    Status: String, //0-New Case, 1-Pending, 2-Resolved
-    FileCode: { type: String, ref: 'File' }
+    Status: String, //0-New Case, 1-Pending, 2-Accepted, 3-Resolved
+    FileCode: { type: String },
+    FileId: { type: String, ref: 'File' }
 })
 
 var FileSchema = new Schema({
@@ -60,22 +62,33 @@ var FileSchema = new Schema({
     Phone: { type: String, required: true },
     Key: { type: String, required: true },
     Date: Date,
+    NotificationLastRead: Date
 });
 
 var CaseSchema = new Schema({
     MediatorId: { type: String },
+    UserId: { type: String },
+    TP_Id: { type: String },
     Mediator_Name: { type: String },
     ComplaintId: { type: String, required: true, ref: 'Complaint' },
+    Date: Date
+});
+
+var CasePaymentSchema = new Schema({
+    Amount: { type: String },
+    ComplaintId: { type: String, required: true, ref: 'Complaint' },
+    IsPaymentMade: Boolean,
     Date: Date
 });
 
 var ChatSchema = new Schema({
     Content: String,
     File: [],
-    TP_Name: { type: String }, //TP means third party
-    Mediator_Name: { type: String },
+    SenderName: { type: String }, //TP means third party
+    SenderId: { type: String },
+    // Mediator_Name: { type: String },
     CaseId: { type: String, required: true, ref: 'Case' },
-    Date: Date
+    Date: Date,
 });
 
 var ProfilePicSchema = new Schema({
@@ -88,9 +101,22 @@ var InviteeSchema = new Schema({
     Email: { type: String, required: true },
     SecretToken: { type: String, required: true },
     CaseId: { type: String, required: true, ref: 'Case' },
+    Key: { type: String },
     DateInvited: Date
 });
 
+var NotificationSchema = new Schema({
+    SenderId: { type: String },
+    ReceiverId: { type: String },
+    ChatId: { type: String, required: true, ref: 'Chat' },
+    IsRead: { type: Boolean },
+    Date: Date
+});
+
+var ConversationSchema = new Schema({
+    CaseId: { type: String },
+    ParticipantId: { type: String },
+});
 
 var Mediator = mongoose.model('Mediator', MediatorSchema);
 module.exports.MediatorModel = Mediator;
@@ -112,3 +138,12 @@ module.exports.ProfilePicModel = Pic;
 
 var Invitee = mongoose.model('Invitee', InviteeSchema);
 module.exports.InviteeModel = Invitee;
+
+var CasePayment = mongoose.model('CasePayment', CasePaymentSchema);
+module.exports.CasePaymentModel = CasePayment;
+
+var Notification = mongoose.model('Notification', NotificationSchema);
+module.exports.NotificationModel = Notification;
+
+var Conversation = mongoose.model('Conversation', ConversationSchema);
+module.exports.ConversationModel = Conversation;

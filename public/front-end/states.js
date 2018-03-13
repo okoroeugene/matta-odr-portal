@@ -1,7 +1,26 @@
-var myApp = angular.module('myApp', ['ui.router', 'ui.bootstrap', 'angular-loading-bar', 'ngAnimate', 'ngFlash', 'oitozero.ngSweetAlert'])
+var myApp = angular.module('myApp', ['ui.router', 'ui.bootstrap', 'ngSanitize', 'angular-loading-bar', 'ngAnimate', 'ngFlash', 'oitozero.ngSweetAlert'])
     .config(function (cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeSpinner = true;
     })
+
+myApp.filter('removeHTMLTags', function () {
+    return function (text) {
+        return text ? String(text).replace(/<[^>]+>/gm, '') : '';
+    };
+});
+
+// app.factory('socket', ['$rootScope', function ($rootScope) {
+//     var socket = io.connect('http://localhost:3005/api');
+//     window.socket = io.connect('http://localhost:3005/api');
+//     return {
+//         on: function (eventName, callback) {
+//             socket.on(eventName, callback);
+//         },
+//         emit: function (eventName, data) {
+//             socket.emit(eventName, data);
+//         }
+//     };
+// }]);
 
 myApp.directive('fileModel', ['$parse', function ($parse) {
     return {
@@ -40,6 +59,8 @@ myApp.directive('updateTitle', ['$rootScope', '$timeout',
     }
 ]);
 
+
+
 // myapp.config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {
 //     usSpinnerConfigProvider.setDefaults({color: 'blue'});
 // }]);
@@ -62,7 +83,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
                 pageTitle: 'Welcometo MATTA DOR'
             },
             templateUrl: '../views/index.html',
-            controller: 'authController'
+            controller: ''
         })
 
         .state('register', {
@@ -146,6 +167,42 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
             },
             templateUrl: '../views/pending.html',
             controller: 'portalController'
+        })
+
+        .state('admin', {
+            url: '/admin',
+            data: {
+                pageTitle: 'Admin Dashboard'
+            },
+            templateUrl: '../views/admin/data.html',
+            controller: 'adminController'
+        })
+
+        .state('admincase', {
+            url: '/admin/complaints',
+            data: {
+                pageTitle: 'Complaints'
+            },
+            templateUrl: '../views/admin/complaints.html',
+            controller: 'adminController'
+        })
+
+        .state('mediators', {
+            url: '/admin/mediators',
+            data: {
+                pageTitle: 'Mediators'
+            },
+            templateUrl: '../views/admin/mediators.html',
+            controller: 'adminController'
+        })
+
+        .state('tips', {
+            url: '/legal-tips',
+            data: {
+                pageTitle: 'Error'
+            },
+            templateUrl: '../views/legal-tips.html',
+            controller: 'authController'
         })
 
         .state('error', {

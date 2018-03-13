@@ -1,20 +1,8 @@
 myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoadingBar', '$http', '$timeout', '$location', '$anchorScroll', '$window', function ($scope, $state, $stateParams, cfpLoadingBar, $http, $timeout, $location, $anchorScroll, $window) {
+    var socket = io.connect('http://localhost:3005');
     $scope.contentLoader = true;
     $scope.userLoader = true;
     var currentId = $stateParams.id;
-    $scope.getUser = function () {
-        // $scope.start();
-        $http.get('/user').then(function (response) {
-            // console.log(response.data);
-            if (response.data === 0) window.location = '/';
-            else {
-                $scope.showUserName = response.data;
-                // $scope.page = 'user';
-            }
-        })
-    }
-
-    $scope.getUser();
 
     $scope.Complaints = function () {
         $http.get('/complaints').then(function (response) {
@@ -30,7 +18,12 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.btnChat = function () {
         $scope.searchButtonText = "chat";
         // $scope.start();
-        var content = $('.note-editable').text();
+        var content = $('.note-editable').html();
+        if($.trim($(".note-editable").html())=='') {
+            toastr["error"]("Error," + " " + "Please enter a valid text...");
+            return;
+        }
+        
         var data = {
             'Content': content,
         };
@@ -42,10 +35,16 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                     inherit: false,
                     notify: true
                 });
+                socket.emit('notify', response.data.result.CaseId, response.data.result.SenderId,
+                    response.data.result.SenderName, response.data.result.Content);
                 $('#myModal').modal('hide');
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
-                document.getElementById(response.data.key).scrollIntoView()
+                setTimeout(() => {
+                    document.getElementById(response.data.result._id).scrollIntoView();
+                }, 2000);
+                
+                // document.getElementById(response.data.result._id).scrollIntoView()
             }
 
             if (response.data.status == 0) toastr["error"]("Error," + response.data.message);
@@ -54,12 +53,12 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
 
     $scope.getCaseData = function () {
         $http.get('/casedata/' + currentId).then(function (response) {
-            $timeout(function () {
-                $scope.showData = response.data;
-                $scope.userLoader = false;
-                $scope.userData = true;
-            }, 6000);
+            // $timeout(function () {
 
+            // }, 6000);
+            $scope.showData = response.data;
+            $scope.userLoader = false;
+            $scope.userData = true;
 
         });
     }
@@ -67,7 +66,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
 
     $scope.allData = [];
     $scope.filteredData = [];
-    $scope.itemsPerPage = 5;
+    $scope.itemsPerPage = 10;
     $scope.currentPage = 1;
     $scope.chats = [];
     $scope.getCaseChat = function () {
@@ -76,29 +75,43 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
         });
     }
 
+    var sIndex = 11, offSet = 10, isPreviousEventComplete = true, isDataAvailable = true;
+        $(window).scroll(function () {
+            if ($(document).height() - 80 <= $(window).scrollTop() + $(window).height()) {
+                console.log(isPreviousEventComplete, isDataAvailable)
+                if (isPreviousEventComplete && isDataAvailable) {
+                    $scope.currentPage ++;
+                    isPreviousEventComplete = false;
+                    $scope.chatDisplay();
+                }
+            };
+        });
+
     $scope.chatDisplay = function () {
+        console.log($scope.currentPage)
         var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
         var end = begin + $scope.itemsPerPage;
-        console.log(begin);
+        // $scope.complete();
 
         $timeout(function () {
-            $scope.complete();
-            $('#container').removeClass('parentDisable');
-            $('.loader').css('display', 'none');
-            $scope.filteredData = $scope.chats.slice(begin, end);
+            if ($scope.chats.length == $scope.filteredData.length) isDataAvailable = false;
+            else isDataAvailable = true;
+            $scope.filteredData = $scope.chats.slice(0, end);
             $scope.contentLoader = false;
             $scope.textContent = true;
-            $("html, body").animate({ scrollTop: 0 }, "slow");
-            return false;
-        }, 6000);
+            // return false;
+            sIndex = sIndex + offSet;
+            isPreviousEventComplete = true;
+        }, 1000);
     };
     $scope.getCaseChat();
     $scope.chatDisplay();
-    $scope.pageChanged = function () {
-        $('#container').addClass('parentDisable');
-        $('.loader').css('display', 'block');
-        $scope.chatDisplay();
-    };
+    
+    // $scope.pageChanged = function () {
+    //     $('#container').addClass('parentDisable');
+    //     $('.loader').css('display', 'block');
+    //     $scope.chatDisplay();
+    // };
 
     // $scope.filteredTodos = []
     //     , $scope.currentPage = 1
@@ -135,6 +148,8 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     // });
 
     $scope.btnInvite = function (caseId) {
+        $('#btnInvite').prop('disabled', true);
+        $(this).prop('disabled', true);
         var req = {
             'caseId': caseId
         }
@@ -236,12 +251,14 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                         inherit: false,
                         notify: true
                     });
+                    socket.emit('notify', response.result.CaseId, response.result.SenderId,
+                    response.result.SenderName, response.result.Content);
                     $('#myModal').modal('hide');
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
                     document.getElementById(response.key).scrollIntoView();
                 }
-                if (response.status == 0) toastr["error"]("Error," + response.data.message);
+                if (response.status == 0) toastr["error"]("Error," + response.message);
             }
         })
         return false;

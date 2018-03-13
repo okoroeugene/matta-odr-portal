@@ -1,0 +1,72 @@
+<div class="ibox" style="font-size:12px;">
+    <div class="ibox-head">
+        <div class="ibox-title">Mediators</div>
+    </div>
+    <div class="ibox-body">
+        <div class="table-responsive">
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="data in mediators">
+                        <td>{{$index + 1}}</td>
+                        <td>{{data.FullName}}</td>
+                        <td>{{data.Email}}</td>
+                        <td>
+                            <div class="badge badge-success m-r-5 m-b-5">Verified</div>
+                        </td>
+                        <td>
+                            <button class="btn btn-info btn-sm btn-rounded" ng-click="btnView(data._id)" data-backdrop="static" data-keyboard="false"
+                                data-toggle="modal" data-target="#myModal">View Details</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Mediator Details</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-stripped">
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{mediatordata.FullName}}</td>
+                            <td>{{mediatordata.Email}}</td>
+                            <td>
+                                <div class="badge badge-success m-r-5 m-b-5">Verified</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button ng-style="backgroundColor" class="btn btn-success" ng-click="btnChat()" type="button">
+                    </i> Verify Mediator</button>
+            </div>
+        </div>
+
+    </div>
+</div>

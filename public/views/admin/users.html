@@ -1,0 +1,30 @@
+<div class="ibox" style="font-size:12px;">
+        <div class="ibox-head">
+          <div class="ibox-title">Cases</div>
+        </div>
+        <div class="ibox-body">
+          <div class="table-responsive">
+            <table class="table table-stripped">
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  <th>Full Name</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="data in complaints">
+                  <td>{{$index + 1}}</td>
+                  <td>{{data.UName}}</td>
+                  <td>{{data.Complaint}}</td>
+                  <td>{{data.TPName}}</td>
+                  <td><div style="padding: 3px 4px;" class="label label-primary">Active</div></td>
+                  <td><button class="btn btn-info btn-sm btn-rounded">Do Something</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>

@@ -5,27 +5,26 @@ var model = require('./models/entitymodels');
 var app = index.myApp;
 var multer = require('multer');
 var rootPath = index.myPath;
-var utility = require('./repositories/utility');
+var utility = require('./Helpers/utility');
 var currentDate = new Date();
 var passport = index.myPassport;
-var session = require('./services/session');
-var auth = require('./services/auth');
+var session = require('./Helpers/session');
+var auth = require('./Helpers/auth');
 var upload = multer({ dest: 'public/uploads/' })
 var cookieParser = require('cookie-parser');
 var crypto = require('crypto');
-var mail = require('./services/mail');
-var sms = require('./services//twilio');
+var mail = require('./Helpers/mail');
+var sms = require('./Helpers/twilio');
 var caseCtrl = require('./controllers/caseController');
 var complaintsCtrl = require('./controllers/complaintsCtrl');
 var fileCtrl = require('./controllers/fileController');
 var authCtrl = require('./controllers/authController');
 var profileCtrl = require('./controllers/profileController');
+var mediatorCtrl = require('./controllers/mediatorController');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(flash())
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/public/views/auth.html')
+    res.sendFile(__dirname + '/public/views/index.html')
 });
 app.get('/verify', function (req, res) {
     var returnUrl = req.query.returnUrl;
@@ -62,7 +61,7 @@ app.get('/profile', utility.Authorize.mediator, function (req, res) {
 });
 app.post('/openfile', fileCtrl.openFile);
 app.get('/new-complaint', utility.Authorize.user, complaintsCtrl.viewNewComplaints);
-app.post('/new-complaint', complaintsCtrl.createComplaint);
+app.post('/new-complaint', utility.Authorize.user, complaintsCtrl.createComplaint);
 app.get('/case/:id', utility.Authorize.all, caseCtrl.viewCase);
 app.post('/addchat/:id', caseCtrl.chat);
 app.get('/casedata/:id', caseCtrl.caseDetails);
@@ -72,7 +71,29 @@ app.post('/createcase', caseCtrl.acceptCase);
 app.post('/InviteThirdParty', caseCtrl.inviteUser);
 app.get('/checkinvite/:id', caseCtrl.checkinvite);
 app.post('/uploadfile/:id', upload.array('uploadfile', 6), utility.Authorize.all, caseCtrl.uploadfile)
-app.get('/pending', utility.Authorize.user, function (req, res) {
-    res.sendFile(__dirname + '/public/views/layout.html')
-});
+app.get('/pending', utility.Authorize.user, complaintsCtrl.pendingcomplaint);
+app.get('/admin', function (req, res) {
+    res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
+})
+app.get('/admin/complaints', function (req, res) {
+    res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
+})
+app.get('/allcomplaints', complaintsCtrl.allcomplaints);
+app.get('/admin/mediators', function (req, res) {
+    res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
+})
+app.get('/allmediators', mediatorCtrl.allmediators);
+app.get('/checkstatus', complaintsCtrl.pendingcomplaint);
+app.get('/getmediatordata/:id', mediatorCtrl.getmediatordata);
+app.get('/getcomplaintdata/:id', complaintsCtrl.getcomplaintdata);
+app.post('/addcasepayment/:id', complaintsCtrl.addcomplaintpayment);
+app.get('/verifypayment', utility.Authorize.user, complaintsCtrl.verifypayment);
+app.post('/makecomplaintpayment/:id', complaintsCtrl.makecomplaintpayment);
+app.get('/getMediatorName/:id', mediatorCtrl.getmediatorbycomplaintId);
+app.get('/legal-tips', function (req, res) {
+    res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
+})
+app.post('/legal-tips')
+app.get('/getallcases', utility.Authorize.mediator, profileCtrl.getallCases);
+app.post('/markasread', authCtrl.MarkAsRead)
 // app.post('/previewfile', upload.array('Images', 6), utility.Authorize.all, caseCtrl.previewfile)

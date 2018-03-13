@@ -12,24 +12,25 @@
                         <input id="fullname" class="form-control" type="text" name="fullname" placeholder="Enter Full Name">
                     </div>
                     <div class="form-group">
-                        <input id="txtEmail" ng-model="email" class="form-control" type="text" name="email" placeholder="Enter Valid EMail Address">
+                        <input id="txtEmail" ng-model="email" class="form-control" type="text" name="email" placeholder="Enter Valid Email Address">
                     </div>
                     <div class="form-group">
                         <input id="txtPhone" ng-model="phone" class="form-control" type="text" name="phone" placeholder="Enter Phone Number">
                     </div>
                     <div class="form-group">
                         <script src="https://js.paystack.co/v1/inline.js"></script>
-                        <button type="button" style="width: 100%;" class="btn btn-success btn-block" onclick="payWithPaystack()">
+                        <button type="button" style="width: 100%;" id="btnPay" class="btn btn-success btn-block" onclick="payWithPaystack()">
                             Open File
                         </button>
-                        <p>Already have a code?
-                            <a href="/"> Enter here</a>
-                        </p>
+                    </div>
+                    <p>Already have a code?
+                        <a href="/verify"> Enter here</a>
+                    </p>
                 </form>
                 </div>
             </div>
         </div>
-        <div class="font-13 text-center text-white m-t-10 m-b-10">AdminCa. Save your time. Choose the best © 2017</div>
+        <!-- <div class="font-13 text-center text-white m-t-10 m-b-10">AdminCa. Save your time. Choose the best © 2017</div> -->
     </div>
 
 
@@ -50,6 +51,7 @@
         });
 
         function payWithPaystack() {
+            $('#btnPay').prop('disabled', true);
             var MyEmail = $('#txtEmail').val();
             var Phone = $('#txtPhone').val();
             var Value = 2000 * 100;
@@ -82,6 +84,7 @@
                 },
                 onClose: function () {
                     alert('window closed');
+                    $('#btnPay').prop('disabled', false);
                 }
             });
             handler.openIframe();

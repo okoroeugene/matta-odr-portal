@@ -1,12 +1,12 @@
 const index = require('../app');
 var app = index.myApp;
 var model = require('../models/entitymodels');
-var utility = require('../repositories/utility');
+var utility = require('../Helpers/utility');
 var currentDate = new Date();
 
 
 app.post('/uploadpic', utility.Authorize.mediator, function (req, res) {
-    console.log(req.file);
+    // console.log(req.file);
     if (req.file) {
         var files = req.file;
         utility.uploadFile.myUpload(req);
@@ -34,3 +34,14 @@ module.exports.getMediatorCases = function (req, res) {
             }
         });
 }
+
+module.exports.getallCases = function (req, res) {
+    model.ComplaintModel.find()
+        .exec(function (err, data) {
+            if (err) console.log(err.message);
+            else {
+                res.json(data);
+            }
+        });
+}
+

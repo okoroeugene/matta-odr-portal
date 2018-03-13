@@ -1,45 +1,16 @@
 const index = require('../app');
 var app = index.myApp;
 var model = require('../models/entitymodels');
-var utility = require('../repositories/utility');
+var utility = require('../Helpers/utility');
 var currentDate = new Date();
 var crypto = require('crypto');
+var fileService = require('../services/fileService');
 
 module.exports.verifyCode = function (req, res) {
     var returnUrl = req.session.returnUrl;
     var code = req.body.FileCode;
-    model.FileModel.findOne({ 'FileCode': code }, function (err, data) {
-        // console.log(data);
-        if (data) {
-            req.session.code = code;
-            req.session.name = data.Name;
-            req.session.key = data.Key;
-            if (returnUrl != undefined) {
-                res.json({ status: 3, url: returnUrl });
-            }
-            else {
-                res.json(1);
-            }
-        }
-        else {
-            model.InviteeModel.findOne({ SecretToken: code }, function (err, data) {
-                if (err) {
-                    console.log(err.message);
-                }
-                if (!data) res.json(0);
-                else if (data) {
-                    req.session.SecretToken = code;
-                    req.session.name = data.FullName;
-                    if (returnUrl != undefined) {
-                        res.json({ status: 3, url: returnUrl });
-                    }
-                    else {
-                        res.json({ status: 2, id: data.CaseId })
-                    }
-                }
-                else res.json(0);
-            });
-        }
+    fileService.GetFileByFileCode(code, function (data) {
+        fileService.ValidateUser(req, res, data, code, returnUrl);
     });
 }
 

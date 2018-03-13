@@ -254,3 +254,39 @@ blink {
         text-align: center;
     }
  }
+
+ .card-title {
+    font-size: 25px;
+    font-weight: 300;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+
+.notification-container {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    top: 15px;
+    left: 15px;
+    
+    i {
+        color: #fff;
+    }
+}
+
+.notification-counter {   
+    position: absolute;
+    top: 8px;
+    left: 25px;
+    
+    background-color: #E2523B;
+    color: #fff;
+    border-radius: 3px;
+    padding: 2px 3px;
+    font: 8px Verdana;
+}
+
+.fake-notification {
+    font: 10px Arial;
+    margin-top: 50px;
+}
