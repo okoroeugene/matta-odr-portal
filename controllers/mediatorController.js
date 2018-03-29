@@ -27,3 +27,21 @@ module.exports.getmediatorbycomplaintId = function (req, res) {
         }
     });
 }
+
+module.exports.uploadMediatorImage = function (req, res) {
+    if (req.file && req.user !== undefined)
+        utility.uploadFile.myUpload(req);   
+        model.ProfilePicModel.create({
+            Image: req.file.filename,
+            UserId: req.user._id
+        });
+        res.redirect('/profile');
+    // console.log('Invalid Credentials!');
+};
+
+module.exports.getprofilepic = function (req, res) {
+    var userId = utility.getCurrentLoggedInUser.id(req, res);
+    model.ProfilePicModel.findOne({ UserId: userId }).sort({ _id: -1 }).exec(function (err, data) {
+        res.json(data)
+    });
+}

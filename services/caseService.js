@@ -95,6 +95,7 @@ var caseD = module.exports = {
         model.ChatModel.find()
             .where('CaseId')
             .in(ID)
+            // .sort({ _id: -1 })
             .populate('CaseId')
             .exec(function (err, data) {
                 callback(data);

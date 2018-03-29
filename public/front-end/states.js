@@ -59,6 +59,27 @@ myApp.directive('updateTitle', ['$rootScope', '$timeout',
     }
 ]);
 
+myApp.directive('schrollBottom', function () {
+    return {
+        scope: {
+            schrollBottom: "="
+        },
+        link: function (scope, element) {
+            scope.$watchCollection('schrollBottom', function (newValue) {
+                if (newValue) {
+                    var id = newValue.slice(-1)[0]._id;
+                    setTimeout(() => {
+                        document.getElementById(id).scrollIntoView();
+                    }, 0);
+                    // var newHeight = $(element)[0].scrollHeight + 10;
+                    // console.log(newHeight);
+                    // $(element).scrollTop(newHeight);
+                }
+            });
+        }
+    }
+})
+
 
 
 // myapp.config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {

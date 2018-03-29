@@ -11,7 +11,7 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
 
     $scope.PaymentStatusInit = function () {
         $scope.verifyPayment = function () {
-           $http.get('/verifypayment').then(function (response) {
+            $http.get('/verifypayment').then(function (response) {
                 if (response.data.status == 1) {
                     // window.location.href = '/case/' + response.data.caseId;
                     $scope.result = response.data.result;
@@ -29,33 +29,33 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                     $scope.result = response.data.result;
                     // toastr["error"]("Error," + " " + "Something went wrong!!!");
                 }
-                if (response.data.status == 3) {
-                    $scope.PaidandNotAccepted = true;
-                    $scope.Paid = true;
-                    $scope.result = response.data.result;
-                    // toastr["error"]("Error," + " " + "Something went wrong!!!");
-                }
+                // if (response.data.status == 3) {
+                //     $scope.PaidandNotAccepted = true;
+                //     $scope.Paid = true;
+                //     $scope.result = response.data.result;
+                //     // toastr["error"]("Error," + " " + "Something went wrong!!!");
+                // }
             });
         }
-
         $scope.verifyPayment();
-
-        $scope.btnGotoCase = function(res) 
-        {
-            window.location.href = '/case/' + res;
-        }
-
-        // $scope.CheckStatus = function () {
-        //     $http.post('/pendingcomplaint').then(function (response) {
-        //         if (response.data == 1) {
-        //             window.location.href = '/error';
-        //         }
-        //         if (response.data == 0) {
-        //             window.location.href = '/new-complaint';
-        //         }
-        //     })
-        // }
     }
+
+
+
+    $scope.btnGotoCase = function (res) {
+        window.location.href = '/case/' + res;
+    }
+
+    // $scope.CheckStatus = function () {
+    //     $http.post('/pendingcomplaint').then(function (response) {
+    //         if (response.data == 1) {
+    //             window.location.href = '/error';
+    //         }
+    //         if (response.data == 0) {
+    //             window.location.href = '/new-complaint';
+    //         }
+    //     })
+    // }
 
 
 

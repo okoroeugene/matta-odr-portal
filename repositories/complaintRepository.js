@@ -60,9 +60,12 @@ module.exports = {
 
     AddCasePayment: function (req, res, callback) {
         var id = req.params.id;
+        var mediatorId = utility.getCurrentLoggedInUser.id(req, res);
         model.CasePaymentModel.create({
             Amount: req.body.cost,
             ComplaintId: id,
+            MediatorId: mediatorId,
+            EstimatedNumberOfDays: req.body.estNoDays,
             IsPaymentMade: false,
             Date: currentDate
         }, function (err, data) {
@@ -70,6 +73,25 @@ module.exports = {
                 callback(data);
             }
         })
-    }
+    },
+
+    AddCase: function (mediatorId, mediatorName, ID, userId, callback) {
+        model.CaseModel.create({
+            MediatorId: mediatorId,
+            Mediator_Name: mediatorName,
+            ComplaintId: ID,
+            UserId: userId,
+            Date: currentDate
+        }, function (err, data) {
+            var participant = [mediatorId, userId];
+            for (let i = 0; i < participant.length; i++) {
+                model.ConversationModel.create({
+                    CaseId: data._id,
+                    ParticipantId: participant[i]
+                });
+            }
+            callback(data);
+        });
+    },
 }
 

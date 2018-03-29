@@ -50,7 +50,7 @@ var ComplaintSchema = new Schema({
     UAddress: { type: String, required: true },
     UEmail: { type: String, required: true },
     DateGenerated: Date,
-    Status: String, //0-New Case, 1-Pending, 2-Accepted, 3-Resolved
+    Status: String, //0-New Case, 1-Pending, 2-Resolved, 3-Resolved
     FileCode: { type: String },
     FileId: { type: String, ref: 'File' }
 })
@@ -75,8 +75,10 @@ var CaseSchema = new Schema({
 });
 
 var CasePaymentSchema = new Schema({
-    Amount: { type: String },
+    Amount: { type: String, required: true },
+    EstimatedNumberOfDays: { type: String, required: true },
     ComplaintId: { type: String, required: true, ref: 'Complaint' },
+    MediatorId: { type: String, required: true, ref: 'Mediator' },
     IsPaymentMade: Boolean,
     Date: Date
 });
@@ -90,11 +92,6 @@ var ChatSchema = new Schema({
     CaseId: { type: String, required: true, ref: 'Case' },
     Date: Date,
 });
-
-var ProfilePicSchema = new Schema({
-    File: { type: String, required: true },
-    MediatorId: { type: String, required: true }
-})
 
 var InviteeSchema = new Schema({
     FullName: { type: String }, //TP means third party
@@ -116,6 +113,11 @@ var NotificationSchema = new Schema({
 var ConversationSchema = new Schema({
     CaseId: { type: String },
     ParticipantId: { type: String },
+});
+
+var ProfilePicSchema = new Schema({
+    Image: { type: String, required: true },
+    UserId: { type: String, required: true },
 });
 
 var Mediator = mongoose.model('Mediator', MediatorSchema);
@@ -147,3 +149,6 @@ module.exports.NotificationModel = Notification;
 
 var Conversation = mongoose.model('Conversation', ConversationSchema);
 module.exports.ConversationModel = Conversation;
+
+var ProfilePic = mongoose.model('ProfilePic', ProfilePicSchema);
+module.exports.ProfilePicModel = ProfilePic;

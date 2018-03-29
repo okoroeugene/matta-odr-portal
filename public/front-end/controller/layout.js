@@ -57,7 +57,7 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
         })
         // var socket = io.connect('http://localhost:3005');
         // socket.on('notifyCount', function (data) {
-            
+
         //     socket.emit('notify');
         // });
     }
@@ -72,6 +72,36 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
     });
 
     $scope.notification();
+
+    $scope.btnHome = function () {
+        $window.location.href = '/';
+    }
+
+    $scope.PaymentStatusInit = function () {
+        $scope.verifyPayment = function () {
+            $http.get('/verifypayment').then(function (response) {
+                if (response.data.status == 1) {
+                    $scope.caseId = response.data.caseId;
+                }
+            });
+        }
+        $scope.verifyPayment();
+    }
+
+    $scope.getRole = function () {
+        $http.get('/userrole').then(function (response) {
+            $scope.role = response.data;
+        });
+    }
+    $scope.getRole();
+
+    $scope.btnGotoCase = function (res) {
+        window.location.href = '/case/' + res;
+    }
+
+    $scope.btnOpenFile = function () {
+        window.location.href = '/open-file';
+    }
 
     $scope.start = function () {
         cfpLoadingBar.start();

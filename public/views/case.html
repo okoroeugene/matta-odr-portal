@@ -1,4 +1,4 @@
-<div style="font-size: 12px!Important;">
+<div style="font-size: 11.5px!Important;">
     <!-- <div class="page-heading">
         <h1 class="page-title">Online Dispute Resolution Portal</h1>
         <ol class="breadcrumb">
@@ -8,7 +8,9 @@
             <li class="breadcrumb-item active">Case</li>
         </ol>
     </div> -->
+    <!-- style="pointer-events: none;opacity: 0.2;" -->
     <div class="page-content fade-in-up">
+
         <div class="row">
             <div class="col-lg-3 col-md-4">
                 <div class="ibox">
@@ -31,19 +33,25 @@
 
                         <div ng-show="userData">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-sm-4 col-xs-3">
                                     <a title="Message" href="#" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal">
                                         <i style="font-size: 30px;" class="fa fa-envelope"></i>
+                                        <br>
+                                        <span style="font-size:10px;text-align:center;">Message</span>
                                     </a>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-sm-4 col-xs-3">
                                     <a title="View Case Details" href="#" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myCaseModal">
-                                        <i style="font-size: 35px;" class="fa fa-edit"></i>
+                                        <i style="font-size: 30px;" class="fa fa-edit"></i>
+                                        <br>
+                                        <span style="font-size:10px;text-align:center;">View Case</span>
                                     </a>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-sm-4 col-xs-3">
                                     <a title="Upload Documents" href="#" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myUploadModal">
                                         <i style="font-size: 30px;" class="fa fa-upload"></i>
+                                        <br>
+                                        <span style="font-size:10px;text-align:center;">Upload</span>
                                     </a>
                                 </div>
                             </div>
@@ -78,7 +86,8 @@
                                     <div class="btn-group-justified col-md-12">
                                         <input type="button" style="font-size: 12px;" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal"
                                             class="btn btn-success" href="javascript:;" value="Message">
-                                        <input type="button" style="font-size: 12px;" ng-if="role == 'mediator'" class="btn btn-default" href="javascript:;" value="Close Case">
+                                        <input type="button" style="font-size: 12px;" ng-if="role == 'mediator'" ng-click="btnCloseCase()" class="btn btn-default"
+                                            href="javascript:;" value="Close Case">
                                     </div>
                                 </div>
                             </span>
@@ -104,7 +113,7 @@
                             <span>: {{showData.ComplaintId.TPEmail}}</span>
                             <div ng-if="role == 'mediator'">
                                 <hr>
-                                <div class="row">
+                                <div class="row" style="margin: auto; display: block;">
                                     <div class="btn-group-justified col-md-12">
                                         <a ng-if="IsInvited == false" ng-click="btnInvite(showData._id)" id="btnInvite" style="font-size: 12px;" class="btn btn-success"
                                             href="javascript:;">Invite Third Party</a>
@@ -123,7 +132,8 @@
                 </pagination> -->
                 <div style="display:none;" class="loader"></div>
                 <div class="ibox" id="container">
-                    <div class="ibox-body">
+                    <div class="ibox-body" schroll-bottom="scrollTrigger" style="overflow: scroll;height:550px;" id="chatBox">
+                        <!-- <img style="width: 200px;margin:0 auto;display:block;position:relative;top:50px;" src="../Images/Case-Closed-Transparent-PNG.png"> -->
                         <!-- <div class="text-center">
                             <button data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myUploadModal" class="btn btn-default labeled">
                                 <span class="btn-label">
@@ -131,41 +141,94 @@
                                 </span>Upload</button>
                         </div>
                         <hr/> -->
-                        <!-- <h3 class="text-center">Case</h3> -->
+                        <!-- <h3 class="text-center">Case</h3> -->                               
+                        <img src="../Images/loading_apple.gif" style="display:block; margin:auto; width:30px;"><br>
                         <div class="cd-timeline-dark center-orientation timeline-2" id="cd-timeline">
-                            <div ng-show="textContent" ng-repeat="data in filteredData" class="cd-timeline-block">
-                                <div style="background-color:#28c913!Important;" ng-if="data.SenderId === data.CaseId.MediatorId" class="cd-timeline-icon bg-green text-white">
-                                    <span style="font-size: 30px;">{{data.SenderName.charAt(0)}}</span>
+                                <div ng-show="textContent" ng-repeat="data in filteredData" class="cd-timeline-block">
+                                <div style="background-color:#18c5a9!Important;" ng-if="data.SenderId === data.CaseId.MediatorId" class="cd-timeline-icon bg-green text-white">
+                                    <span style="font-size: 22px; text-transform: uppercase;position:relative;top:5px;">{{data.SenderName.charAt(0)}}</span>
                                 </div>
                                 <div style="background-color: #6f85d6!Important;" ng-if="data.SenderId === data.CaseId.UserId" style="background-color:#7f8c8d!Important;"
                                     class="cd-timeline-icon bg-purple text-white">
-                                    <span style="font-size: 30px;">{{data.SenderName.charAt(0)}}</span>
+                                    <span style="font-size: 22px; text-transform: uppercase;position:relative;top:5px;">{{data.SenderName.charAt(0)}}</span>
                                 </div>
-                                <div style="background-color: #f26fac!Important;" ng-if="data.SenderId !== data.CaseId.UserId && data.SenderId !== data.CaseId.MediatorId" style="background-color:#7f8c8d!Important;"
-                                    class="cd-timeline-icon bg-purple text-white">
-                                    <span style="font-size: 30px;">{{data.SenderName.charAt(0)}}</span>
+                                <div style="background-color: #f26fac!Important;" ng-if="data.SenderId !== data.CaseId.UserId && data.SenderId !== data.CaseId.MediatorId"
+                                    style="background-color:#7f8c8d!Important;" class="cd-timeline-icon bg-purple text-white">
+                                    <span style="font-size: 22px; text-transform: uppercase;position:relative;top:5px;">{{data.SenderName.charAt(0)}}</span>
                                 </div>
                                 <a id="{{data._id}}" href="#{{data._id}}"></a>
                                 <div class="cd-timeline-content">
-                                    <h4 ng-if="data.SenderName != null">{{data.SenderName}}</h4>
+                                        <!-- <a href="#" ng-mouseover="showPopover=true;" ng-mouseleave="showPopover=false;">
+                                                <h4 ng-if="data.SenderName != null" style="font-size: 1.3rem!Important;">{{data.SenderName}}</h4>
+                                                <div class="ibox" style="position:absolute; top:0;display: block;">
+                                                    <div class="ibox-body" ng-show="showPopover">
+                                                        <span>{{ popover.title }}</span>{{ popover.message }}</div>
+                                                </div>
+                                            </a> -->
+                                    <a href="#" ng-mouseover="getPopOverData(data.SenderId, data.SenderName, $index)" ng-mouseleave="showMyPopover(data.SenderId)">
+                                        <h4 ng-if="data.SenderName != null" style="font-size: 1.3rem!Important;">{{data.SenderName}}</h4>
+                                        <div class="popover" ng-show="showPopoverIndex == $index" id="pop_{{data.SenderId}}">
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <img class="img-circle" style="width: 30px;height:30px;border-radius:50%;" src="../uploads/{{popover.fileSrc}}">
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <span> {{ popover.name }}</span>
+                                                    <span ng-if="popover.role === 'mediator'" style="font-size:12px;font-weight:300;color:#464646">MEDIATOR</span>
+                                                    <span ng-if="popover.role === 'user'" style="font-size:12px;font-weight:300;color:#464646">USER</span>
+                                                    <span ng-if="popover.role === 'invitee'" style="font-size:12px;font-weight:300;color:#464646">INVITEE</span>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        </div>
+                                    </a>
+
+                                    <!-- <h4 ng-if="role !== 'mediator'" ng-if="data.SenderName != null" style="font-size: 1.3rem!Important;">{{data.SenderName}}</h4> -->
                                     <!-- <h4 ng-if="data.TP_Name != null">{{data.TP_Name}}</h4> -->
                                     <p>
                                         <span ng-if="data.Content != null" ng-bind-html="data.Content"></span>
-                                        <div class="row">
-                                            <div class="col-md-4" style="padding-right: 0px; padding-left: 0px;" ng-if="data.File != null" ng-repeat="(key, value) in data.File track by $index">
-                                                <img ng-if="$index <= 1" id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width: 200px; height:120px;"
-                                                    src="../uploads/{{value.filename}}">
-                                                <img ng-if="$index == 2" id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width: 200px; height:120px; opacity:0.3"
-                                                    src="../uploads/{{value.filename}}">
-                                                <img ng-if="$index > 3" class="img-responsive img-thumbnail" style="display:none;" src="../uploads/{{value.filename}}">
-                                                <div ng-if="$index == 2" ng-click="myImg(value.filename)" class="centered myImgLink">
-                                                    <h1 style="color: rgb(84, 84, 84);">+ {{data.File.length - 2}}</h1>
+                                        <div class="">
+                                            <div ng-if="data.File.length === 1">
+                                                <div class="col-md-12" ng-if="data.File != null" ng-repeat="(key, value) in data.File track by $index">
+                                                    <img id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width:100%; display:block; margin: 0 auto; height:180px;"
+                                                        src="../uploads/{{value.filename}}">
+                                                </div>
+                                            </div>
+                                            <div ng-if="data.File.length === 2">
+                                                <div class="row">
+                                                    <div class="col-md-6" ng-if="data.File != null" ng-repeat="(key, value) in data.File track by $index">
+                                                        <img id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width: 100%; height:120px;"
+                                                            src="../uploads/{{value.filename}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-if="data.File.length === 3">
+                                                <div class="row">
+                                                    <div class="col-md-4" style="padding-right: 0px; padding-left: 0px;" ng-if="data.File != null" ng-repeat="(key, value) in data.File track by $index">
+                                                        <img id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width: 100%; height:120px;"
+                                                            src="../uploads/{{value.filename}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-if="data.File.length > 3">
+                                                <div class="row">
+                                                    <div class="col-md-4" style="padding-right: 0px; padding-left: 0px;" ng-if="data.File != null" ng-repeat="(key, value) in data.File track by $index">
+                                                        <img ng-if="$index <= 1" id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width: 200px; height:120px;"
+                                                            src="../uploads/{{value.filename}}">
+                                                        <img ng-if="$index == 2" id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width: 200px; height:120px; opacity:0.3"
+                                                            src="../uploads/{{value.filename}}">
+                                                        <img ng-if="$index > 3" class="img-responsive img-thumbnail" style="display:none;" src="../uploads/{{value.filename}}">
+                                                        <div ng-if="$index == 2" ng-click="myImg(value.filename)" class="centered myImgLink">
+                                                            <h1 style="color: rgb(84, 84, 84);">+ {{data.File.length - 2}}</h1>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </p>
                                     <!-- <a class="btn btn-success btn-sm" href="javascript:;">More ...</a> -->
-                                    <span class="cd-date">{{data.Date | date : "MMM d, y h:mm a"}}</span>
+                                    <span style="font-size: 11px;color: #7b7979;font-style: italic;" class="cd-date">{{data.Date | date : "MMM d, y h:mm a"}}</span>
                                 </div>
                             </div>
 
@@ -194,10 +257,10 @@
                                     </p>
                                 </div>
                             </div>
+                            <!-- <img src="../Images/loading_apple.gif" style="display:block; margin:auto; width:30px;"> -->
                         </div>
                     </div>
                 </div>
-                <img src="../Images/loading_apple.gif" style="display:block; margin:auto; width:30px;">
                 <!-- <pagination ng-show="textContent" boundary-links="true" max-size="5" items-per-page="itemsPerPage" total-items="chats.length"
                     ng-model="currentPage" ng-change="pageChanged()">
                 </pagination> -->
@@ -213,7 +276,6 @@
                 </div>
             </div> -->
         </div>
-
 
     </div>
 
@@ -403,6 +465,7 @@
         $('#summernote_air').summernote({ airMode: true });
     });
 
-    
+    // var objDiv = document.querySelector("chat");
+    // objDiv.scrollTop = objDiv.scrollHeight;
 
 </script>

@@ -2,8 +2,9 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
 
     var currentId = $stateParams.id;
 
+    $scope.allcomplaints = [];
     $scope.Complaints = function () {
-        $http.get('/complaints').then(function (response) {
+        $http.get('/allcomplaints').then(function (response) {
             // console.log(response.data);
             if (response.data === 0) window.location = '/';
             else {
@@ -14,7 +15,19 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
 
     $scope.Complaints();
 
-    $scope.getallcases = function(){
+    $scope.MediatorCase = function () {
+        $http.get('/complaints').then(function (response) {
+            // console.log(response.data);
+            if (response.data === 0) window.location = '/';
+            else {
+                $scope.mediatorCase = response.data;
+            }
+        })
+    }
+
+    $scope.MediatorCase();
+
+    $scope.getallcases = function () {
         $http.get('/getallcases').then(function (response) {
             $scope.allcases = response.data;
         });
@@ -22,19 +35,30 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
 
     $scope.getallcases();
 
+    $scope.getawaitingpayment = function () {
+        $http.get('/getawaitingpayment').then(function (response) {
+            $scope.awaitingPayment = response.data;
+        });
+    }
+
+    $scope.getawaitingpayment();
+
+    $scope.getProfilePic = function () {
+        $http.get('/getprofilepic').then(function (response) {
+            $scope.ImagePath = response.data;
+        });
+    }
+
+    $scope.getProfilePic();
+
     $scope.btnAccept = function (complaintId) {
-        swal({
-            title: "Accept?",
-            text: "By clicking this, you are accepting to handle this case",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55", confirmButtonText: "Yes, continue!",
-            cancelButtonText: "No, cancel!",
-            closeOnConfirm: false,
-            closeOnCancel: false
-        },
-            function (isConfirm) {
-                if (isConfirm) {
+        alertify
+            .okBtn("Accept")
+            .cancelBtn("Deny")
+            .confirm("By clicking this, you are accepting to handle this case", function (ev) {
+                ev.preventDefault();
+                alertify.success("Successful");
+                setTimeout(() => {
                     var req = {
                         'complaintId': complaintId
                     };
@@ -46,9 +70,10 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
                             toastr["error"]("Error," + response.data.message);
                         }
                     });
-                } else {
-                    swal("Cancelled", "Your cancelled :)", "error");
-                }
+                }, 2000);
+            }, function (ev) {
+                ev.preventDefault();
+                alertify.error("You've Cancelled Request");
             });
     }
 
@@ -80,6 +105,87 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
     }
     $scope.UploadPic();
 
+    $scope.btnGetComplaintData = function (e) {
+        var newArray = $scope.allcomplaints.filter(function (x) {
+            return x._id == e
+        });
+        $scope.displayComplaintData = newArray;
+    }
+
+    $scope.AcceptCase = function(e) {
+        $('#divLoading').css('display', 'block');
+        setTimeout(() => {
+            $('#divLoading').css('display', 'none');
+            $('#AcceptanceModal').modal('show');
+            $('#AcceptanceModal').modal('toggle');
+        }, 2000);
+        $scope.complaintId = e;
+    }
+
+    $scope.btnAcceptCase = function(e) {
+        var a = {
+            'cost': $scope.cost,
+            'estNoDays': $scope.estNoDays
+        }
+        $http.post('/addcasepayment/' + e, a).then(function (response) {
+            if (response.data == 1) {
+                toastr.success('Case Accepted! Once payment is confirmed by the user, we will automatically redirect you to the case portal');
+                $state.transitionTo($state.current, $stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+                $('#myModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                // document.getElementById(response.key).scrollIntoView();
+            }
+            else {
+                toastr["error"]("Error," + " " + "Something went wrong!!!");
+            }
+        });
+    }
+
+    $scope.DeclineCase = function(e) {
+        $('#divLoading').css('display', 'block');
+        setTimeout(() => {
+            $('#divLoading').css('display', 'none');
+            $('#modalConfirmDiscard').modal('show');
+            $('#modalConfirmDiscard').modal('toggle');
+        }, 2000);
+        $scope.casePaymentId = e;
+    }
+
+    $scope.btnDeclineCase = function(e) {
+        $('#btnDecline').prop('disabled', true);
+        $http.post('/declinecase/' + e).then(function (response) {
+            if (response.data == 1) {
+                toastr.success('Case Removed Successfully!');
+                $state.transitionTo($state.current, $stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+                $('#myModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                // document.getElementById(response.key).scrollIntoView();
+            }
+            else {
+                toastr["error"]("Error," + " " + "Something went wrong!!!");
+            }
+        });
+    }
+
+    $scope.getUser = function () {
+        $http.get('/user').then(function (response) {
+            if (response.data === 0) $scope.showUserName = 'Fake User';
+            else {
+                $scope.showUserName = response.data;
+            }
+        })
+    }
+    $scope.getUser();
 
     $scope.start = function () {
         cfpLoadingBar.start();

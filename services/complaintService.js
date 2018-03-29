@@ -48,7 +48,7 @@ module.exports.VerifyAndReturnPaymentData = function (req, res, code) {
                             if (casedata) {
                                 res.json({ status: 1, result: result, caseId: casedata._id, mediator: casedata.Mediator_Name });
                             }
-                            else res.json({ status: 3, result: result });
+                            // else res.json({ status: 3, result: result });
                         });
                     }
                     else {
@@ -60,3 +60,13 @@ module.exports.VerifyAndReturnPaymentData = function (req, res, code) {
         }
     });
 }
+
+module.exports.AddCaseAndUpdate = function (mediatorId, mediatorName, ID, userId, callback) {
+    complaintRepo.AddCase(mediatorId, mediatorName, ID, userId, function (data) {
+        // model.ComplaintModel.findByIdAndUpdate(ID, { Status: 2 }, function (err, result) {
+        //     if (result)
+        //         callback(data);
+        // })
+        callback(data);
+    });
+};

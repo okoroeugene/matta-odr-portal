@@ -42,7 +42,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                 $('.modal-backdrop').remove();
                 setTimeout(() => {
                     document.getElementById(response.data.result._id).scrollIntoView();
-                }, 2000);
+                }, 0);
                 
                 // document.getElementById(response.data.result._id).scrollIntoView()
             }
@@ -72,31 +72,55 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.getCaseChat = function () {
         $http.get('/casechat/' + currentId).then(function (response) {
             $scope.chats = response.data;
+            console.log(response.data);
         });
     }
 
     var sIndex = 11, offSet = 10, isPreviousEventComplete = true, isDataAvailable = true;
-        $(window).scroll(function () {
-            if ($(document).height() - 80 <= $(window).scrollTop() + $(window).height()) {
-                console.log(isPreviousEventComplete, isDataAvailable)
-                if (isPreviousEventComplete && isDataAvailable) {
-                    $scope.currentPage ++;
-                    isPreviousEventComplete = false;
-                    $scope.chatDisplay();
-                }
+    $('#chatBox').scroll(function () {
+        // console.log($('#chatBox').scrollTop());
+        if ($('#chatBox').scrollTop() == 0) {
+            // console.log(isPreviousEventComplete, isDataAvailable)
+            if (isPreviousEventComplete && isDataAvailable) {
+                $scope.currentPage ++;
+                isPreviousEventComplete = false;
+                $scope.chatDisplay();
+            }
+        };
+    });
+
+    // $scope.showPopover=false;   
+
+    $scope.showMyPopover = function (e) {
+        $scope.showPopoverIndex = false;
+        $('#pop_' + e).css('display', 'none');
+    }
+    $scope.getPopOverData = function (e, name, index) {
+        $http.get('/getpopoverdata/' + e).then(function (response) {
+            $scope.showPopoverIndex = true;
+            $scope.showPopoverIndex = index;
+            // $('#pop_' + e).css('display', 'block');
+            $scope.popover = {
+                name: name,
+                fileSrc: response.data.src,
+                role: response.data.role
             };
         });
-
+    }
+   
     $scope.chatDisplay = function () {
-        console.log($scope.currentPage)
-        var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
-        var end = begin + $scope.itemsPerPage;
-        // $scope.complete();
-
+        // var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
+        // var end = begin + $scope.itemsPerPage;
         $timeout(function () {
+            if ($scope.currentPage > 1)
+                $('#chatBox').scrollTop(1130);
+            var begin = ($scope.currentPage * $scope.itemsPerPage);
+            var x = $scope.chats.length - begin;
+            var end = $scope.chats.length;
             if ($scope.chats.length == $scope.filteredData.length) isDataAvailable = false;
             else isDataAvailable = true;
-            $scope.filteredData = $scope.chats.slice(0, end);
+            $scope.filteredData = $scope.chats.slice(x, end);
+            $scope.scrollTrigger = $scope.chats;
             $scope.contentLoader = false;
             $scope.textContent = true;
             // return false;
@@ -262,7 +286,40 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
             }
         })
         return false;
-    })
+    });
+
+    $scope.btnCloseCase = function () {
+        alertify
+            .okBtn("Accept")
+            .cancelBtn("Deny")
+            .confirm("Are you sure you want to close this case?", function (ev) {
+                ev.preventDefault();
+                alertify.success("Case closed successful");
+                // setTimeout(() => {
+                //     var req = {
+                //         'complaintId': complaintId
+                //     };
+                //     $http.post('/createcase', req).then(function (response) {
+                //         if (response.data.status == 1) {
+                //             $window.location = "/case/" + response.data.message;
+                //         }
+                //         if (response.data.status == 0) {
+                //             toastr["error"]("Error," + response.data.message);
+                //         }
+                //     });
+                // }, 2000);
+            }, function (ev) {
+                ev.preventDefault();
+                alertify.error("You've Cancelled Request");
+            });
+    }
+
+    // $scope.getRole = function () {
+    //     $http.get('/userrole').then(function (response) {
+    //         $scope.role = response.data;
+    //     });
+    // }
+    // $scope.getRole();
 
     $scope.start = function () {
         cfpLoadingBar.start();

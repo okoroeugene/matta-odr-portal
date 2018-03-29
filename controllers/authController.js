@@ -44,7 +44,7 @@ module.exports.createUser = function (req, res) {
     });
 }
 
-app.get('/user', function (req, res) {
+module.exports.getUserName = function (req, res) {
     var user = req.session.code;
     var mediator = req.user;
     var invitee = req.session.SecretToken;
@@ -53,16 +53,16 @@ app.get('/user', function (req, res) {
         if (user != undefined || invitee != undefined) res.json(req.session.name);
         if (mediator != undefined) res.json(req.user.FullName);
     }
-});
+};
 
-app.get('/getroles', function (req, res) {
+module.exports.getrole = function (req, res) {
     var roles = utility.UserRole.GetRoleName(req);
     if (roles == 'user') res.json({ role: 'user' });
     if (roles == 'mediator') res.json({ role: 'mediator' });
     if (roles == 'invitee') res.json({ role: 'invitee' });
-});
+};
 
-app.get('/notificationcount', function (req, res) {
+module.exports.getnotificationdata = function (req, res) {
     var userId = utility.getCurrentLoggedInUser.id(req, res);
     getUserNotificationData(userId, function (data) {
         var result = {
@@ -71,7 +71,7 @@ app.get('/notificationcount', function (req, res) {
         }
         res.json(result);
     });
-});
+};
 
 function getUserNotificationData(response, callback) {
     model.NotificationModel.find({ ReceiverId: response, IsRead: false }).populate('ChatId').exec(function (err, data) {
@@ -87,6 +87,30 @@ module.exports.MarkAsRead = function (req, res) {
             res.json(1);
     });
 }
+
+module.exports.getRoleById = function (req, res) {
+    var id = utility.getCurrentLoggedInUser.id(req, res);
+    utility.UserRole.GetRoleNameByUserId(id, function (result) {
+        res.json(result);
+    });
+};
+
+module.exports.popoverdata = function (req, res) {
+    model.ProfilePicModel.findOne({ UserId: req.params.id }).sort({ _id: -1 }).exec(function (err, data) {
+        utility.UserRole.GetRoleNameByUserId(req.params.id, function (result) {
+            var src;
+            if (data)
+                src = data.Image;
+            else
+                src = '../Images/u1.png';
+            var p = {
+                'role': result,
+                'src': src
+            };
+            res.json(p);
+        });
+    });
+};
 
 // module.exports.allusers = function (req, res) {
 //     model.ComplaintModel.find()

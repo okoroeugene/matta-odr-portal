@@ -50,6 +50,21 @@ module.exports.UserRole = {
         }
     },
 
+    GetRoleNameByUserId: function (id, callback) {
+        model.MediatorModel.findById(id, function (err, data) {
+            if (data)
+                callback('mediator');
+        });
+        model.FileModel.findOne({ Key: id }, function (err, data) {
+            if (data)
+                callback('user');
+        });
+        model.InviteeModel.findOne({ Key: id }, function (err, data) {
+            if (data)
+                callback('invitee');
+        });
+    },
+
     // GetRoleNameandAuthenticate: function (req) {
     //     if (role == 'mediator' && data.MediatorId != req.user.id) res.redirect('/error');
     //     else res.sendFile(rootPath + '/views/layout.html')
@@ -91,6 +106,21 @@ module.exports.getCurrentLoggedInUser = {
             username = req.user.FullName;
         return username;
     }
+}
+
+module.exports.GetUserNameByUserId = function (id, callback) {
+    model.MediatorModel.findById(id, function (err, data) {
+        if (data)
+            callback(data.FullName);
+    });
+    model.FileModel.findOne({ Key: id }, function (err, data) {
+        if (data)
+            callback(data.Name);
+    });
+    model.InviteeModel.findOne({ Key: id }, function (err, data) {
+        if (data)
+            callback(data.FullName);
+    });
 }
 
 module.exports.Authorize = {

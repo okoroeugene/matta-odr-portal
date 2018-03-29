@@ -86,7 +86,7 @@ app.get('/allmediators', mediatorCtrl.allmediators);
 app.get('/checkstatus', complaintsCtrl.pendingcomplaint);
 app.get('/getmediatordata/:id', mediatorCtrl.getmediatordata);
 app.get('/getcomplaintdata/:id', complaintsCtrl.getcomplaintdata);
-app.post('/addcasepayment/:id', complaintsCtrl.addcomplaintpayment);
+app.post('/addcasepayment/:id', utility.Authorize.mediator, complaintsCtrl.addcomplaintpayment);
 app.get('/verifypayment', utility.Authorize.user, complaintsCtrl.verifypayment);
 app.post('/makecomplaintpayment/:id', complaintsCtrl.makecomplaintpayment);
 app.get('/getMediatorName/:id', mediatorCtrl.getmediatorbycomplaintId);
@@ -95,5 +95,14 @@ app.get('/legal-tips', function (req, res) {
 })
 app.post('/legal-tips')
 app.get('/getallcases', utility.Authorize.mediator, profileCtrl.getallCases);
-app.post('/markasread', authCtrl.MarkAsRead)
+app.post('/markasread', authCtrl.MarkAsRead);
+app.post('/uploadmediatorimage', upload.single('Image'), mediatorCtrl.uploadMediatorImage);
+app.get('/getprofilepic', utility.Authorize.mediator, mediatorCtrl.getprofilepic);
+app.get('/getawaitingpayment', utility.Authorize.mediator, complaintsCtrl.getawaitingpayment)
+app.get('/user', authCtrl.getUserName);
+app.get('/getroles', authCtrl.getrole);
+app.get('/notificationcount', authCtrl.getnotificationdata);
+app.get('/userrole', authCtrl.getRoleById);
+app.get('/getpopoverdata/:id', authCtrl.popoverdata);
+app.post('/declinecase/:id', utility.Authorize.mediator, complaintsCtrl.declinecase);
 // app.post('/previewfile', upload.array('Images', 6), utility.Authorize.all, caseCtrl.previewfile)
