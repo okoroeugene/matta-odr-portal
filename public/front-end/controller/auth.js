@@ -46,11 +46,22 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
         })
     }
 
-    $scope.getNewRegData = function () {
+    $scope.getFileNumber = function () {
         $http.get('/getNewRegData').then(function (response) {
             $scope.newFileCode = response.data;
         });
     };
-    $scope.getNewRegData();
+    $scope.getFileNumber();
+
+    $scope.btnOpenFile = function () {
+        $http.post('/open-file').then(function (response) {
+            if (response.data == 1) {
+                toastr.success('Successful!');
+                setTimeout(() => {
+                    window.location.href = '/new-complaint';
+                }, 1000);
+            }
+        })
+    }
 }]);
 

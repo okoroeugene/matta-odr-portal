@@ -109,5 +109,5 @@ app.get('/notificationcount', authCtrl.getnotificationdata);
 app.get('/userrole', authCtrl.getRoleById);
 app.get('/getpopoverdata/:id', authCtrl.popoverdata);
 app.post('/declinecase/:id', utility.Authorize.mediator, complaintsCtrl.declinecase);
-app.get('/getNewRegData', utility.Authorize.user, fileCtrl.getNewRegData);
+app.get('/getNewRegData', fileCtrl.getNewRegData);
 // app.post('/previewfile', upload.array('Images', 6), utility.Authorize.all, caseCtrl.previewfile)

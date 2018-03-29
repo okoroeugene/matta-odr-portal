@@ -8,17 +8,16 @@
                 <!-- <h5 class="font-strong m-b-10 text-center">James Brown</h5> -->
                 <p class="font-13 text-center">Please enter your MATTA PIN/SECRET TOKEN to enter the ODR Portal</p>
                 <div class="form-group">
-                    {{newFileCode}}
-                    <input style="padding: 11px 10px;" value="{{newFileCode}}" disabled ng-model="filecode" class="form-control" type="text" name="filecode">
+                    <input style="padding: 11px 10px;" value="{{newFileCode}}" placeholder="{{newFileCode}}" readonly ng-model="filecode" class="form-control" type="text" name="filecode">
                 </div>
                 <div class="form-group">
-                    <input style="padding: 11px 10px;" ng-model="password" class="form-control" type="text" name="password" placeholder="Enter Password" required>
+                    <input style="padding: 11px 10px;" ng-model="password" class="form-control" type="password" name="password" placeholder="Enter Password" required>
                 </div>
                 <div class="form-group">
-                    <input style="padding: 11px 10px;" ng-model="confirmpassword" class="form-control" type="text" name="confirmpassword" placeholder="Confirm Password" required>
+                    <input style="padding: 11px 10px;" ng-model="confirmpassword" class="form-control" type="password" name="confirmpassword" placeholder="Confirm Password" required>
                 </div>
                 <div class="form-group">
-                    <button style="padding: 15px;" class="btn btn-success btn-block" ng-click="checkCode()" type="button">
+                    <button style="padding: 15px;" class="btn btn-success btn-block" ng-click="btnOpenFile()" type="button">
                         <i class="ti-unlock m-r-5"></i>Confirm Registration</button>
                 </div>
                 <p>Don't have a code?
