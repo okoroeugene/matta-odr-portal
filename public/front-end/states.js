@@ -226,6 +226,15 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
             controller: 'authController'
         })
 
+        .state('validate', {
+            url: '/validate',
+            data: {
+                pageTitle: 'Error'
+            },
+            templateUrl: '../views/validate.html',
+            controller: 'authController'
+        })
+
         .state('error', {
             url: '/error',
             data: {

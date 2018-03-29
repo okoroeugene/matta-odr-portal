@@ -45,5 +45,12 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
             // toastr.success('Submitted!');
         })
     }
+
+    $scope.getNewRegData = function () {
+        $http.get('/getNewRegData').then(function (response) {
+            $scope.newFileCode = response.data;
+        });
+    };
+    $scope.getNewRegData();
 }]);
 

@@ -27,66 +27,68 @@
                         <a href="/verify"> Enter here</a>
                     </p>
                 </form>
-                </div>
             </div>
         </div>
-        <!-- <div class="font-13 text-center text-white m-t-10 m-b-10">AdminCa. Save your time. Choose the best © 2017</div> -->
     </div>
+    <!-- <div class="font-13 text-center text-white m-t-10 m-b-10">AdminCa. Save your time. Choose the best © 2017</div> -->
+</div>
 
 
-    <script type="text/javascript">
-        $(function () {
-            $('#lock-form').validate({
-                errorClass: "help-block",
-                rules: {
-                    password: { required: true }
-                },
-                highlight: function (e) { $(e).closest(".form-group").addClass("has-error") },
-                unhighlight: function (e) { $(e).closest(".form-group").removeClass("has-error") },
-                errorPlacement: function (e, r) {
-                    var i = $(r).parents(".input-group, .check-list");
-                    i.length ? i.after(e) : r.after(e)
-                },
-            });
+<script type="text/javascript">
+    $(function () {
+        $('#lock-form').validate({
+            errorClass: "help-block",
+            rules: {
+                password: { required: true }
+            },
+            highlight: function (e) { $(e).closest(".form-group").addClass("has-error") },
+            unhighlight: function (e) { $(e).closest(".form-group").removeClass("has-error") },
+            errorPlacement: function (e, r) {
+                var i = $(r).parents(".input-group, .check-list");
+                i.length ? i.after(e) : r.after(e)
+            },
         });
+    });
 
-        function payWithPaystack() {
-            $('#btnPay').prop('disabled', true);
-            var MyEmail = $('#txtEmail').val();
-            var Phone = $('#txtPhone').val();
-            var Value = 2000 * 100;
-            var handler = PaystackPop.setup({
-                key: 'pk_test_c7fae17b0fc0dc90a958362549dd64ea8fb43a53',
-                email: MyEmail,
-                amount: Value,
-                ref: '' + Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
-                metadata: {
-                    custom_fields: [
-                        {
-                            display_name: "Mobile Number",
-                            variable_name: "mobile_number",
-                            value: Phone
-                        }
-                    ]
-                },
-                callback: function (response) {
-                    var form = $('#file-form');
-                    var v = form.serializeJSON();
-                    // alert(v);
-                    $.post("/openfile", v, function (response) {
-                        if (response == 1) {
-                            toastr.success('Successful!');
-                            window.location.href = '/new-complaint';
-                        }
-                        else toastr["error"]("Sorry," + response);
-                        $(':input[type="submit"]').prop('disabled', true);
-                    });
-                },
-                onClose: function () {
-                    alert('window closed');
-                    $('#btnPay').prop('disabled', false);
-                }
-            });
-            handler.openIframe();
-        }
-    </script>
+    function payWithPaystack() {
+        $('#btnPay').prop('disabled', true);
+        var MyEmail = $('#txtEmail').val();
+        var Phone = $('#txtPhone').val();
+        var Value = 2000 * 100;
+        var handler = PaystackPop.setup({
+            key: 'pk_test_c7fae17b0fc0dc90a958362549dd64ea8fb43a53',
+            email: MyEmail,
+            amount: Value,
+            ref: '' + Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+            metadata: {
+                custom_fields: [
+                    {
+                        display_name: "Mobile Number",
+                        variable_name: "mobile_number",
+                        value: Phone
+                    }
+                ]
+            },
+            callback: function (response) {
+                var form = $('#file-form');
+                var v = form.serializeJSON();
+                // alert(v);
+                $.post("/genFileNumber", v, function (response) {
+                    if (response == 1) {
+                        toastr.success('Successful!');
+                        setTimeout(() => {
+                            window.location.href = '/validate';
+                        }, 1000);
+                    }
+                    else toastr["error"]("Sorry," + response);
+                    $(':input[type="submit"]').prop('disabled', true);
+                });
+            },
+            onClose: function () {
+                alert('window closed');
+                $('#btnPay').prop('disabled', false);
+            }
+        });
+        handler.openIframe();
+    }
+</script>

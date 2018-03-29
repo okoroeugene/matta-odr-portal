@@ -60,6 +60,7 @@ app.get('/profile', utility.Authorize.mediator, function (req, res) {
     res.sendFile(__dirname + '/public/views/layout.html')
 });
 app.post('/openfile', fileCtrl.openFile);
+app.post('/genFileNumber', fileCtrl.genFileNumber);
 app.get('/new-complaint', utility.Authorize.user, complaintsCtrl.viewNewComplaints);
 app.post('/new-complaint', utility.Authorize.user, complaintsCtrl.createComplaint);
 app.get('/case/:id', utility.Authorize.all, caseCtrl.viewCase);
@@ -81,6 +82,9 @@ app.get('/admin/complaints', function (req, res) {
 app.get('/allcomplaints', complaintsCtrl.allcomplaints);
 app.get('/admin/mediators', function (req, res) {
     res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
+})
+app.get('/validate', function (req, res) {
+    res.sendFile(__dirname + '/public/views/auth.html')
 })
 app.get('/allmediators', mediatorCtrl.allmediators);
 app.get('/checkstatus', complaintsCtrl.pendingcomplaint);
@@ -105,4 +109,5 @@ app.get('/notificationcount', authCtrl.getnotificationdata);
 app.get('/userrole', authCtrl.getRoleById);
 app.get('/getpopoverdata/:id', authCtrl.popoverdata);
 app.post('/declinecase/:id', utility.Authorize.mediator, complaintsCtrl.declinecase);
+app.get('/getNewRegData', utility.Authorize.user, fileCtrl.getNewRegData);
 // app.post('/previewfile', upload.array('Images', 6), utility.Authorize.all, caseCtrl.previewfile)
