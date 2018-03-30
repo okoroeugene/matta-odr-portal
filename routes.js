@@ -84,8 +84,11 @@ app.get('/admin/mediators', function (req, res) {
     res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
 })
 app.get('/validate', function (req, res) {
-    res.sendFile(__dirname + '/public/views/auth.html')
-})
+    if (req.session.fileNumber === undefined)
+        res.redirect('/open-file');
+    else
+        res.sendFile(__dirname + '/public/views/auth.html')
+});
 app.get('/allmediators', mediatorCtrl.allmediators);
 app.get('/checkstatus', complaintsCtrl.pendingcomplaint);
 app.get('/getmediatordata/:id', mediatorCtrl.getmediatordata);
@@ -96,6 +99,9 @@ app.post('/makecomplaintpayment/:id', complaintsCtrl.makecomplaintpayment);
 app.get('/getMediatorName/:id', mediatorCtrl.getmediatorbycomplaintId);
 app.get('/legal-tips', function (req, res) {
     res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
+})
+app.get('/mediator-profile', function (req, res) {
+    res.sendFile(__dirname + '/public/views/layout.html')
 })
 app.post('/legal-tips')
 app.get('/getallcases', utility.Authorize.mediator, profileCtrl.getallCases);

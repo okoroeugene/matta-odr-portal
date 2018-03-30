@@ -9,14 +9,14 @@
             </div>
         </div> -->
         <div class="row">
-            <form class="col-12" id="lock-form" action="#" method="post">
+            <form class="col-12" id="lock-form" action="javascript:void(0)">
                 <!-- <h5 class="font-strong m-b-10 text-center">James Brown</h5> -->
                 <p class="font-13 text-center">Please enter your MATTA PIN/SECRET TOKEN to enter the ODR Portal</p>
                 <div class="form-group">
                     <input style="padding: 11px 10px;" ng-model="filecode" class="form-control" type="text" name="filecode" placeholder="Enter a Valid File Number">
                 </div>
                 <div class="form-group">
-                    <button style="padding: 15px;" class="btn btn-success btn-block" ng-click="checkCode()" type="button">
+                    <button style="padding: 15px;" class="btn btn-success btn-block" ng-click="checkCode()" type="submit">
                         <i class="ti-unlock m-r-5"></i>Enter Portal</button>
                 </div>
                 <p>Don't have a code?<a href="/open-file"> Open file here</a></p>
@@ -31,7 +31,7 @@
       $('#lock-form').validate({
           errorClass:"help-block",
           rules: {
-              password: {required:true}
+            filecode: {required:true}
           },
           highlight:function(e){$(e).closest(".form-group").addClass("has-error")},
           unhighlight:function(e){$(e).closest(".form-group").removeClass("has-error")},

@@ -31,10 +31,14 @@ module.exports.openFile = function (req, res) {
         Email: req.session.email,
         Phone: req.session.phone,
         Key: key,
+        Password: req.body.password,
         Date: currentDate,
     }, function (err, data) {
-        if (err) res.json(err.message);
+        if (err) console.log(err.message);
         else {
+            req.session.code = req.session.fileNumber;
+            req.session.name = req.session.fullname;
+            req.session.key = key;
             res.json(1);
         }
     });
@@ -42,6 +46,5 @@ module.exports.openFile = function (req, res) {
 
 module.exports.getNewRegData = function (req, res) {
     var fileCode = req.session.fileNumber;
-    console.log(fileCode);
     res.json(fileCode);
 }

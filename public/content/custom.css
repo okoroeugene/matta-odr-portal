@@ -438,3 +438,7 @@ blink {
     -webkit-border-radius: 10px;
     border-radius: 10px;
 }
+
+.list-group.list-group-divider.newDivider .list-group-item:not(:first-child) {
+    border-top-color: transparent!Important;
+}

@@ -11,28 +11,49 @@
 <div class="page-content fade-in-up" style="font-size: 12px;">
     <div class="row">
         <div class="col-lg-3 col-md-4">
-            <div class="ibox" style="margin-bottom: 5px;">
-                <div class="ibox-body text-center">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6 col-xs-3">
-                            <a title="Message" href="#" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal">
-                                <i style="font-size: 30px;" class="fa fa-envelope"></i>
-                                <br>
-                                <span style="font-size:10px;text-align:center;">Message</span>
-                            </a>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-3">
-                            <a title="View Case Details" href="#" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myCaseModal">
-                                <i style="font-size: 30px;" class="fa fa-users"></i>
-                                <br>
-                                <span style="font-size:10px;text-align:center;">Mediator Profile</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="ibox">
                 <div class="ibox-body text-center">
+                    <ul class="nav pull-right navbar-toolbar">
+                            <li class="dropdown dropdown-inbox">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown">
+                                <i style="font-size: 25px;" class="ti-more pull-right"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media" style="transform: translate3d(5px, 18px, 0px)!Important;">
+                                <li class="list-group list-group-divider newDivider" data-color="#71808f">
+                                    <div style="padding:5px;">
+                                        <a ng-href="/mediator-profile" class="list-group-item">
+                                            <div class="media">
+                                                <div class="media-img">
+                                                    <span class="badge badge-success badge-circle-big" style="background-color:#00c851;">
+                                                        <i class="fa fa-user"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="media-body">
+                                                    <div class="font-13" style="margin-top: 5px;">Mediator Profile</div>
+                                                    <!-- <small class="text-muted">22 mins</small> -->
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                        <a class="list-group-item">
+                                                <div class="media">
+                                                    <div class="media-img">
+                                                        <span class="badge badge-success badge-circle-big" style="background-color:#ff3547;">
+                                                            <i style="position: relative;top: 1.7px;left: .3px;" class="ti-settings"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <div class="font-13" style="margin-top: 5px;">Change Password</div>
+                                                        <!-- <small class="text-muted">22 mins</small> -->
+                                                    </div>
+                                                </div>
+                                            </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
                     <div class="m-t-20">
                         <img ng-if="ImagePath === undefined" class="img-circle" style="width: 100px; height: 100px;" src="../Images/u1.png" />
                         <img ng-if="ImagePath !== undefined" class="img-circle" style="width: 100px; height: 100px;" src="../uploads/{{ImagePath.Image}}"
@@ -50,45 +71,15 @@
                     </div>
                 </div>
             </div>
+            <!-- <button style="width: 100%;" class="btn btn-primary btn-lg">Large button</button> -->
         </div>
         <div class="col-lg-9 col-md-8">
             <div class="ibox">
                 <div class="ibox-body">
-                    <!-- <div class="row">
-                                <div class="col-md-3 col-sm-3 col-xs-3">
-                                    <a title="Message" href="#tab-1" data-toggle="tab">
-                                        <i style="font-size: 30px;" class="fa fa-envelope"></i>
-                                        <br>
-                                        <span style="font-size:12px;text-align:center;">New Cases</span>
-                                    </a>
-                                </div>
-                                <div class="col-md-3 col-sm-3 col-xs-3">
-                                    <a title="Message" href="#tab-2" data-toggle="tab">
-                                        <i style="font-size: 30px;" class="fa fa-envelope"></i>
-                                        <br>
-                                        <span style="font-size:12px;text-align:center;">Awaiting Payment</span>
-                                    </a>
-                                </div>
-                                <div class="col-md-3 col-sm-3 col-xs-3">
-                                    <a title="Message" href="#tab-3" data-toggle="tab">
-                                        <i style="font-size: 30px;" class="fa fa-envelope"></i>
-                                        <br>
-                                        <span style="font-size:12px;text-align:center;">Pending Cases</span>
-                                    </a>
-                                </div>
-                                <div class="col-md-3 col-sm-3 col-xs-3">
-                                    <a title="Message" href="#tab-3" data-toggle="tab">
-                                        <i style="font-size: 30px;" class="fa fa-envelope"></i>
-                                        <br>
-                                        <span style="font-size:12px;text-align:center;">Resolved Cases</span>
-                                    </a>
-                                </div>
-        
-                            </div> -->
                     <ul class="nav nav-tabs tabs-line">
                         <li class="nav-item">
                             <a class="nav-link active" href="#tab-1" data-toggle="tab">
-                                <i style="font-size: 20px; text-align:center; display:block; margin:0 auto;" class="ti-menu-alt"></i>
+                                <i style="font-size: 20px; text-align:center; display:block; margin:0 auto;" class="ti-pencil-alt"></i>
                                 <br> New Cases
                                 <span style="background-color: #E2523B;" ng-if="(allcomplaints | filter:{Status:'0'}).length > 0" class="badge badge-danger badge-circle newBadge m-r-5 m-b-5">{{(allcomplaints | filter:{Status:'0'}).length}}</span>
                             </a>
@@ -118,7 +109,7 @@
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="tab-1">
                             <h4 class="text-info m-b-20 m-t-20">
-                                <i class="ti-menu-alt"></i> New Cases</h4>
+                                <i class="ti-pencil-alt"></i> New Cases</h4>
                             <div class="row products-board">
                                 <div ng-repeat="data in allcomplaints" ng-if="data.Status == 0" class="col-lg-4 col-sm-6">
                                     <div class="card" style="height: 150px;box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 2px 0 rgba(0, 0, 0, 0.19)">

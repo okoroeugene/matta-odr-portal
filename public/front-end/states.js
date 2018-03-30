@@ -235,6 +235,15 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
             controller: 'authController'
         })
 
+        .state('mediatorProfile', {
+            url: '/mediator-profile',
+            data: {
+                pageTitle: 'Error'
+            },
+            templateUrl: '../views/mediator-profile.html',
+            controller: 'profileController'
+        })
+
         .state('error', {
             url: '/error',
             data: {

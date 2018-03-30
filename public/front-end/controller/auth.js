@@ -54,7 +54,11 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
     $scope.getFileNumber();
 
     $scope.btnOpenFile = function () {
-        $http.post('/open-file').then(function (response) {
+        $('#btnOpenFile').prop('disabled', true);
+        var a = {
+            'password': $scope.password
+        }
+        $http.post('/openfile', a).then(function (response) {
             if (response.data == 1) {
                 toastr.success('Successful!');
                 setTimeout(() => {
