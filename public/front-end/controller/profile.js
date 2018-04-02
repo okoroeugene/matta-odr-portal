@@ -112,7 +112,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
         $scope.displayComplaintData = newArray;
     }
 
-    $scope.AcceptCase = function(e) {
+    $scope.AcceptCase = function (e) {
         $('#divLoading').css('display', 'block');
         setTimeout(() => {
             $('#divLoading').css('display', 'none');
@@ -122,7 +122,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
         $scope.complaintId = e;
     }
 
-    $scope.btnAcceptCase = function(e) {
+    $scope.btnAcceptCase = function (e) {
         var a = {
             'cost': $scope.cost,
             'estNoDays': $scope.estNoDays
@@ -146,7 +146,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
         });
     }
 
-    $scope.DeclineCase = function(e) {
+    $scope.DeclineCase = function (e) {
         $('#divLoading').css('display', 'block');
         setTimeout(() => {
             $('#divLoading').css('display', 'none');
@@ -156,7 +156,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
         $scope.casePaymentId = e;
     }
 
-    $scope.btnDeclineCase = function(e) {
+    $scope.btnDeclineCase = function (e) {
         $('#btnDecline').prop('disabled', true);
         $http.post('/declinecase/' + e).then(function (response) {
             if (response.data == 1) {
@@ -185,6 +185,80 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
             }
         })
     }
+
+    $scope.btnUploadMedCert = function () {
+        var x = document.getElementById("medCert");
+        var formData = new FormData();
+        var file = x.files[0];
+        formData.append('MediatorCert', file);
+        $.ajax({
+            url: '/uploadmediatorcert',
+            type: "POST",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response == 1) {
+                    toastr.success('Uploaded!');
+                    // $state.transitionTo($state.current, $stateParams, {
+                    //     reload: true,
+                    //     inherit: false,
+                    //     notify: true
+                    // });
+                }
+            }
+        })
+        return false;
+    }
+
+    $scope.getExistingMediatorProfile = function () {
+        $http.get('/existingmediatorprofile').then(function (response) {
+            $scope.existingProfile = response.data;
+        });
+    }
+    $scope.getExistingMediatorProfile();
+
+    $scope.btnSaveMediatorProfile = function () {
+        $('#btnUpdateProfile').prop('disabled', true);
+        var x = document.getElementById("medCert");
+        var formData = new FormData();
+        var file = x.files[0];
+        if (file === undefined && document.getElementById('medCertImage').src === undefined) {
+            toastr["error"]("Error," + " " + "Please select a valid file");
+            return;
+        }
+        formData.append('MediatorCert', file);
+        formData.append('FirstName', $('#firstname').val());
+        formData.append('LastName', $('#lastname').val());
+        formData.append('OtherNames', $('#othernames').val());
+        formData.append('Address', $('#address').val());
+        formData.append('MiniBio', $('#bio').val());
+        formData.append('Phone', $('#phone').val());
+        $.ajax({
+            url: '/createmediatorprofile',
+            type: "POST",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response == 1) {
+                    toastr.success('Profile Updated Successfully!');
+                    setTimeout(() => {
+                        location.href = '/mediator-profile';
+                    }, 1000);
+                    
+                    // $state.transitionTo($state.current, $stateParams, {
+                    //     reload: true,
+                    //     inherit: false,
+                    //     notify: true
+                    // });
+                }
+            }
+        });
+    }
+
     $scope.getUser();
 
     $scope.start = function () {

@@ -2,7 +2,7 @@
     <div data-ng-init="PaymentStatusInit()"></div>
     <div class="page-content fade-in-up">
         <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="NotAssignedPayment">
                 <div ng-show="NotAssignedPayment" class="loader loaderP" style="width: 220px; height: 220px; left: 44.4%; top: 30%;"></div>
                 <div class="ibox" id="container">
                     <div class="ibox-body" style="min-height: 500px;">
@@ -17,123 +17,91 @@
 
                                 </div>
                         </div>
-
-                        <div ng-show="AssignedPayment">
-                            <h2 class="text-center">Make Payment</h3>
-                                <hr>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
-                                <p>
-                                    <!-- <i class="fa fa-arrow-circle-o-right"></i> -->
-                                    <h3 class="text-center">File Number:
-                                        <span style="color:rgb(131, 133, 135)">{{result.FileCode}}</span>
-                                    </h3>
-                                    <h3 class="text-center">Amount Due:
-                                        <span style="color:rgb(131, 133, 135)">&#8358;{{result.Amount}}</span>
-                                    </h3>
-                                    <h3 class="text-center">Valid Till:
-                                        <span style="color:rgb(131, 133, 135)">{{}}</span>
-                                    </h3>
-                                    <br>
-                                    <div class="col-md-12 text-center">
-                                        <script src="https://js.paystack.co/v1/inline.js"></script>
-                                        <button class="btn btn-info btn-lg" id="btnPayment" onclick="payWithPaystack()">Make Payment</button>
-                                    </div>
-
-                                </p>
-                        </div>
-
-                        <div ng-show="Paid">
-                            <h2 class="text-center">Welcome to MATTA ODR</h3>
-                                <hr>
-                                <!-- <h1 class="text-center">72%</h1> -->
-                                <!-- <h1 ng-show="PaidandNotAccepted" class="pendText" style="position:relative; top:180px; padding-left:150px;padding-right:150px; text-align:center;" class="text-center">
-                                    Awaiting Approval
-                                </h1> -->
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="ibox">
-                                            <div class="ibox-body" style="min-height: 500px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-                                                <h1 ng-show="PaidandNotAccepted" class="pendText" style="position:relative; top:180px; text-align:center; text-shadow: 0 0 2px#5ea8d1;"
-                                                    class="text-center">
-                                                    <blink>Awaiting Approval from our Mediators</blink>
-                                                </h1>
-                                                <div class="col-md-12" ng-show="PaidandAccepted">
-                                                    <!-- <img style="border-radius: 50%;width: 65px;height: 60px;box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" class="img-circle center" src="../images/avatar_1.png" width="210px" /> -->
-                                                    <p>
-                                                        <h4>Name:
-                                                            <span style="font-weight:300;">{{result.UName}}</span>
-                                                        </h4>
-                                                        <hr>
-                                                        <h4>File Number:
-                                                            <span style="font-weight:300;">{{result.FileCode}}</span>
-                                                        </h4>
-                                                        <hr>
-                                                        <h4>Third Party Name:
-                                                            <span style="font-weight:300;">{{result.TPName}}</span>
-                                                        </h4>
-                                                        <hr>
-                                                        <h4>Assigned Mediator:
-                                                            <span style="font-weight:300;">{{mediatorname}}</span>
-                                                        </h4>
-                                                    </p>
-
-                                                    <br>
-                                                    <br>
-                                                    <div class="text-center">
-                                                        <button style="padding: 1.9rem 5rem;" class="btn btn-success btn-lg col-md-12" ng-click="btnGotoCase(caseId)" type="button">
-                                                            </i> Proceed to Case Portal</button>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <!-- <div ng-show="PaidandNotAccepted" class="loader loaderP" style="width: 220px; height: 220px; left: 44.4%; top: 30%;"></div> -->
-
-
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-                                            <h3 class="text-center" style="margin-top:15px; font-weight: bold;">TIP OF THE DAY</h3>
-                                            <img class="card-img-top" style="object-fit:contain;" src="../content/dashboard/assets/img/blog/storm.jpg" style="padding: 15px;">
-                                            <div class="card-body">
-                                                <h4 class="card-title">Divorce Advice for men</h4>
-                                                <!-- <div class="text-muted card-subtitle">subtitle</div> -->
-                                                <p class="card-text">
-                                                    <ul>
-                                                        <li style="font-size: 15px; font-weight: 300;">Maximize your time with your kids</li>
-                                                        <li style="font-size: 15px; font-weight: 300;">Keep your emotions in check</li>
-                                                        <li style="font-size: 15px; font-weight: 300;">Mediate from the start</li>
-                                                    </ul>
-                                                </p>
-                                                <!-- <button class="btn btn-default btn-sm">
-                                                    <i class="fa fa-plus"></i> Add</button> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- <div class="cd-timeline-dark center-orientation timeline-2" id="cd-timeline">
-
-                                </div> -->
-                        </div>
                     </div>
-                    <div class="ibox-footer">
-                        <div class="col-md-12">
-                            <div class="alert alert-info">
-                                <i class="fa fa-info-circle"></i>
-                                <b>PS: The system would carefully analyze every bit of the case and would evaluate the COST
-                                    for your case.</b>
-                            </div>
+                </div>
+                <div class="ibox-footer">
+                    <div class="col-md-12">
+                        <div class="alert alert-info">
+                            <i class="fa fa-info-circle"></i>
+                            <b>PS: The system would carefully analyze every bit of the case and would evaluate the COST for
+                                your case.</b>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div ng-show="Paid" class="col-sm-12 col-sm-offset-3">
+                <div class="card card-1 col-md-6 text-md-center" id="card1">
+                    <br>
+                    <p>
+                        <h6>Name:
+                            <span style="font-weight:300;">{{result.UName}}</span>
+                        </h6>
+                        <hr>
+                        <h6>File Number:
+                            <span style="font-weight:300;">{{result.FileCode}}</span>
+                        </h6>
+                        <hr>
+                        <h6>Third Party Name:
+                            <span style="font-weight:300;">{{result.TPName}}</span>
+                        </h6>
+                        <hr>
+                        <h6>Status:
+                            <span ng-show="NotAssignedPayment" class="badge badge-warning badge-pill m-r-5 m-b-5">Pending</span>
+                            <span ng-show="Paid" style="background-color:#00c851;" class="badge badge-success badge-pill m-r-5 m-b-5">Confirmed</span>
+                        </h6>
+                        <hr>
+                        <div ng-show="Paid">
+                            <h6>Assigned Mediator:
+                                <span style="font-weight:300;">{{mediatorname}}</span>
+                            </h6>
+                        </div>
+                    </p>
+
+                    <br>
+                    <br>
+                    <div class="text-center" ng-show="Paid">
+                        <button style="padding: 1.2rem 3rem;" class="btn btn-success btn-lg col-md-12" ng-click="btnGotoCase(caseId)" type="button">Proceed to Case Portal</button>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="AssignedPayment" class="col-sm-12 col-sm-offset-3">
+                <div class="card card-1 col-md-6 text-md-center" id="card1">
+                    <h2 class="text-center">Make Payment</h3>
+                        <br>
+                        <p>
+                            <h6>Name:
+                                <span style="font-weight:300;">{{result.UName}}</span>
+                            </h6>
+                            <hr>
+                            <h6>File Number:
+                                <span style="font-weight:300;">{{result.FileCode}}</span>
+                            </h6>
+                            <hr>
+                            <h6>Third Party Name:
+                                <span style="font-weight:300;">{{result.TPName}}</span>
+                            </h6>
+                            <hr>
+                            <h6 class="text-center">Amount Due:
+                                <span style="color:rgb(131, 133, 135); font-size: 25px;">&#8358;{{result.Amount}}</span>
+                            </h6>
+                            <hr>
+                            <div ng-show="Paid">
+                                <h6>Assigned Mediator:
+                                    <span style="font-weight:300;">{{mediatorname}}</span>
+                                </h6>
+                            </div>
+                        </p>
+                        <div class="col-md-12 text-center">
+                            <script src="https://js.paystack.co/v1/inline.js"></script>
+                            <button class="btn btn-info btn-lg" id="btnPayment" onclick="payWithPaystack()">Make Payment</button>
+                        </div>
+                </div>
+            </div>
         </div>
     </div>
+</div>
 </div>
 
 

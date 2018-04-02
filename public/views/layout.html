@@ -103,7 +103,7 @@
                         <li style="font-size:12px;" class="list-group list-group-divider scroller" data-height="240px" data-color="#71808f">
                             <p ng-if="notificationData.count === 0" style="color: rgb(204, 35, 35); text-align:center">No new Notifications</p>
                             <div>
-                                <a style="padding: 5px 9px 2px;" ng-repeat="data in notificationData.content" class="list-group-item">
+                                <a href="/case/{{data.ChatId.CaseId}}?ref={{data.ChatId._id}}" style="padding: 5px 9px 2px;" ng-repeat="data in notificationData.content" class="list-group-item">
                                     <div class="media">
                                         <div class="media-img">
                                             <img class="img-circle" src="../content/dashboard/assets/img/users/u1.jpg" />

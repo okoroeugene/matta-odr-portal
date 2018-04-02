@@ -55,8 +55,8 @@
                     </ul>
                     
                     <div class="m-t-20">
-                        <img ng-if="ImagePath === undefined" class="img-circle" style="width: 100px; height: 100px;" src="../Images/u1.png" />
-                        <img ng-if="ImagePath !== undefined" class="img-circle" style="width: 100px; height: 100px;" src="../uploads/{{ImagePath.Image}}"
+                        <img ng-if="ImagePath === null" class="img-circle" style="width: 100px; height: 100px;" src="../Images/u1.png" />
+                        <img ng-if="ImagePath !== null" class="img-circle" style="width: 100px; height: 100px;" src="../uploads/{{ImagePath.Image}}"
                         />
                     </div>
                     <br>
@@ -112,7 +112,7 @@
                                 <i class="ti-pencil-alt"></i> New Cases</h4>
                             <div class="row products-board">
                                 <div ng-repeat="data in allcomplaints" ng-if="data.Status == 0" class="col-lg-4 col-sm-6">
-                                    <div class="card" style="height: 150px;box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 2px 0 rgba(0, 0, 0, 0.19)">
+                                    <div class="card" style="height: 200px;box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 2px 0 rgba(0, 0, 0, 0.19)">
                                         <!-- <img src="../content/dashboard/assets/img/image.png"> -->
                                         <div class="card-body">
                                             <a class="product-name" href="javascript:;">{{data.UName}}</a>
@@ -135,15 +135,15 @@
                                 <i class="ti-credit-card"></i> Cases Awaiting Payment</h4>
                             <div class="row products-board">
                                 <div ng-repeat="data in awaitingPayment" class="col-lg-4 col-sm-6">
-                                    <div ng-if="data.IsPaymentMade == false" class="card" style="height: 150px;box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 2px 0 rgba(0, 0, 0, 0.19)">
+                                    <div ng-if="data.IsPaymentMade == false" class="card" style="height: 200px;box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 2px 0 rgba(0, 0, 0, 0.19)">
                                         <!-- <img src="../content/dashboard/assets/img/image.png"> -->
                                         <div class="card-body" style="background-color:#e4e4e4;">
                                             <a ng-click="DeclineCase(data._id)" style="float:right;" class="text-muted">
-                                                <i style="position: relative;bottom: 9px;left: 7px;" class="fa fa-window-close font-16"></i>
+                                                <i style="position: relative;bottom: 9px;left: 7px;" class="fa fa-times font-16"></i>
                                             </a>
                                             <br>
                                             <a class="product-name" href="javascript:;">{{data.ComplaintId.UName}}</a>
-                                            <div>{{data.ComplaintId.Complaint}}</div>
+                                            <div>{{data.ComplaintId.Complaint | limitTo: 100}}{{data.ComplaintId.Complaint.length > 20 ? '...' : ''}}</div>
                                             <div style="position: absolute;bottom: 8px;" class="m-t-10 d-flex justify-content-between align-items-center">
                                                 <h3 style="color: #898686;">&#8358;{{data.Amount}}</h2>
                                                     <!-- <button ng-click="AcceptCase(data._id)" class="btn btn-outline-info btn-rounded">
@@ -174,7 +174,7 @@
                                 <tbody>
                                     <tr ng-repeat="data in mediatorCase" ng-if="data.ComplaintId.Status == 1">
                                         <td>{{$index +1}}</td>
-                                        <td>{{data.ComplaintId.TPName}}</td>
+                                        <td>{{data.ComplaintId.UName}}</td>
                                         <td>{{data.ComplaintId.Complaint}}</td>
                                         <td>{{data.ComplaintId.DateGenerated | date : "MMM d, y"}}</td>
                                         <td>
@@ -202,7 +202,7 @@
 
                                     <tr ng-repeat="data in allcomplaints" ng-if="data.ComplaintId.Status == 2">
                                         <td>{{$index +1}}</td>
-                                        <td>{{data.ComplaintId.TPName}}</td>
+                                        <td>{{data.ComplaintId.UName}}</td>
                                         <td>{{data.ComplaintId.Complaint}}</td>
                                         <td>{{data.ComplaintId.DateGenerated | date : "MMM d, y"}}</td>
                                     </tr>
@@ -311,11 +311,15 @@
                         <form id="">
                             <div class="row">
                                 <div class="col-md-5">
-                                    <div class="input-icon">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon3">&#8358;</span>
+                                        <input style="padding: 12px 0px 12px 30px;" ng-model="cost" name="cost" id="cost" type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                                    </div>
+                                    <!-- <div class="input-icon">
                                         <i>&#8358;</i>
                                         <input type="text" ng-model="cost" name="cost" id="cost" style="padding: 12px 0px 12px 30px;" placeholder="Enter Amount"
                                             class="form-control" required>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="col-md-7">
                                     <div class="form-group">
@@ -333,7 +337,7 @@
                 <div class="modal-footer justify-content-center">
                     <button id="btnAccept" type="button" ng-disabled="!cost || !estNoDays" style="padding: .8rem .75rem;border-color:#40ca78;background-color: #00c851!important;border-color:#00c851;color: #fff!important;"
                         class="btn btn-success" ng-click="btnAcceptCase(complaintId)">I Accept
-                        <i class="fa fa-arrow-right"></i>
+                        <!-- <i class="fa fa-arrow-right"></i> -->
                     </button>
                     <button type="button" style="padding: .8rem .75rem;" class="btn btn-default" data-dismiss="modal">No, thanks</button>
                 </div>

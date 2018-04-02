@@ -20,9 +20,18 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
     }
     $scope.getUser();
 
+    $scope.getuserId = function () {
+        $http.get('/getuserid').then(function (response) {
+            $scope.userId = response.data;
+        });
+    }
+    $scope.getuserId();
+
     var socket = io.connect('http://localhost:3005');
-    socket.on('notifyCount', function (data, sendername, content) {
+    socket.on('notifyCount', function (data, sendername, content, participantId, allData) {
         var myContent;
+        var myCount = 0;
+        myCount += 1;
         if (content === null) myContent = 'Sent an Attachment';
         else myContent = content;
         $('.notification-counter').html(data.count);
@@ -46,6 +55,39 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
+        setTimeout(() => {
+            $('#showColor1_' + allData._id).css('background-color', '#fffdce');
+            $('#showColor2_' + allData._id).css('background-color', '#fffdce');
+        }, 1000);
+        setTimeout(() => {
+            $('#showColor1_' + allData._id).css('background-color', 'transparent');
+            $('#showColor2_' + allData._id).css('background-color', '#f4f4f4');
+        }, 3000);
+        var html = '<div class="cd-timeline-block" id="showColor1_' + allData._id + '">' +
+            '<div style="background-color: #2edc3b!Important;"' +
+            'style="background-color:#7f8c8d!Important;" class="cd-timeline-icon bg-purple text-white">' +
+            '<span class="userText" style="font-size: 14px;position:relative;top:5px;">' + 'new' + '</span>' +
+            '</div>' +
+            '<div class="cd-timeline-content" id="showColor2_' + allData._id + '">' +
+            '<a href="#">' +
+            '<h4 ng-if="data.SenderName != null" style="font-size: 1.3rem!Important;">' + sendername + '</h4>' +
+            '</a>' +
+            '<p>' +
+            '<div id="txtChatContent_{{data._id}}" ng-if="data.Content != null">' + allData.Content + '</div>' +
+            '<div class="">' +
+            '<div ng-if="data.File.length === 1">' +
+            // '<div class="col-md-12" ng-if="' + content[0].ChatId.File != null + '" ng-repeat="(key, value) in data.File track by $index">' +
+            // '<img id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width:100%; display:block; margin: 0 auto; height:180px;"' +
+            // 'src="../uploads/{{value.filename}}">' +
+            // '</div>' +
+            '</div>' +
+            '</div>' +
+            '</p>' +
+            '<span style="font-size: 11px;color: #7b7979;font-style: italic;" class="cd-date">' + allData.Date + '</span>' +
+            '</div>' +
+            '</div>';
+        var wrapper = $('#contentContainer_' + participantId);
+        wrapper.append(html);
     });
 
     $scope.notification = function () {

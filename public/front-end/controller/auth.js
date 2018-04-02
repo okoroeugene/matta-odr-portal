@@ -22,6 +22,24 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
             });
     }
 
+    $scope.btnReg = function () {
+        $('#btnReg').prop('disabled', true);
+        var data = {
+            'email': $scope.email,
+            'password': $scope.password,
+            'fullname': $scope.fullname,
+        };
+        $http.post('/register', data).then(function (response) {
+            if (response.data == 1) {
+                window.location.href = '/profile';
+            }
+            else{
+                $('#btnReg').prop('disabled', false);
+                toastr["error"]("Error," + " " + response.data);
+            }
+        })
+    }
+
 
     $scope.btnLogin = function () {
         // flash.setMessage(message);
@@ -31,7 +49,6 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
             'password': $scope.password
         };
         $http.post('/login', data).then(function (response) {
-            console.log(response);
             if (response.data.success == false) {
                 toastr["error"]("Error," + " " + "Invalid Username or Password");
             }

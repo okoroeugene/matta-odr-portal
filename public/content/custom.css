@@ -304,7 +304,7 @@ blink {
     width: 4px;
 } */
 
-.scroll {
+/* .scroll {
     width: 100px;
     height: 400px;
      background: red;
@@ -322,7 +322,7 @@ blink {
  .scroll::-webkit-scrollbar-thumb {
      border-radius: 10px;
      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
- }
+ } */
 
  /* .col-md-4 {
     flex: 100%!Important;max-width: 100%!Important;
@@ -415,7 +415,7 @@ blink {
 }
 
 .modal {
-    font-size: 14px!Important;
+    font-size: 12px!Important;
     font-weight: 300;
 }
 
@@ -442,3 +442,80 @@ blink {
 .list-group.list-group-divider.newDivider .list-group-item:not(:first-child) {
     border-top-color: transparent!Important;
 }
+
+.card-1 {
+    padding: 10px 10px 10px 10px;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  }
+  
+  /* hr {
+       color: #f00;
+       background: #e0e0e0; 
+       width: 100%; 
+       height: 10%;
+       box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  } */
+  .bold{
+      font-family: Helvetica;
+      font-weight: bold;
+  }
+  .table-responsive>.table>tbody>tr>td{
+      horizontal-align: middle;
+  }
+  .card {
+    margin: 0 auto; /* Added */
+          float: none; /* Added */
+          margin-bottom: 10px; /* Added */
+  }
+
+
+.btn-success:hover {
+    border-color: #425CBB!Important;
+}
+
+.button-box {
+    text-align:center;
+    margin-top:20px;
+ }
+
+ .alert {
+    border-radius: 3px!Important;
+}
+
+.btn-info.active, .btn-info.disabled, .btn-info.focus, .btn-info:active, .btn-info:disabled, .btn-info:focus, .btn-info:hover {
+    background-color: #5e74de!important;
+    border-color: #5e74de!important;
+}
+
+/* width */
+.scroll::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+.scroll::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+.scroll::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+.scroll::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+@media only screen and (min-width: 1170px) {
+    #cd-timeline.center-orientation .cd-timeline-content {
+        padding-bottom: 5px;
+        padding-top: 13px;
+    }
+}
+
+@media (max-width:1200px)  { 
+    .userText {
+        font-size: 12px!Important;
+      }
+ }

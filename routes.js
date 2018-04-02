@@ -21,6 +21,7 @@ var fileCtrl = require('./controllers/fileController');
 var authCtrl = require('./controllers/authController');
 var profileCtrl = require('./controllers/profileController');
 var mediatorCtrl = require('./controllers/mediatorController');
+var adminCtrl = require('./controllers/adminController');
 
 app.use(flash())
 app.get('/', function (req, res) {
@@ -40,7 +41,7 @@ app.post('/login', authCtrl.authenticateUser);
 app.get('/register', function (req, res) {
     res.sendFile(__dirname + '/public/views/auth.html')
 });
-app.post('/register', authCtrl.createUser);
+app.post('/register', authCtrl.createMediator);
 app.get('/error', function (req, res) {
     res.sendFile(__dirname + '/public/views/error.html')
 });
@@ -67,7 +68,7 @@ app.get('/case/:id', utility.Authorize.all, caseCtrl.viewCase);
 app.post('/addchat/:id', caseCtrl.chat);
 app.get('/casedata/:id', caseCtrl.caseDetails);
 app.get('/casechat/:id', caseCtrl.chatDetails);
-app.get('/complaints', utility.Authorize.mediator, profileCtrl.getMediatorCases);
+app.get('/complaints', utility.Authorize.mediator, mediatorCtrl.getMediatorCases);
 app.post('/createcase', caseCtrl.acceptCase);
 app.post('/InviteThirdParty', caseCtrl.inviteUser);
 app.get('/checkinvite/:id', caseCtrl.checkinvite);
@@ -100,11 +101,11 @@ app.get('/getMediatorName/:id', mediatorCtrl.getmediatorbycomplaintId);
 app.get('/legal-tips', function (req, res) {
     res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
 })
-app.get('/mediator-profile', function (req, res) {
+app.get('/mediator-profile', utility.Authorize.mediator, function (req, res) {
     res.sendFile(__dirname + '/public/views/layout.html')
 })
 app.post('/legal-tips')
-app.get('/getallcases', utility.Authorize.mediator, profileCtrl.getallCases);
+app.get('/getallcases', utility.Authorize.mediator, mediatorCtrl.getallCases);
 app.post('/markasread', authCtrl.MarkAsRead);
 app.post('/uploadmediatorimage', upload.single('Image'), mediatorCtrl.uploadMediatorImage);
 app.get('/getprofilepic', utility.Authorize.mediator, mediatorCtrl.getprofilepic);
@@ -116,4 +117,12 @@ app.get('/userrole', authCtrl.getRoleById);
 app.get('/getpopoverdata/:id', authCtrl.popoverdata);
 app.post('/declinecase/:id', utility.Authorize.mediator, complaintsCtrl.declinecase);
 app.get('/getNewRegData', fileCtrl.getNewRegData);
+app.post('/createmediatorprofile', utility.Authorize.mediator, upload.single('MediatorCert'), mediatorCtrl.createmediatorprofile);
+app.post('/uploadmediatorcert', upload.single('MediatorCert'), mediatorCtrl.uploadmediatorcert);
+app.get('/existingmediatorprofile', utility.Authorize.mediator, mediatorCtrl.existingmediatorprofile);
+app.post('/verifymediator/:id', adminCtrl.verifymediator);
+app.post('/unverifymediator/:id', adminCtrl.unverifymediator);
+app.get('/getuserid', authCtrl.getuserid);
+app.get('/GetChatDataById/:id', caseCtrl.GetChatDataById);
+app.post('/updatechatcontent/:id', caseCtrl.updatechatcontent);
 // app.post('/previewfile', upload.array('Images', 6), utility.Authorize.all, caseCtrl.previewfile)

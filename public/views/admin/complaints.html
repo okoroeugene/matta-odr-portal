@@ -25,27 +25,19 @@
             <td>{{data.TPName}}</td>
             <!-- <td data-ng-init="getMediatorName(data._id)">{{mediatorName}}</td> -->
             <td>{{data.DateGenerated | date : "MMM d, y h:mm a"}}</td>
-            <td ng-if="data.Status == 0">
-              <div class="badge badge-danger m-r-5 m-b-5">New Complaint</div>
-            </td>
-            <td ng-if="data.Status == 1">
-              <div class="badge badge-warning m-r-5 m-b-5">Awaiting Acceptance</div>
-            </td>
-            <td ng-if="data.Status == 2">
-              <div class="badge badge-info m-r-5 m-b-5">Accepted</div>
-            </td>
-            <td ng-if="data.Status == 3">
-              <div class="badge badge-primary m-r-5 m-b-5">Resolved</div>
-            </td>
             <td>
+              <div ng-if="data.Status == 0" class="badge badge-danger m-r-5 m-b-5">New Complaint</div>
+              <div ng-if="data.Status == 1" class="badge badge-warning m-r-5 m-b-5" style="background-color:#00c851;">Accepted</div>
+              <!-- <div ng-if="data.Status == 2" class="badge badge-info m-r-5 m-b-5">Accepted</div> -->
+              <div ng-if="data.Status == 2" class="badge badge-primary m-r-5 m-b-5">Resolved</div>
+            </td>
+            <!-- <td>
               <button ng-if="data.Status == 0" class="btn btn-warning btn-sm btn-rounded" ng-click="btnViewComplaint(data._id)" data-backdrop="static"
                 data-keyboard="false" data-toggle="modal" data-target="#myModal">Assign Cost</button>
-              <!-- <button class="btn btn-warning btn-sm btn-rounded" ng-click="btnViewComplaint(data._id)" data-backdrop="static" data-keyboard="false"
-                data-toggle="modal" data-target="#myModal">Assign Cost</button> -->
-            </td>
+            </td> -->
             <td>
-              <button class="btn btn-warning btn-sm btn-rounded" ng-click="btnViewComplaint(data._id)" data-backdrop="static" data-keyboard="false"
-                data-toggle="modal" data-target="#myModal">Update Data</button>
+              <!-- <button class="btn btn-warning btn-sm btn-rounded" ng-click="btnViewComplaint(data._id)" data-backdrop="static" data-keyboard="false"
+                data-toggle="modal" data-target="#myModal">Update Data</button> -->
             </td>
           </tr>
         </tbody>
@@ -88,7 +80,7 @@
           </i> Assign Cost</button>
       </div>
     </div>
-    
+
   </div>
 </div>
 

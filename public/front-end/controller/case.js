@@ -19,11 +19,11 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
         $scope.searchButtonText = "chat";
         // $scope.start();
         var content = $('.note-editable').html();
-        if($.trim($(".note-editable").html())=='') {
+        if ($.trim($(".note-editable").html()) == '') {
             toastr["error"]("Error," + " " + "Please enter a valid text...");
             return;
         }
-        
+
         var data = {
             'Content': content,
         };
@@ -36,17 +36,48 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                     notify: true
                 });
                 socket.emit('notify', response.data.result.CaseId, response.data.result.SenderId,
-                    response.data.result.SenderName, response.data.result.Content);
+                    response.data.result.SenderName, response.data.result.Content, response.data.result);
+
                 $('#myModal').modal('hide');
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
                 setTimeout(() => {
                     document.getElementById(response.data.result._id).scrollIntoView();
                 }, 0);
-                
+
                 // document.getElementById(response.data.result._id).scrollIntoView()
             }
 
+            if (response.data.status == 0) toastr["error"]("Error," + response.data.message);
+        });
+    };
+
+    $scope.btnChat2 = function () {
+        // $scope.searchButtonText = "chat";
+        var content = $('#txtContent2').val();
+        if ($.trim($('#txtContent2').val()) == '') {
+            toastr["error"]("Error," + " " + "Please enter a valid text...");
+            return;
+        }
+
+        var data = {
+            'Content': content,
+        };
+        $http.post('/addchat/' + currentId, data).then(function (response) {
+            if (response.data.status == 1) {
+                toastr.success('Submitted!');
+                $state.transitionTo($state.current, $stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+                socket.emit('notify', response.data.result.CaseId, response.data.result.SenderId,
+                    response.data.result.SenderName, response.data.result.Content, response.data.result);
+
+                setTimeout(() => {
+                    document.getElementById(response.data.result._id).scrollIntoView();
+                }, 0);
+            }
             if (response.data.status == 0) toastr["error"]("Error," + response.data.message);
         });
     };
@@ -72,7 +103,6 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.getCaseChat = function () {
         $http.get('/casechat/' + currentId).then(function (response) {
             $scope.chats = response.data;
-            console.log(response.data);
         });
     }
 
@@ -82,7 +112,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
         if ($('#chatBox').scrollTop() == 0) {
             // console.log(isPreviousEventComplete, isDataAvailable)
             if (isPreviousEventComplete && isDataAvailable) {
-                $scope.currentPage ++;
+                $scope.currentPage++;
                 isPreviousEventComplete = false;
                 $scope.chatDisplay();
             }
@@ -107,19 +137,35 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
             };
         });
     }
-   
+
+    // $scope.showNotificationData = function (e, caseId) {
+    //     $state.transitionTo('case', { id: caseId }, {
+    //         reload: true,
+    //         notify: true
+    //     });
+    // }
+
     $scope.chatDisplay = function () {
         // var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
         // var end = begin + $scope.itemsPerPage;
+        if ($scope.chats.length >= 3) $('#imgLoader').css('display', 'block');
         $timeout(function () {
             if ($scope.currentPage > 1)
                 $('#chatBox').scrollTop(1130);
-            var begin = ($scope.currentPage * $scope.itemsPerPage);
-            var x = $scope.chats.length - begin;
-            var end = $scope.chats.length;
+            var begin = ($scope.currentPage * (-$scope.itemsPerPage));
+            // var x;
+            // if ($scope.chats.length < 10) x = 1;
+            // else if ($scope.chats.length > 10) x = $scope.chats.length - begin;
+            // var end = $scope.chats.length;
+            if ($stateParams.ref !== undefined) {
+                $scope.filteredData = $scope.chats;
+                setTimeout(() => {
+                    document.getElementById($stateParams.ref).scrollIntoView();
+                }, 100);
+            }
+            else $scope.filteredData = $scope.chats.slice(begin);
             if ($scope.chats.length == $scope.filteredData.length) isDataAvailable = false;
             else isDataAvailable = true;
-            $scope.filteredData = $scope.chats.slice(x, end);
             $scope.scrollTrigger = $scope.chats;
             $scope.contentLoader = false;
             $scope.textContent = true;
@@ -130,7 +176,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     };
     $scope.getCaseChat();
     $scope.chatDisplay();
-    
+
     // $scope.pageChanged = function () {
     //     $('#container').addClass('parentDisable');
     //     $('.loader').css('display', 'block');
@@ -173,12 +219,18 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
 
     $scope.btnInvite = function (caseId) {
         $('#btnInvite').prop('disabled', true);
-        $(this).prop('disabled', true);
         var req = {
             'caseId': caseId
         }
         $http.post('/InviteThirdParty', req).then(function (response) {
-            if (response.data.status == 1) toastr.success('Invite sent!');
+            if (response.data.status == 1) {
+                toastr.success('Invite sent!');
+                $state.transitionTo($state.current, $stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+            }
             if (response.data.status == 0) toastr["error"]("Error," + " " + response.data.message);
         });
     }
@@ -276,7 +328,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                         notify: true
                     });
                     socket.emit('notify', response.result.CaseId, response.result.SenderId,
-                    response.result.SenderName, response.result.Content);
+                        response.result.SenderName, response.result.Content);
                     $('#myModal').modal('hide');
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
@@ -312,6 +364,38 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                 ev.preventDefault();
                 alertify.error("You've Cancelled Request");
             });
+    }
+
+    $scope.getuserId = function () {
+        $http.get('/getuserid').then(function (response) {
+            $scope.userId = response.data;
+        });
+    }
+    $scope.getuserId();
+
+    $scope.btnEditContent = function (e) {
+        $http.get('/GetChatDataById/' + e).then(function (response) {
+            $scope.chatData = response.data;
+            $("#contentUpdate").val(response.data.Content);
+        });
+    }
+
+    $scope.btnUpdateContent = function (e) {
+        var p = {
+            'Content': $('#contentUpdate').val()
+        }
+        $http.post('/updatechatcontent/' + e, p).then(function (response) {
+            if (response.data === 1) {
+                toastr.success('Updated!');
+                $('#myEditContentModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                document.getElementById("txtChatContent_" + e).innerHTML = $('#contentUpdate').val();
+                // console.log($('#contentUpdate').val())
+                // document.getElementById(response.data._id).scrollIntoView();
+            }
+            else toastr["error"]("Error," + " " + "Something went wrong!");
+        });
     }
 
     // $scope.getRole = function () {

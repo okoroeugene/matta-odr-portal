@@ -25,7 +25,7 @@ module.exports.authenticateUser = function (req, res, next) {
     })(req, res, next);
 }
 
-module.exports.createUser = function (req, res) {
+module.exports.createMediator = function (req, res) {
     model.MediatorModel.findOne({ Email: req.body.email }, function (err, user) {
         if (err) console.log(err.message);
         else {
@@ -34,10 +34,19 @@ module.exports.createUser = function (req, res) {
                 model.MediatorModel.create({
                     FullName: req.body.fullname,
                     Email: req.body.email,
-                    Password: req.body.password
+                    Password: req.body.password,
+                    IsVerified: false
                 }, function (err, new_user) {
+                    // var e = {
+                    //     'email': 
+                    // }
                     passport.authenticate('local-sign-in', {});
-                    res.json(1);
+                    req.login(new_user, loginErr => {
+                        if (loginErr) {
+                            // return next(loginErr);
+                        }
+                        else res.json(1);
+                    });
                 });
             }
         }
@@ -111,6 +120,11 @@ module.exports.popoverdata = function (req, res) {
         });
     });
 };
+
+module.exports.getuserid = function (req, res) {
+    var id = utility.getCurrentLoggedInUser.id(req, res);
+    res.json(id);
+}
 
 // module.exports.allusers = function (req, res) {
 //     model.ComplaintModel.find()

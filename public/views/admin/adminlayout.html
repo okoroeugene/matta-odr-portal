@@ -19,6 +19,7 @@
   <!-- PLUGINS STYLES-->
   <!-- THEME STYLES-->
   <link href="../../content/admin/main.css" rel="stylesheet" />
+  <link href="../../content/custom.css" rel="stylesheet" />
   <!-- PAGE LEVEL STYLES-->
 </head>
 
@@ -253,6 +254,17 @@
     <div class="wrapper content-wrapper">
       <div class="page-content fade-in-up">
         <div ui-view></div>
+
+        <div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px;
+    top: 0px; width: 100%; height: 100%; background-color: #666666; z-index: 30001;
+    opacity: .8; filter: alpha(opacity=70);display:none">
+          <!-- <p style="position: absolute; top: 30%; left: 45%; color: White;"> -->
+          <!-- Loading, please wait... -->
+
+          <!-- </p> -->
+          <img style="width: 50px; height: 50px; display:block; margin:0 auto; position: relative; top: 40%;" src="../Images/loading_apple.gif"
+          />
+        </div>
       </div>
 
       <footer class="page-footer">

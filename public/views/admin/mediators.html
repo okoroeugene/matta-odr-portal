@@ -20,11 +20,16 @@
                         <td>{{data.FullName}}</td>
                         <td>{{data.Email}}</td>
                         <td>
-                            <div class="badge badge-success m-r-5 m-b-5">Verified</div>
+                            <div ng-if="data.IsVerified === true" class="badge badge-success m-r-5 m-b-5" style="background-color:#00c851;">Verified</div>
+                            <div ng-if="data.IsVerified === false" class="badge badge-danger m-r-5 m-b-5">Not Verified</div>
                         </td>
                         <td>
-                            <button class="btn btn-info btn-sm btn-rounded" ng-click="btnView(data._id)" data-backdrop="static" data-keyboard="false"
-                                data-toggle="modal" data-target="#myModal">View Details</button>
+                            <a href="javascript:void(0)" data-backdrop="static" ng-click="btnView(data._id)" data-keyboard="false" data-toggle="modal"
+                                data-target="#myModal">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <!-- <button class="btn btn-info btn-sm btn-rounded" ng-click="btnView(data._id)" data-backdrop="static" data-keyboard="false"
+                                data-toggle="modal" data-target="#myModal">View Details</button> -->
                         </td>
                     </tr>
                 </tbody>
@@ -33,40 +38,82 @@
     </div>
 </div>
 
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="border-radius:3px;padding-right: 17px;">
+    <div class="modal-dialog cascading-modal modal-avatar modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Mediator Details</h4>
+                <img ng-if="mediatordata.Image === null" class="img-circle" style="width: 100px; height: 100px; margin:0 auto;" src="../Images/u1.png"
+                />
+                <img ng-if="mediatordata.Image !== null" width="120" height="120" style="margin:0 auto;" src="../uploads/{{mediatordata.Image.Image}}"
+                    class="rounded-circle img-responsive" alt="Avatar photo">
             </div>
-            <div class="modal-body">
-                <table class="table table-stripped">
-                    <thead>
-                        <tr>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{mediatordata.FullName}}</td>
-                            <td>{{mediatordata.Email}}</td>
-                            <td>
-                                <div class="badge badge-success m-r-5 m-b-5">Verified</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button ng-style="backgroundColor" class="btn btn-success" ng-click="btnChat()" type="button">
-                    </i> Verify Mediator</button>
+            <div class="modal-body text-center mb-1">
+                <div ng-show="noData">
+                    <p>
+                        <div class="alert alert-danger">
+                            <h5>No Mediator Data</h5>
+                        </div>
+                    </p>
+                </div>
+                <div ng-show="hasData">
+                    <p>
+                        <h6>Full Name:
+                            <span style="font-weight:300;">{{mediatordata.MedProfileData.FirstName}} {{mediatordata.MedProfileData.LastName}} {{mediatordata.MedProfileData.OtherNames}}</span>
+                        </h6>
+                        <hr>
+                        <h6>Email:
+                            <span style="font-weight:300;">{{mediatordata.MedProfileData.MediatorId.Email}}</span>
+                        </h6>
+                        <hr>
+                        <h6>Mini Biography:
+                            <span style="font-weight:300;">{{mediatordata.MedProfileData.MiniBio}}</span>
+                        </h6>
+                        <hr>
+                        <h6>Phone Number:
+                            <span style="font-weight:300;">{{mediatordata.MedProfileData.Phone}}</span>
+                        </h6>
+                        <hr>
+                        <h6>Address:
+                            <span style="font-weight:300;">{{mediatordata.MedProfileData.Address}}</span>
+                        </h6>
+                        <hr>
+                        <h6>Status:
+                            <span ng-if="mediatordata.MedProfileData.MediatorId.IsVerified === false" class="badge badge-danger badge-pill m-r-5 m-b-5">Not Verified</span>
+                            <span ng-if="mediatordata.MedProfileData.MediatorId.IsVerified === true" style="background-color:#00c851;" class="badge badge-success badge-pill m-r-5 m-b-5">Verified</span>
+                        </h6>
+                        <hr>
+                        <h6>Proof of Mediation:
+                            <span style="font-weight:300;">
+                                <a ng-click="myImg(mediatordata.MedProfileData.MediatorCertificate)" href="javascript:void(0)" style="font-size: 18px;position: relative;top: 2.7px;">
+                                    <i class="ti-eye"></i>
+                                </a>
+                            </span>
+                        </h6>
+                    </p>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button ng-if="mediatordata.MedProfileData.MediatorId.IsVerified === false" ng-click="btnVerify(mediatordata.MedProfileData.MediatorId._id)"
+                        class="btn btn-success waves-effect waves-light">Verify
+                        <i class="fa fa-sign-in ml-1"></i>
+                    </button>
+                    <button ng-if="mediatordata.MedProfileData.MediatorId.IsVerified === true" ng-click="btnUnVerify(mediatordata.MedProfileData.MediatorId._id)"
+                        class="btn btn-danger waves-effect waves-light">UnVerify
+                        <i class="fa fa-sign-in ml-1"></i>
+                    </button>
+                    <button type="button" style="padding: .6rem 1.5rem;" class="btn btn-cyan waves-effect waves-light" data-dismiss="modal">Cancel</button>
+                </div>
             </div>
         </div>
-
     </div>
+</div>
+
+
+
+<div id="myImgModal" class="modalImg">
+    <span class="close">&times;</span>
+    <img style="width:300px; margin-top:60px;" class="imgModal-content" id="img01">
+    <br>
+    <!-- <i class="fa fa-arrow-left" style="font-size:60px; margin-left:45%;"></i> -->
+    <!-- <i style="font-size:60px; margin-left:3%;" class="fa fa-arrow-right"></i> -->
 </div>

@@ -13,7 +13,6 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
         $scope.verifyPayment = function () {
             $http.get('/verifypayment').then(function (response) {
                 if (response.data.status == 1) {
-                    // window.location.href = '/case/' + response.data.caseId;
                     $scope.result = response.data.result;
                     $scope.mediatorname = response.data.mediator;
                     $scope.caseId = response.data.caseId;
@@ -22,19 +21,11 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                 }
                 if (response.data.status == 0) {
                     $scope.NotAssignedPayment = true;
-                    // toastr["error"]("Error," + " " + "Something went wrong!!!");
                 }
                 if (response.data.status == 2) {
                     $scope.AssignedPayment = true;
                     $scope.result = response.data.result;
-                    // toastr["error"]("Error," + " " + "Something went wrong!!!");
                 }
-                // if (response.data.status == 3) {
-                //     $scope.PaidandNotAccepted = true;
-                //     $scope.Paid = true;
-                //     $scope.result = response.data.result;
-                //     // toastr["error"]("Error," + " " + "Something went wrong!!!");
-                // }
             });
         }
         $scope.verifyPayment();

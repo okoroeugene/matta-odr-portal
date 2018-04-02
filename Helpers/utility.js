@@ -160,7 +160,7 @@ module.exports.Authorize = {
 }
 
 module.exports.uploadFile = {
-    myUpload: function (req, err) {
+    myUpload: function (req, err, callback) {
         if (err) return 0;
         else {
             var file = req.file.originalname;

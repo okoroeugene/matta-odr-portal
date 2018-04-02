@@ -12,34 +12,64 @@
     <div class="row">
         <div class="col-lg-9 col-md-9">
             <div class="ibox">
-                <div class="ibox-head">
-                    <div class="ibox-title">Personal Information</div>
-                </div>
-                <div class="ibox-body">
-                    <div class="row">
-                        <div class="col-sm-4 form-group">
-                            <label>First Name</label>
-                            <span class="text-danger">*</span>
-                            <input type="text" name="firstname" class="form-control">
-                        </div>
-                        <div class="col-sm-4 form-group">
-                            <label>Last Name</label>
-                            <span class="text-danger">*</span>
-                            <input type="text" name="lastname" class="form-control">
-                        </div>
-                        <div class="col-sm-4 form-group">
-                            <label>Other Names</label>
-                            <span class="text-danger">*</span>
-                            <input type="text" name="othername" class="form-control">
-                        </div>
-                        <div class="col-sm-4 form-group">
-                            <label>Mini Bio</label>
-                            <span class="text-danger">*</span>
-                            <textarea type="text" name="othername" rows="8" class="form-control"></textarea>
+                <form id="mediationProfile" name="mediationProfile" enctype="multipart/form-data" method="POST">
+                    <div class="ibox-head">
+                        <div class="ibox-title">Personal Information</div>
+                    </div>
+                    <div class="ibox-body">
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label>First Name</label>
+                                <span class="text-danger">*</span>
+                                <input style="padding: 10px;" type="text" value="{{existingProfile.FirstName}}" name="firstname" id="firstname" class="form-control">
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Last Name</label>
+                                <span class="text-danger">*</span>
+                                <input style="padding: 10px;" type="text" value="{{existingProfile.LastName}}" name="lastname" id="lastname" class="form-control">
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Other Names</label>
+                                <span class="text-danger">*</span>
+                                <input style="padding: 10px;" type="text" value="{{existingProfile.OtherNames}}" name="othernames" id="othernames" class="form-control">
+                            </div>
+                            <div class="col-sm-8 form-group">
+                                <label>Mini Bio</label>
+                                <span class="text-danger">*</span>
+                                <textarea type="text" name="bio" rows="8" id="bio" class="form-control">{{existingProfile.MiniBio}}</textarea>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Mediation Certificate</label>
+                                <span class="text-danger">*</span>
+                                <input type="file" name="Image" id="medCert">
+                                <!-- <input type="button" ng-click="btnUploadMedCert()" value="Upload"> -->
+                                <br>
+                                <div class="ibox-body">
+                                    <img width="130" height="120" id="medCertImage" class="img-responsive img-thumbnail" src="../uploads/{{existingProfile.MediatorCertificate}}">
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Contact Phone</label>
+                                <span class="text-danger">*</span>
+                                <input style="padding: 10px;" value="{{existingProfile.Phone}}" type="text" id="phone" name="phone" class="form-control">
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Address</label>
+                                <span class="text-danger">*</span>
+                                <input style="padding: 10px;" type="text" value="{{existingProfile.Address}}" id="address" name="address" class="form-control">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="ibox-head">
+                    <div class="ibox-footer">
+                        <div class="col-md-12">
+                            <div class="button-box col-lg-12">
+                                <a href="javascript:void(0)" id="btnUpdateProfile" style="padding: 1.2rem 3rem;" class="btn btn-success" ng-click="mediationProfile.$valid && btnSaveMediatorProfile()">Update</a>
+                                <a href="/profile" style="padding: 1.2rem 3rem;" class="btn btn-default" role="button">Return to Dashboard <i class="fa fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- <div class="ibox-head">
                     <div class="ibox-title">Legal Information</div>
                 </div>
                 <div class="ibox-body">
@@ -60,7 +90,7 @@
                             <input type="text" name="firstname" class="form-control">
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -75,165 +105,6 @@
         </div>
     </div>
 </div>
-
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog" style="font-size: 14px!Important;font-weight: 300;">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Change Profile Picture</h4>
-            </div>
-            <form method="post" enctype="multipart/form-data" action="/uploadmediatorimage">
-
-                <div class="modal-body">
-                    <div class="page-content fade-in-up">
-                        <div class="ibox">
-                            <div class="ibox-head">
-                                <div class="ibox-title">File Upload </div>
-                            </div>
-                            <div class="ibox-body">
-                                <input type="file" name="Image">
-                                <br>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button class="btn btn-success" type="submit"> Upload</button>
-                </div>
-            </form>
-        </div>
-
-    </div>
-</div>
-
-<div class="modal fade" id="myCaseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header text-center" style="background-color: rgba(66, 92, 187, 0.871);">
-                <h4 class="modal-title w-100" style="color:white;">Complaint</h4>
-            </div>
-            <div class="modal-body mx-3 text-center">
-                <span>
-                    <b>Name</b>
-                    <span>: {{displayComplaintData[0].UName}}</span>
-                    <hr>
-                    <b>Email</b>
-                    <span>: {{displayComplaintData[0].UEmail}}</span>
-                    <hr>
-                    <b>Address</b>
-                    <span>: {{displayComplaintData[0].UAddress}}</span>
-                    <hr>
-                </span>
-                <span>
-                    <b>COMPLAINT</b>
-                    <span>: {{displayComplaintData[0].Complaint}}</span>
-                </span>
-            </div>
-            <!-- style="padding: 12px 0px 12px 165px;" -->
-            <div class="modal-footer justify-content-center">
-                <!-- <button type="button" style="padding: .9rem .75rem;background-color: #00c851!important;border-color:#00c851;color: #fff!important;"
-                                class="btn btn-success">I Accept
-                                <i class="fa fa-arrow-right"></i>
-                            </button> -->
-                <button type="button" style="padding: .7rem .75rem;" class="btn btn-default" data-dismiss="modal">
-                    <i class="fa fa-window-close "></i> Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal: modalAbandonedCart-->
-<div class="modal fade" id="AcceptanceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header text-center" style="background-color: #00c851;">
-                <h4 class="modal-title w-100" style="color:white;">Accept Case</h4>
-                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button> -->
-            </div>
-            <div class="modal-body mx-3 text-center">
-                <i style="color: #00c851;" class="fa fa-check fa-4x mb-3 animated rotateIn"></i>
-                <p>
-                    By Clicking I Accept, you hereby accept all charges pertaining to this Complaint.
-                    <br> Note that
-                    <b>MATTA</b> has a 20% charge form the stipulated charges you are about entering now.
-                    <!-- <br>
-                            Cases settled on or before the stipulated time, earns you some credit -->
-                </p>
-                <div class="md-form mb-5">
-                    <!-- <i class="fa fa-envelope prefix grey-text"></i> -->
-                    <form id="">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <div class="input-icon">
-                                    <i>&#8358;</i>
-                                    <input type="text" ng-model="cost" name="cost" id="cost" style="padding: 12px 0px 12px 30px;" placeholder="Enter Amount"
-                                        class="form-control" required>
-                                </div>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="form-group">
-                                    <input type="text" ng-model="estNoDays" name="estNoDays" id="estNoDays" style="padding: 12px 0px 12px 30px;" placeholder="Estimated number of days"
-                                        class="form-control" required>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                    <!-- <label data-error="wrong" data-success="right" for="defaultForm-email1">Your email</label> -->
-                </div>
-            </div>
-            <!-- style="padding: 12px 0px 12px 165px;" -->
-            <div class="modal-footer justify-content-center">
-                <button id="btnAccept" type="button" ng-disabled="!cost || !estNoDays" style="padding: .8rem .75rem;border-color:#40ca78;background-color: #00c851!important;border-color:#00c851;color: #fff!important;"
-                    class="btn btn-success" ng-click="btnAcceptCase(complaintId)">I Accept
-                    <i class="fa fa-arrow-right"></i>
-                </button>
-                <button type="button" style="padding: .8rem .75rem;" class="btn btn-default" data-dismiss="modal">No, thanks</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--Modal: modalConfirmDelete-->
-<div class="modal fade" id="modalConfirmDiscard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
-        <!--Content-->
-        <div class="modal-content text-center">
-            <!--Header-->
-            <div class="modal-header d-flex justify-content-center" style="background-color: #ff3547;">
-                <h4 class="modal-title w-100" style="color:white;">Are you sure?</h4>
-            </div>
-
-            <!--Body-->
-            <div class="modal-body">
-                <i style="color: #ff3547;" class="fa fa-times fa-4x animated rotateIn"></i>
-                <p>
-                    By Clicking
-                    <b>Yes</b>, you hereby drop all charges pertaining to this Complaint.
-                    <!-- <br> Note that
-                            <b>MATTA</b> has a 20% charge form the stipulated charges you are about entering now. -->
-                </p>
-            </div>
-
-            <!--Footer-->
-            <div class="modal-footer justify-content-center">
-                <button id="btnDecline" type="button" style="padding: .6rem 1.5rem;background-color: #ff3547!important;border-color:#ff3547;color: #fff!important;"
-                    class="btn btn-success" ng-click="btnDeclineCase(casePaymentId)">Yes
-                </button>
-                <button type="button" style="padding: .6rem 1.5rem;" class="btn btn-default" data-dismiss="modal">No</button>
-            </div>
-        </div>
-        <!--/.Content-->
-    </div>
-</div>
-<!--Modal: modalConfirmDelete-->
 
 <div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px;
         top: 0px; width: 100%; height: 100%; background-color: #666666; z-index: 30001;
@@ -252,17 +123,20 @@
 <!--VALIDATION-->
 <script type="text/javascript">
     $(function () {
-        $('#acceptCaseForm').validate({
-            errorPlacement: function errorPlacement(error, element) { error.insertAfter(element); },
+        $('#mediationProfile').validate({
             rules: {
-                cost: { required: true },
-                estNoDays: { required: true }
+                firstname: { required: true },
+                lastname: { required: true },
+                othername: { required: true },
+                phone: { required: true },
+                address: { required: true },
+                bio: { required: true }
             },
-            highlight: function (e) { $(e).closest(".form-group").addClass("has-error") },
-            highlight: function (e) { $(e).closest(".input-icon").addClass("has-error") },
-            unhighlight: function (e) { $(e).closest(".form-group").removeClass("has-error") },
-            unhighlight: function (e) { $(e).closest(".input-icon").removeClass("has-error") },
+            errorClass: "help-block error",
+            highlight: function (e) { $(e).closest(".form-group.row").addClass("has-error") },
+            unhighlight: function (e) { $(e).closest(".form-group.row").removeClass("has-error") },
         });
+
 
         // if ($('#cost').val() !== '' && $('#estNoDays').val() !== '') {
         //     $('#btnAccept').prop('disabled', true);

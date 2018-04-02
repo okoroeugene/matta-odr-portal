@@ -69,8 +69,8 @@ io.on('connection', function (socket) {
 
     socket.join(userId); // We are using room of socket io
 
-    socket.on('notify', function (caseId, userId, sendername, content) {
-        getChatParticipants(caseId, userId, sendername, content, function (data) {
+    socket.on('notify', function (caseId, userId, sendername, content, allData) {
+        getChatParticipants(caseId, userId, sendername, content, allData, function (data) {
             var result = {
                 'count': data.length,
                 'content': data
@@ -82,7 +82,7 @@ io.on('connection', function (socket) {
     //Gets active chat Participants
     var participants = null;
     var participants = [];
-    function getChatParticipants(caseId, userId, sendername, content, callback) {
+    function getChatParticipants(caseId, userId, sendername, content, allData, callback) {
         var clients = socket.handshake.session.allClients;
         model.ConversationModel.find({ CaseId: caseId, ParticipantId: { $ne: userId } }, function (err, convo) {
             for (let i = 0; i < convo.length; i++) {
@@ -94,7 +94,7 @@ io.on('connection', function (socket) {
                             'count': data.length,
                             'content': data
                         }
-                        io.sockets.in(convo[i].ParticipantId).emit('notifyCount', result, sendername, content);
+                        io.sockets.in(convo[i].ParticipantId).emit('notifyCount', result, sendername, content, convo[i].ParticipantId, allData);
                     });
                 else console.error('Something went wrong!!');
             }

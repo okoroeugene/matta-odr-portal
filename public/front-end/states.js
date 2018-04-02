@@ -173,7 +173,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
         })
 
         .state('case', {
-            url: '/case/:id',
+            url: '/case/:id?ref',
             data: {
                 pageTitle: 'Case'
             },

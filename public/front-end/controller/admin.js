@@ -36,7 +36,15 @@ myApp.controller('adminController', ['$scope', '$state', '$stateParams', '$http'
 
     $scope.btnView = function (res) {
         $http.get('/getmediatordata/' + res).then(function (response) {
-            $scope.mediatordata = response.data;
+            if (response.data === null) {
+                $scope.hasData = false;
+                $scope.noData = true;
+            }
+            else {
+                $scope.hasData = true;
+                $scope.noData = false;
+                $scope.mediatordata = response.data;
+            }
         });
     }
 
@@ -70,6 +78,54 @@ myApp.controller('adminController', ['$scope', '$state', '$stateParams', '$http'
         });
     }
 
+    $scope.btnVerify = function (e) {
+        $http.post('/verifymediator/' + e).then(function (response) {
+            if (response.data === 1) {
+                toastr.success('Verified!');
+                $state.transitionTo($state.current, $stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+                $('#myModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            }
+            else toastr["error"]("Error," + " " + "Something went wrong!!!");
+        });
+    }
 
+    $scope.btnUnVerify = function (e) {
+        $http.post('/unverifymediator/' + e).then(function (response) {
+            if (response.data === 1) {
+                toastr.success('UnVerified!');
+                $state.transitionTo($state.current, $stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+                $('#myModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            }
+            else toastr["error"]("Error," + " " + "Something went wrong!!!");
+        });
+    }
+
+    $scope.myImg = function (imgSrc) {
+        // $('#divLoading').css('display', 'block');
+        $('#myModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+        var modal = document.getElementById('myImgModal');
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        modal.style.display = "block";
+        modalImg.src = '../uploads/' + imgSrc;
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+    }
     // $scope.complete();
 }]);

@@ -88,7 +88,7 @@ module.exports.uploadfile = function (req, res) {
         var caption = req.body.caption;
         var role = utility.UserRole.GetRoleName(req);
         caseService.AddCaseChat(req, res, files, function (data) {
-            if(data) res.json({ status: 1, result: data });
+            if (data) res.json({ status: 1, result: data });
             else res.json({ status: 0, message: 'Something went wrong!!' });
         });
     });
@@ -97,6 +97,21 @@ module.exports.uploadfile = function (req, res) {
 module.exports.checkinvite = function (req, res) {
     var caseId = req.params.id;
     model.InviteeModel.findOne({ CaseId: caseId }, function (err, data) {
+        if (data) res.json(1);
+        else res.json(0);
+    });
+}
+
+module.exports.GetChatDataById = function (req, res) {
+    var Id = req.params.id;
+    model.ChatModel.findById(Id, function (err, data) {
+        res.json(data);
+    });
+}
+
+module.exports.updatechatcontent = function (req, res) {
+    var Id = req.params.id;
+    model.ChatModel.findByIdAndUpdate(Id, { Content: req.body.Content }, function (err, data) {
         if (data) res.json(1);
         else res.json(0);
     });

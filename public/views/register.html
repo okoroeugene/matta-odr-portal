@@ -8,23 +8,23 @@
                 </div>
             </div> -->
             <div class="row">
-                <form class="col-12" id="reg-form" action="/register" method="post">
+                <form class="col-12" id="reg-form" action="javascript:void(0)" name="myForm">
                     <!-- <h5 class="font-strong m-b-10 text-center">James Brown</h5> -->
                     <p class="font-13 text-center">Please enter your MATTA PIN to enter the ODR Portal</p>
                     <div class="form-group">
-                        <input ng-model="fullname" class="form-control" type="text" name="fullname" placeholder="Enter Full Name ">
+                        <input style="padding: 11px 10px;" ng-model="fullname" class="form-control" type="text" name="fullname" placeholder="Enter Full Name ">
                     </div>
                     <div class="form-group">
-                        <input ng-model="email" class="form-control" type="email" name="email" placeholder="Enter Email Address ">
+                        <input style="padding: 11px 10px;" ng-model="email" class="form-control" type="email" name="email" placeholder="Enter Email Address ">
                     </div>
                     <div class="form-group">
-                        <input ng-model="password" class="form-control" type="password" id="password" name="password" placeholder="Enter Password">
+                        <input style="padding: 11px 10px;" ng-model="password" class="form-control" type="password" id="password" name="password" placeholder="Enter Password">
                     </div>
                     <div class="form-group">
-                        <input ng-model="repeatpassword" class="form-control" type="password" name="repeatpassword" placeholder="Repeat Password">
+                        <input style="padding: 11px 10px;" ng-model="repeatpassword" class="form-control" type="password" name="repeatpassword" placeholder="Repeat Password">
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-success btn-block" onclick="btnReg()" type="button">
+                        <button id="btnReg" style="padding: 15px;" class="btn btn-success btn-block" ng-click="myForm.$valid && btnReg()" type="submit">
                             <i class="ti-unlock m-r-5"></i>Register</button>
                     </div>
                     <p>Already have an Account?
@@ -38,16 +38,12 @@
 
 <script type="text/javascript">
     $(function () {
-        // var req = http.request(options, callback).end();
-        // if (req != null){
-        //     toastr["error"]("Sorry," + callback);
-        // }
-        $('#lock-form').validate({
+        $('#reg-form').validate({
             errorClass: "help-block",
             rules: {
                 fullname: { required: true },
                 email: { required: true },
-                password: { required: true },
+                password: { required: true, minlength: 6 },
                 repeatpassword: { required: true },
                 repeatpassword: {
                     equalTo: "#password"

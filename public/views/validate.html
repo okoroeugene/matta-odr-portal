@@ -6,10 +6,13 @@
         <div class="row">
             <form class="col-12" id="lock-form" name="myform" action="javascript:void(0)">
                 <!-- <h5 class="font-strong m-b-10 text-center">James Brown</h5> -->
-                <div class="form-group">
-                    <input style="padding: 11px 10px;" value="{{newFileCode}}" placeholder="{{newFileCode}}" readonly ng-model="filecode" class="form-control"
-                        type="text" name="filecode">
+                <div class="input-group">
+                    <input style="padding: 11px 10px;" readonly value="{{newFileCode}}" type="text" id="myInput" class="form-control">
+                    <span class="input-group-btn">
+                        <button style="padding: 11px 10px;" class="btn btn-success" onclick="myFunction()" type="button">Copy</button>
+                    </span>
                 </div>
+                <br>
                 <div class="form-group">
                     <input style="padding: 11px 10px;" ng-model="password" class="form-control" id="password" type="password" name="password"
                         placeholder="Enter Password" required>
@@ -45,6 +48,13 @@
         highlight: function (e) { $(e).closest(".form-group.row").addClass("has-error") },
         unhighlight: function (e) { $(e).closest(".form-group.row").removeClass("has-error") },
     });
+
+    function myFunction() {
+        /* Get the text field */
+        var copyText = document.getElementById("myInput");
+        copyText.select();
+        document.execCommand("Copy");
+    }
 </script>
 <!-- 
 <script type="text/javascript">

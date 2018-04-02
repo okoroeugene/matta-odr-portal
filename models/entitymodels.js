@@ -7,7 +7,8 @@ var MediatorSchema = new Schema({
     FullName: { type: String, required: true },
     Email: { type: String, required: true },
     Password: { type: String, required: true },
-    NotificationLastRead: Date
+    NotificationLastRead: Date,
+    IsVerified: { type: Boolean, required: true }
 })
 
 MediatorSchema.pre('save', function (next) {
@@ -43,7 +44,7 @@ var ComplaintSchema = new Schema({
     TPEmail: { type: String, required: true },
     TPAddress: { type: String, required: true },
     TPPhone: { type: String, required: true },
-    TPWebsite: { type: String, required: true },
+    TPWebsite: { type: String },
     Complaint: { type: String, required: true },
     UName: { type: String, required: true },
     UPhone: { type: String, required: true },
@@ -121,6 +122,18 @@ var ProfilePicSchema = new Schema({
     UserId: { type: String, required: true },
 });
 
+var MediatorProfileSchema = new Schema({
+    FirstName: { type: String, required: true },
+    LastName: { type: String, required: true },
+    OtherNames: { type: String, required: true },
+    MiniBio: { type: String, required: true },
+    Phone: { type: String, required: true },
+    Address: { type: String, required: true },
+    MediatorCertificate: { type: String, required: true },
+    MediatorId: { type: String, required: true, ref: 'Mediator' },
+    Date: Date,
+});
+
 var Mediator = mongoose.model('Mediator', MediatorSchema);
 module.exports.MediatorModel = Mediator;
 
@@ -153,3 +166,6 @@ module.exports.ConversationModel = Conversation;
 
 var ProfilePic = mongoose.model('ProfilePic', ProfilePicSchema);
 module.exports.ProfilePicModel = ProfilePic;
+
+var MediatorProfile = mongoose.model('MediatorProfile', MediatorProfileSchema);
+module.exports.MediatorProfileModel = MediatorProfile;
