@@ -38,27 +38,6 @@ myApp.directive('fileModel', ['$parse', function ($parse) {
     };
 }]);
 
-myApp.directive('updateTitle', ['$rootScope', '$timeout',
-    function ($rootScope, $timeout) {
-        return {
-            link: function (scope, element) {
-
-                var listener = function (event, toState) {
-
-                    var title = 'Default Title';
-                    if (toState.data && toState.data.pageTitle) title = toState.data.pageTitle;
-
-                    $timeout(function () {
-                        element.text(title);
-                    }, 0, false);
-                };
-
-                $rootScope.$on('$stateChangeSuccess', listener);
-            }
-        };
-    }
-]);
-
 myApp.directive('schrollBottom', function () {
     return {
         scope: {
@@ -67,13 +46,15 @@ myApp.directive('schrollBottom', function () {
         link: function (scope, element) {
             scope.$watchCollection('schrollBottom', function (newValue) {
                 if (newValue) {
-                    var id = newValue.slice(-1)[0]._id;
+                    // var id = newValue.slice(-1)[0]._id;
+                    // setTimeout(() => {
+                    //     document.getElementById(id).scrollIntoView();
+                    // }, 0);
                     setTimeout(() => {
-                        document.getElementById(id).scrollIntoView();
+                        var newHeight = $(element)[0].scrollHeight + 50;
+                        // console.log(newHeight);
+                        $(element).scrollTop(newHeight);
                     }, 0);
-                    // var newHeight = $(element)[0].scrollHeight + 10;
-                    // console.log(newHeight);
-                    // $(element).scrollTop(newHeight);
                 }
             });
         }
@@ -259,13 +240,26 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
 
 myApp.run(['$rootScope', '$location', '$anchorScroll', function ($rootScope, $location, $anchorScroll) {
     // $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-    //     // $rootScope.title = current.$$route.title;
-    //     // document.body.scrollTop = document.documentElement.scrollTop = 0;
-    //     // $location.hash($routeParams.scrollTo);
-    //     // $anchorScroll();
+    //     $rootScope.title = current.$$route.title;
     // });
     $rootScope.$on('$stateChangeSuccess', function () {
         document.body.scrollTop = document.documentElement.scrollTop = 0;
     });
 }]);
 
+myApp.directive('updateTitle', ['$rootScope', '$timeout',
+    function ($rootScope, $timeout) {
+        return {
+            link: function (scope, element) {
+                var listener = function (event, toState) {
+                    var title = 'Default Title';
+                    if (toState.data && toState.data.pageTitle) title = toState.data.pageTitle;
+                    $timeout(function () {
+                        element.text(title);
+                    }, 0, false);
+                };
+                $rootScope.$on('$stateChangeSuccess', listener);
+            }
+        };
+    }
+]);

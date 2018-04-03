@@ -43,13 +43,13 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
 
     $scope.getawaitingpayment();
 
-    $scope.getProfilePic = function () {
-        $http.get('/getprofilepic').then(function (response) {
-            $scope.ImagePath = response.data;
-        });
-    }
+    // $scope.getProfilePic = function () {
+    //     $http.get('/getprofilepic').then(function (response) {
+    //         $scope.ImagePath = response.data;
+    //     });
+    // }
 
-    $scope.getProfilePic();
+    // $scope.getProfilePic();
 
     $scope.btnAccept = function (complaintId) {
         alertify
@@ -212,9 +212,22 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
         return false;
     }
 
+    $scope.getMediatorData = function () {
+        $http.get('/getmediatordata').then(function (response) {
+            $scope.mediatorData = response.data;
+        });
+    }
+    $scope.getMediatorData();
+
     $scope.getExistingMediatorProfile = function () {
         $http.get('/existingmediatorprofile').then(function (response) {
             $scope.existingProfile = response.data;
+            $scope.firstname = response.data.FirstName;
+            $scope.lastname = response.data.LastName;
+            $scope.othernames = response.data.OtherNames;
+            $scope.bio = response.data.MiniBio;
+            $scope.phone = response.data.Phone;
+            $scope.address = response.data.Address;
         });
     }
     $scope.getExistingMediatorProfile();
@@ -248,7 +261,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
                     setTimeout(() => {
                         location.href = '/mediator-profile';
                     }, 1000);
-                    
+
                     // $state.transitionTo($state.current, $stateParams, {
                     //     reload: true,
                     //     inherit: false,

@@ -45,8 +45,8 @@ var caseD = module.exports = {
         });
     },
 
-    AddCaseChat: function (req, res, files, callback) {
-        var _chat = new model.ChatModel({ CaseId: req.params.id, Content: req.body.Content, File: files, Date: currentDate });
+    AddCaseChat: function (req, res, content, files, callback) {
+        var _chat = new model.ChatModel({ CaseId: req.params.id, Content: content, File: files, Date: currentDate });
         var role = utility.UserRole.GetRoleName(req);
         if (role == 'user' || role == 'invitee') {
             _chat.SenderName = req.session.name;

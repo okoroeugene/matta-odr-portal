@@ -21,7 +21,7 @@
                         <td>{{data.Email}}</td>
                         <td>
                             <div ng-if="data.IsVerified === true" class="badge badge-success m-r-5 m-b-5" style="background-color:#00c851;">Verified</div>
-                            <div ng-if="data.IsVerified === false" class="badge badge-danger m-r-5 m-b-5">Not Verified</div>
+                            <div ng-if="data.IsVerified === false || !data.IsVerified" class="badge badge-danger m-r-5 m-b-5">Not Verified</div>
                         </td>
                         <td>
                             <a href="javascript:void(0)" data-backdrop="static" ng-click="btnView(data._id)" data-keyboard="false" data-toggle="modal"
@@ -42,9 +42,9 @@
     <div class="modal-dialog cascading-modal modal-avatar modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <img ng-if="mediatordata.Image === null" class="img-circle" style="width: 100px; height: 100px; margin:0 auto;" src="../Images/u1.png"
+                <img ng-if="imgPath === null" class="img-circle" style="width: 100px; height: 100px; margin:0 auto;" src="../Images/u1.png"
                 />
-                <img ng-if="mediatordata.Image !== null" width="120" height="120" style="margin:0 auto;" src="../uploads/{{mediatordata.Image.Image}}"
+                <img ng-if="imgPath !== null" width="120" height="120" style="margin:0 auto;" src="../uploads/{{imgPath.Image}}"
                     class="rounded-circle img-responsive" alt="Avatar photo">
             </div>
             <div class="modal-body text-center mb-1">
@@ -78,7 +78,7 @@
                         </h6>
                         <hr>
                         <h6>Status:
-                            <span ng-if="mediatordata.MedProfileData.MediatorId.IsVerified === false" class="badge badge-danger badge-pill m-r-5 m-b-5">Not Verified</span>
+                            <span ng-if="mediatordata.MedProfileData.MediatorId.IsVerified === false || !mediatordata.MedProfileData.MediatorId.IsVerified" class="badge badge-danger badge-pill m-r-5 m-b-5">Not Verified</span>
                             <span ng-if="mediatordata.MedProfileData.MediatorId.IsVerified === true" style="background-color:#00c851;" class="badge badge-success badge-pill m-r-5 m-b-5">Verified</span>
                         </h6>
                         <hr>
@@ -93,7 +93,7 @@
                 </div>
 
                 <div class="text-center mt-4">
-                    <button ng-if="mediatordata.MedProfileData.MediatorId.IsVerified === false" ng-click="btnVerify(mediatordata.MedProfileData.MediatorId._id)"
+                    <button ng-if="mediatordata.MedProfileData.MediatorId.IsVerified === false || !mediatordata.MedProfileData.MediatorId.IsVerified" ng-click="btnVerify(mediatordata.MedProfileData.MediatorId._id)"
                         class="btn btn-success waves-effect waves-light">Verify
                         <i class="fa fa-sign-in ml-1"></i>
                     </button>

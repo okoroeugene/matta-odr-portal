@@ -8,11 +8,11 @@
     </ol>
 </div>
 
-<div class="page-content fade-in-up" style="font-size: 12px;">
+<div class="page-content fade-in-up" ng-disabled="true" style="font-size: 12px;">
     <div class="row">
         <div class="col-lg-9 col-md-9">
             <div class="ibox">
-                <form id="mediationProfile" name="mediationProfile" enctype="multipart/form-data" method="POST">
+                <form id="mediationProfile" name="mediationData" action="javascript:void(0)" enctype="multipart/form-data">
                     <div class="ibox-head">
                         <div class="ibox-title">Personal Information</div>
                     </div>
@@ -21,22 +21,22 @@
                             <div class="col-sm-4 form-group">
                                 <label>First Name</label>
                                 <span class="text-danger">*</span>
-                                <input style="padding: 10px;" type="text" value="{{existingProfile.FirstName}}" name="firstname" id="firstname" class="form-control">
+                                <input style="padding: 10px;" type="text" value="{{existingProfile.FirstName}}" ng-model="firstname" name="firstname" id="firstname" class="form-control" required>
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label>Last Name</label>
                                 <span class="text-danger">*</span>
-                                <input style="padding: 10px;" type="text" value="{{existingProfile.LastName}}" name="lastname" id="lastname" class="form-control">
+                                <input style="padding: 10px;" type="text" value="{{existingProfile.LastName}}" ng-model="lastname" name="lastname" id="lastname" class="form-control" required>
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label>Other Names</label>
                                 <span class="text-danger">*</span>
-                                <input style="padding: 10px;" type="text" value="{{existingProfile.OtherNames}}" name="othernames" id="othernames" class="form-control">
+                                <input style="padding: 10px;" type="text" value="{{existingProfile.OtherNames}}" ng-model="othernames" name="othernames" id="othernames" class="form-control">
                             </div>
                             <div class="col-sm-8 form-group">
                                 <label>Mini Bio</label>
                                 <span class="text-danger">*</span>
-                                <textarea type="text" name="bio" rows="8" id="bio" class="form-control">{{existingProfile.MiniBio}}</textarea>
+                                <textarea type="text" name="bio" ng-model="bio" rows="8" id="bio" class="form-control" required>{{existingProfile.MiniBio}}</textarea>
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label>Mediation Certificate</label>
@@ -51,19 +51,19 @@
                             <div class="col-sm-4 form-group">
                                 <label>Contact Phone</label>
                                 <span class="text-danger">*</span>
-                                <input style="padding: 10px;" value="{{existingProfile.Phone}}" type="text" id="phone" name="phone" class="form-control">
+                                <input style="padding: 10px;" value="{{existingProfile.Phone}}" type="text" ng-model="phone" id="phone" name="phone" class="form-control" required>
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label>Address</label>
                                 <span class="text-danger">*</span>
-                                <input style="padding: 10px;" type="text" value="{{existingProfile.Address}}" id="address" name="address" class="form-control">
+                                <input style="padding: 10px;" type="text" value="{{existingProfile.Address}}" ng-model="address" id="address" name="address" class="form-control" required>
                             </div>
                         </div>
                     </div>
                     <div class="ibox-footer">
                         <div class="col-md-12">
                             <div class="button-box col-lg-12">
-                                <a href="javascript:void(0)" id="btnUpdateProfile" style="padding: 1.2rem 3rem;" class="btn btn-success" ng-click="mediationProfile.$valid && btnSaveMediatorProfile()">Update</a>
+                                <input type="submit" href="javascript:void(0)" value="Update" id="btnUpdateProfile" style="padding: 1.2rem 3rem;" class="btn btn-success" ng-click="mediationData.$valid && btnSaveMediatorProfile()">
                                 <a href="/profile" style="padding: 1.2rem 3rem;" class="btn btn-default" role="button">Return to Dashboard <i class="fa fa-arrow-right"></i></a>
                             </div>
                         </div>
@@ -127,7 +127,7 @@
             rules: {
                 firstname: { required: true },
                 lastname: { required: true },
-                othername: { required: true },
+                // othername: { required: true },
                 phone: { required: true },
                 address: { required: true },
                 bio: { required: true }

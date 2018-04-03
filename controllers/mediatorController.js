@@ -12,13 +12,26 @@ module.exports.allmediators = function (req, res) {
         })
 }
 
-module.exports.getmediatordata = function (req, res) {
+module.exports.GetMediatorDataById = function (req, res) {
     var id = req.params.id;
     model.MediatorProfileModel.findOne({ MediatorId: id }).populate('MediatorId').exec(function (err, data) {
-        model.ProfilePicModel.findOne({ UserId: id }, function (err, img) {
+        model.ProfilePicModel.findOne({ UserId: id }).sort({ _id: -1 }).exec(function (err, img) {
             var p = {
                 'MedProfileData': data,
                 'Image': img
+            };
+            res.json(p);
+        });
+    });
+}
+
+module.exports.getmediatordata = function (req, res) {
+    var id = utility.getCurrentLoggedInUser.id(req, res);
+    model.MediatorModel.findById(id).exec(function (err, data) {
+        model.ProfilePicModel.findOne({ UserId: id }).sort({ _id: -1 }).exec(function (err, img) {
+            var p = {
+                'MedProfileData': data,
+                'Image': img.Image
             };
             res.json(p);
         });

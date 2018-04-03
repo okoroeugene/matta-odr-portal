@@ -125,7 +125,7 @@ var ProfilePicSchema = new Schema({
 var MediatorProfileSchema = new Schema({
     FirstName: { type: String, required: true },
     LastName: { type: String, required: true },
-    OtherNames: { type: String, required: true },
+    OtherNames: { type: String },
     MiniBio: { type: String, required: true },
     Phone: { type: String, required: true },
     Address: { type: String, required: true },

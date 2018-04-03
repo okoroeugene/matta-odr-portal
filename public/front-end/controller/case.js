@@ -103,13 +103,15 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.getCaseChat = function () {
         $http.get('/casechat/' + currentId).then(function (response) {
             $scope.chats = response.data;
+            $scope.chatDisplay();
         });
     }
-
+    $scope.getCaseChat();
+    
     var sIndex = 11, offSet = 10, isPreviousEventComplete = true, isDataAvailable = true;
     $('#chatBox').scroll(function () {
         // console.log($('#chatBox').scrollTop());
-        if ($('#chatBox').scrollTop() == 0) {
+        if ($('#chatBox').scrollTop() <= 20) {
             // console.log(isPreviousEventComplete, isDataAvailable)
             if (isPreviousEventComplete && isDataAvailable) {
                 $scope.currentPage++;
@@ -172,10 +174,11 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
             // return false;
             sIndex = sIndex + offSet;
             isPreviousEventComplete = true;
-        }, 1000);
+        }, 0);
     };
     $scope.getCaseChat();
     $scope.chatDisplay();
+
 
     // $scope.pageChanged = function () {
     //     $('#container').addClass('parentDisable');
