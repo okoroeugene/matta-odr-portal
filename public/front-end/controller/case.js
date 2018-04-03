@@ -66,7 +66,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
         $http.post('/addchat/' + currentId, data).then(function (response) {
             if (response.data.status == 1) {
                 toastr.success('Submitted!');
-                $state.transitionTo($state.current, $stateParams, {
+                $state.transitionTo($state.current, { id: response.data.result.CaseId }, {
                     reload: true,
                     inherit: false,
                     notify: true
@@ -148,6 +148,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     // }
 
     $scope.chatDisplay = function () {
+        console.log($stateParams.ref);
         // var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
         // var end = begin + $scope.itemsPerPage;
         if ($scope.chats.length >= 3) $('#imgLoader').css('display', 'block');

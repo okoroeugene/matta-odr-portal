@@ -519,3 +519,8 @@ blink {
         font-size: 12px!Important;
       }
  }
+
+ .thumbnail i {
+    margin-left: -25px;
+    margin-top: -30px;
+    }

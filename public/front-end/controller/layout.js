@@ -119,6 +119,10 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
         $window.location.href = '/';
     }
 
+    // $scope.navigateToChat = function (e, caseId) {
+    //     $state.transitionTo('case', { id: e, ref: caseId });
+    // }
+
     $scope.PaymentStatusInit = function () {
         $scope.verifyPayment = function () {
             $http.get('/verifypayment').then(function (response) {
