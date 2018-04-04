@@ -2,155 +2,73 @@
     .wrapper {
         max-width: 1000px!Important;
     }
+
+    .sticky {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 1;
+        z-index: 1002;
+        background-color: white;
+        margin-top: -20px;
+    }
+
+    .btnRadius {
+        border-radius: 50px 0 0 50px!Important;
+    }
 </style>
 
 <div style="font-size: 11.5px!Important;">
-    <!-- <div class="page-heading">
-        <h1 class="page-title">Online Dispute Resolution Portal</h1>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="index-2.html">Portal</a>
-            </li>
-            <li class="breadcrumb-item active">Case</li>
-        </ol>
-    </div> -->
     <!-- style="pointer-events: none;opacity: 0.2;" -->
     <div class="page-content">
 
         <div class="row">
-            <!-- <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
-                <div class="ibox">
-                    <div class="ibox-body text-center">
-                        <div ng-show="userLoader">
-                            <div class="text-loader-lg"></div>
-                            <hr>
-                            <div class="text-loader-lg"></div>
-                            <br>
-                            <div class="text-loader-lg"></div>
-                            <br>
-                            <div class="text-loader-lg"></div>
-                            <br>
-                            <div class="text-loader-lg"></div>
-                            <br>
-                        </div>
-
-                        <div ng-show="userData">
-                            <div class="row">
-                                <div class="col-md-4 col-sm-4 col-xs-3">
-                                    <a title="Message" href="#" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal">
-                                        <i style="font-size: 30px;" class="fa fa-envelope"></i>
-                                        <br>
-                                        <span style="font-size:10px;text-align:center;">Message</span>
-                                    </a>
-                                </div>
-                                <div class="col-md-4 col-sm-4 col-xs-3">
-                                    <a title="View Case Details" href="#" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myCaseModal">
-                                        <i style="font-size: 30px;" class="fa fa-edit"></i>
-                                        <br>
-                                        <span style="font-size:10px;text-align:center;">View Case</span>
-                                    </a>
-                                </div>
-                                <div class="col-md-4 col-sm-4 col-xs-3">
-                                    <a title="Upload Documents" href="#" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myUploadModal">
-                                        <i style="font-size: 30px;" class="fa fa-upload"></i>
-                                        <br>
-                                        <span style="font-size:10px;text-align:center;">Upload</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <hr>
-                            <span>
-                                <b>CASE</b>
-                                <span>: {{ showData.ComplaintId.Complaint | limitTo: 100 }}{{showData.ComplaintId.Complaint.length
-                                    > 20 ? '...' : ''}}
-                                </span>
-                            </span>
-                            <hr>
-                            <span>
-                                <b>Name</b>
-                                <span>: {{showData.ComplaintId.UName}}</span>
-                                <span ng-if="role != 'invitee'">
-                                    <br>
-                                    <b>File Number</b>
-                                    <span>: {{showData.ComplaintId.FileCode}}</span>
-                                </span>
-                                <br>
-                                <b>Email</b>
-                                <span>: {{showData.ComplaintId.UEmail}}</span>
-                                <br>
-                            </span>
-                            <span>
-                                <b>Status</b>
-                                </h5>
-                                <span class="badge badge-success m-r-5 m-b-5" style="background-color: #00c851;">In Progress</span>
-                                <hr>
-                                <div class="row">
-                                    <div class="btn-group-justified col-md-12">
-                                        <input type="button" style="font-size: 12px;" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal"
-                                            class="btn btn-success" href="javascript:;" value="Message">
-                                        <input type="button" style="font-size: 12px;" ng-if="role == 'mediator'" ng-click="btnCloseCase()" class="btn btn-default"
-                                            href="javascript:;" value="Close Case">
-                                    </div>
-                                </div>
-                            </span>
-                        </div>
-                    </div>
-
-                    <hr>
-                    <div class="ibox-body text-center">
-                        <div ng-show="userLoader">
-                            <div class="text-loader-lg"></div>
-                            <br>
-                            <div class="text-loader-lg"></div>
-                            <br>
-                        </div>
-
-                        <span ng-show="userData">
-                            <b>Third Party Name</b>
-                            <span>: {{showData.ComplaintId.TPName}}</span>
-                            <br>
-                            <b>Email</b>
-                            <span>: {{showData.ComplaintId.TPEmail}}</span>
-                            <div ng-if="role == 'mediator'">
-                                <hr>
-                                <div class="row" style="margin: auto; display: block;">
-                                    <div class="btn-group-justified col-md-12">
-                                        <button ng-if="IsInvited == false" ng-click="btnInvite(showData._id)" id="btnInvite" style="font-size: 12px;" class="btn btn-success"
-                                            href="javascript:;">Invite Third Party</button>
-                                    </div>
-                                    <span ng-if="IsInvited == true" class="badge badge-success m-r-5 m-b-5" style="text-align:center;">Invited</span>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-            </div> -->
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <!-- <pagination ng-show="textContent" boundary-links="true" max-size="5" items-per-page="itemsPerPage" total-items="chats.length"
                     ng-model="currentPage" ng-change="pageChanged()">
                 </pagination> -->
+                <!-- <a href="https://unsplash.it/1200/768.jpg?image=250" data-toggle="lightbox" data-title="A random title" data-footer="A custom footer text">
+                    <img src="https://unsplash.it/600.jpg?image=250" class="img-fluid">
+                </a> -->
                 <div style="display:none;" class="loader"></div>
                 <div class="ibox" id="container">
-                    <div class="ibox-head">
+                    <div class="ibox-head" id="noScroll">
                         <div class="col-md-12">
                             <div class="row" style="text-align:center;margin:0 auto;display:block;">
-                                <div style="margin-top:9.7px" class="btn-group m-b-10 btn-rounded">
-                                    <button data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal" style="font-size:10px;" class="btn">
+                                <div ng-cloak style="margin-top:9.98px" class="btn-group m-b-10 btn-rounded">
+                                    <button ng-show="removeBtn" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal" style="font-size:10px;"
+                                        class="btn">
                                         <i class="fa fa-envelope" style="color:#6f85d6;font-size: 17px;"></i>
                                         <br>Message</button>
-                                    <button data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myCaseModal" style="font-size:10px;"
-                                        class="btn">
-                                        <i class="fa fa-edit" style="color:#f26fac;font-size: 17px;"></i>
+                                    <button id="btnViewCaseToggle" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myCaseModal"
+                                        style="font-size:10px;" class="btn btn-default">
+                                        <i class="ti-eye" style="color:#f26fac;font-size: 20px;
+                                        position: relative;
+                                        line-height: 0.6;
+                                        top: 1px;"></i>
                                         <br>View Case</button>
-                                    <button data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myUploadModal" style="font-size:10px;"
-                                        class="btn">
+                                    <button ng-show="removeBtn" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myUploadModal"
+                                        style="font-size:10px;" class="btn">
                                         <i class="fa fa-upload" style="color:#18c5a9;font-size: 17px;"></i>
                                         <br>Upload</button>
+                                    <!-- <button ng-if="role === 'mediator'" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myUploadModal" style="font-size:10px;"
+                                        class="btn btn-default">
+                                        <i class="fa fa-times" ng-click="btnCloseCase()" style="color:#a50000;font-size: 17px;"></i>
+                                        <br>Close Case</button> -->
+                                    <button ng-show="removeBtn" ng-show="IsUserChecked" ng-click="btnMarkCaseAsResolved(showData.ComplaintId._id, showData._id)"
+                                        style="font-size:10px;" class="btn btn-default">
+                                        <i class="fa fa-check" style="color:#00c851;font-size: 17px;"></i>
+                                        <br>Resolved</button>
                                     <button style="font-size:10px;" class="btn">
                                         <!-- <img width="13" src="../Images/0915c44d62245550f9508bc99963b862.png"> -->
                                         <!-- <img width="9" src="../Images/clip-art-red-dot-clipart-1.jpg"> -->
-                                        <i class="fa fa-cloud-upload" style="font-size: 17px;"></i>
-                                        <br>Upload</button>
+                                        <i ng-if="showData.ComplaintId.Status !== '2'" class="fa fa-circle" style="font-size: 17px;color:#e42b2b"></i>
+                                        <i ng-if="showData.ComplaintId.Status === '2'" class="fa fa-circle" style="font-size: 17px;color:#00c851"></i>
+                                        <br>
+                                        <span ng-if="showData.ComplaintId.Status !== '2'">Not Resolved</span>
+                                        <span ng-if="showData.ComplaintId.Status === '2'">Resolved</span>
+                                    </button>
                                 </div>
 
                             </div>
@@ -160,7 +78,8 @@
 
                     <div class="ibox-body scroll" schroll-bottom="scrollTrigger" style="overflow: scroll;overflow-y: scroll;
                     overflow-x: hidden;height:550px;" id="chatBox">
-                        <img id="imgLoader" src="../Images/loading_apple.gif" style="display:none; margin:auto; width:30px;">
+                        <br>
+                        <img id="imgLoader" src="../Images/loading_apple.gif" style="display:none; margin:auto; width:45px;">
                         <br>
                         <div class="cd-timeline-dark center-orientation timeline-2" id="cd-timeline">
                             <div ng-show="textContent" ng-repeat="data in filteredData" class="cd-timeline-block">
@@ -185,9 +104,9 @@
                                             <span style="background:#fff; 
                                             padding:0 10px; ">THIS IS A TEST</span>
                                         </h2> -->
-                                    <a href="javascript:void(0)" ng-click="btnEditContent(data._id)" ng-if="userId == data.SenderId && data.File === null" data-backdrop="static"
-                                        data-keyboard="false" data-toggle="modal" data-target="#myEditContentModal" class="pull-right"
-                                        href="">
+                                    <a style="position: relative;bottom: 6px;" href="javascript:void(0)" ng-click="btnEditContent(data._id)" ng-if="userId == data.SenderId && data.File === null"
+                                        data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myEditContentModal"
+                                        class="pull-right" href="">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                     <br ng-if="userId == data.SenderId && data.File === null">
@@ -222,39 +141,53 @@
 
                                     <!-- <h4 ng-if="role !== 'mediator'" ng-if="data.SenderName != null" style="font-size: 1.3rem!Important;">{{data.SenderName}}</h4> -->
                                     <!-- <h4 ng-if="data.TP_Name != null">{{data.TP_Name}}</h4> -->
+                                    <!-- <a href="https://unsplash.it/1200/768.jpg?image=250" data-toggle="lightbox" data-title="A random title" data-footer="A custom footer text">
+                                        <img src="https://unsplash.it/600.jpg?image=250" class="img-fluid">
+                                    </a> -->
                                     <p>
                                         <div id="txtChatContent_{{data._id}}" ng-if="data.Content != null" ng-bind-html="data.Content"></div>
                                         <div class="">
                                             <div ng-if="data.File.length === 1">
                                                 <div class="col-md-12" ng-if="data.File != null" ng-repeat="(key, value) in data.File track by $index">
-                                                    <img id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width:100%; display:block; margin: 0 auto; height:180px;"
-                                                        src="../uploads/{{value.filename}}">
+                                                    <a href="../uploads/{{value.filename}}" onclick="return false" data-toggle="lightbox">
+                                                        <img class="img-responsive img-thumbnail" style="object-fit:contain; width:100%; display:block; margin: 0 auto; height:180px;"
+                                                            src="../uploads/{{value.filename}}">
+                                                    </a>
+                                                    <!-- <a href="http://demo.weblizar.com/enigma-premium/wp-content/uploads/sites/23/2016/10/agenda-3170626_960_720-340x210.jpg" data-toggle="lightbox" data-title="A random title" data-footer="A custom footer text">
+                                                        <img src="http://demo.weblizar.com/enigma-premium/wp-content/uploads/sites/23/2016/10/agenda-3170626_960_720-340x210.jpg" class="img-fluid">
+                                                    </a> -->
                                                 </div>
                                             </div>
                                             <div ng-if="data.File.length === 2">
                                                 <div class="row">
-                                                    <div class="col-md-6" ng-if="data.File != null" ng-repeat="(key, value) in data.File track by $index">
-                                                        <img id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width: 100%; height:120px;"
-                                                            src="../uploads/{{value.filename}}">
+                                                    <div class="col-md-6" ng-repeat="(key, value) in data.File track by $index" ng-if="data.File != null">
+                                                        <a href="../uploads/{{value.filename}}" data-toggle="lightbox" onclick="return false" data-gallery="example-gallery">
+                                                            <img class="img-responsive img-thumbnail" style="object-fit:contain; width: 100%; height:120px;" src="../uploads/{{value.filename}}">
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div ng-if="data.File.length === 3">
                                                 <div class="row">
                                                     <div class="col-md-4" style="padding-right: 0px; padding-left: 0px;" ng-if="data.File != null" ng-repeat="(key, value) in data.File track by $index">
-                                                        <img id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width: 100%; height:120px;"
-                                                            src="../uploads/{{value.filename}}">
+                                                        <a href="../uploads/{{value.filename}}" data-toggle="lightbox" onclick="return false" data-gallery="example-gallery" href="javascript:void(0)">
+                                                            <img class="img-responsive img-thumbnail" style="object-fit:contain; width: 100%; height:120px;" src="../uploads/{{value.filename}}">
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div ng-if="data.File.length > 3">
                                                 <div class="row">
                                                     <div class="col-md-4" style="padding-right: 0px; padding-left: 0px;" ng-if="data.File != null" ng-repeat="(key, value) in data.File track by $index">
-                                                        <img ng-if="$index <= 1" id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width: 200px; height:120px;"
-                                                            src="../uploads/{{value.filename}}">
-                                                        <img ng-if="$index == 2" id="myImg" ng-click="myImg(value.filename)" class="img-responsive img-thumbnail" style="object-fit:contain; width: 200px; height:120px; opacity:0.3"
-                                                            src="../uploads/{{value.filename}}">
-                                                        <img ng-if="$index > 3" class="img-responsive img-thumbnail" style="display:none;" src="../uploads/{{value.filename}}">
+                                                        <a ng-if="$index <= 1" href="../uploads/{{value.filename}}" data-toggle="lightbox" onclick="return false" data-gallery="example-gallery">
+                                                            <img class="img-responsive img-thumbnail" style="object-fit:contain; width: 200px; height:120px;" src="../uploads/{{value.filename}}">
+                                                        </a>
+                                                        <a ng-if="$index == 2" href="../uploads/{{value.filename}}" data-toggle="lightbox" onclick="return false" data-gallery="example-gallery">
+                                                            <img class="img-responsive img-thumbnail" style="object-fit:contain; width: 200px; height:120px; opacity:0.3" src="../uploads/{{value.filename}}">
+                                                        </a>
+                                                        <a ng-if="$index > 3" href="../uploads/{{value.filename}}" data-toggle="lightbox" onclick="return false" data-gallery="example-gallery">
+                                                            <img class="img-responsive img-thumbnail" style="display:none;" src="../uploads/{{value.filename}}">
+                                                        </a>
                                                         <div ng-if="$index == 2" ng-click="myImg(value.filename)" class="centered myImgLink">
                                                             <h1 style="color: rgb(84, 84, 84);">+ {{data.File.length - 2}}</h1>
                                                         </div>
@@ -271,7 +204,7 @@
                                         </div>
                                     </p>
                                     <!-- <a class="btn btn-success btn-sm" href="javascript:;">More ...</a> -->
-                                    <span style="font-size: 11px;color: #7b7979;font-style: italic;" class="cd-date">{{data.Date | date : "MMM d, y h:mm a"}}</span>
+                                    <span style="font-size: 11px;color: #7b7979;font-style: italic;margin-top:3px;" class="cd-date">{{data.Date | date : "MMM d, y h:mm a"}}</span>
                                 </div>
                             </div>
 
@@ -503,8 +436,6 @@
 </div>
 
 
-
-
 <!-- <script src="../content/dashboard/vendors/dropzone/dist/min/dropzone.min.js" type="text/javascript"></script> -->
 <script type="text/javascript">
     // Dropzone.options.mydropzone = {
@@ -542,7 +473,25 @@
         $('#summernote_air').summernote({ airMode: true });
     });
 
-    // var objDiv = document.querySelector("chat");
-    // objDiv.scrollTop = objDiv.scrollHeight;
-
+    // When the user scrolls the page, execute myFunction 
+    window.onscroll = function () { myFunction() };
+    // Get the header
+    var header = document.getElementById("noScroll");
+    // Get the offset position of the navbar
+    var sticky = header.offsetTop;
+    // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
+    function myFunction() {
+        if (window.pageYOffset >= 20) {
+            header.classList.add("sticky");
+        } else {
+            header.classList.remove("sticky");
+        }
+    }
 </script>
+
+<!-- <script>
+    $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+        event.preventDefault();
+        $(this).ekkoLightbox();
+    });
+</script> -->

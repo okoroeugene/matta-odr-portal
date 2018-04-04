@@ -10,6 +10,7 @@ var path = require('path');
 var fileRepo = require('../repositories/fileRepository');
 var complaintRepo = require('../repositories/complaintRepository');
 var caseRepo = require('../repositories/caseRepository');
+var routes = require('../routes');
 
 var caseD = module.exports = {
     ValidateCaseView: function (req, res, ID) {
@@ -122,7 +123,8 @@ var caseD = module.exports = {
         var ImageFile = [];
         if (req.files) {
             var files = req.files;
-            utility.uploadFile.apiUpload(req.files, key);
+            // utility.uploadFile.apiUpload(req.files, key);
+            
             files.forEach(item => {
                 ImageFile.push({
                     'filename': item.filename

@@ -7,10 +7,22 @@ var multer = require('multer');
 var rootPath = index.myPath;
 var utility = require('./Helpers/utility');
 var currentDate = new Date();
+var mime = require('mime-types');
 var passport = index.myPassport;
 var session = require('./Helpers/session');
 var auth = require('./Helpers/auth');
-var upload = multer({ dest: 'public/uploads/' })
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads/')
+    },
+    filename: function (req, file, cb) {
+        crypto.pseudoRandomBytes(16, function (err, raw) {
+            cb(null, raw.toString('hex') + Date.now() + '.' + mime.extension(file.mimetype));
+        });
+    }
+});
+module.exports.storage = storage;
+var upload = multer({ storage: storage });
 var cookieParser = require('cookie-parser');
 var crypto = require('crypto');
 var mail = require('./Helpers/mail');
@@ -126,4 +138,5 @@ app.post('/unverifymediator/:id', adminCtrl.unverifymediator);
 app.get('/getuserid', authCtrl.getuserid);
 app.get('/GetChatDataById/:id', caseCtrl.GetChatDataById);
 app.post('/updatechatcontent/:id', caseCtrl.updatechatcontent);
+app.post('/MarkAsResolved/:id', caseCtrl.MarkAsResolved);
 // app.post('/previewfile', upload.array('Images', 6), utility.Authorize.all, caseCtrl.previewfile)

@@ -117,6 +117,14 @@ module.exports.updatechatcontent = function (req, res) {
     });
 }
 
+module.exports.MarkAsResolved = function (req, res) {
+    var Id = req.params.id;
+    model.ComplaintModel.findByIdAndUpdate(Id, { Status: 2 }, function (err, data) {
+        if (data) res.json(1);
+        else res.json(0);
+    });
+}
+
 
 
 //UPDATE ANY DATA

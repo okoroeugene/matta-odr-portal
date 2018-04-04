@@ -88,9 +88,18 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
 
             // }, 6000);
             $scope.showData = response.data;
+            if (response.data.ComplaintId.Status === '2') {
+                var div = $('#btnViewCaseToggle');
+                div.addClass('btnRadius');
+                $scope.removeBtn = false;
+                $scope.IsUserChecked = false;
+            }
+            else {
+                $scope.removeBtn = true;
+                $scope.IsUserChecked = true;
+            }
             $scope.userLoader = false;
             $scope.userData = true;
-
         });
     }
     $scope.getCaseData();
@@ -107,7 +116,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
         });
     }
     $scope.getCaseChat();
-    
+
     var sIndex = 11, offSet = 10, isPreviousEventComplete = true, isDataAvailable = true;
     $('#chatBox').scroll(function () {
         // console.log($('#chatBox').scrollTop());
@@ -148,7 +157,6 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     // }
 
     $scope.chatDisplay = function () {
-        console.log($stateParams.ref);
         // var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
         // var end = begin + $scope.itemsPerPage;
         if ($scope.chats.length >= 3) $('#imgLoader').css('display', 'block');
@@ -260,6 +268,11 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.getrole = function () {
         $http.get('/getroles').then(function (response) {
             $scope.role = response.data.role;
+            if (response.data.role !== 'user') {
+                $scope.IsUserChecked = false;
+                var div = $('#btnViewCaseToggle');
+                div.addClass('btnRadius');
+            }
         });
     }
     $scope.getrole();
@@ -364,6 +377,33 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                 //         }
                 //     });
                 // }, 2000);
+            }, function (ev) {
+                ev.preventDefault();
+                alertify.error("You've Cancelled Request");
+            });
+    }
+
+    $scope.btnMarkCaseAsResolved = function (e, caseId) {
+        alertify
+            .okBtn("Accept")
+            .cancelBtn("Deny")
+            .confirm("Are you sure you want to mark this case as RESOLVED?", function (ev) {
+                ev.preventDefault();
+                $http.post('/MarkAsResolved/' + e).then(function (response) {
+                    if (response.data === 1) {
+                        alertify.success("Successful");
+                        setTimeout(() => {
+                            $state.transitionTo('case', { id: caseId }, {
+                                reload: true,
+                                notify: true
+                            });
+                        }, 1000);
+                    }
+                    if (response.data === 0) {
+                        toastr["error"]("Error," + response.data.message);
+                    }
+                });
+
             }, function (ev) {
                 ev.preventDefault();
                 alertify.error("You've Cancelled Request");
