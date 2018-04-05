@@ -87,16 +87,20 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
             // $timeout(function () {
 
             // }, 6000);
+            var div = $('#btnViewCaseToggle');
             $scope.showData = response.data;
+            $scope.getrole();
+            if (response.data.ComplaintId.Status === '1') $scope.showBtn = true;
             if (response.data.ComplaintId.Status === '2') {
-                var div = $('#btnViewCaseToggle');
                 div.addClass('btnRadius');
-                $scope.removeBtn = false;
-                $scope.IsUserChecked = false;
+                $scope.showBtn = false;
+            }
+            else if (userRole === 'user') {
+                // div.removeClass('btnRadius');
+                $scope.userBtn = true;
             }
             else {
-                $scope.removeBtn = true;
-                $scope.IsUserChecked = true;
+                $('#statusBtn').addClass('btn-default');
             }
             $scope.userLoader = false;
             $scope.userData = true;
@@ -265,14 +269,11 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
         }
     }
 
+    var userRole = null;
     $scope.getrole = function () {
         $http.get('/getroles').then(function (response) {
             $scope.role = response.data.role;
-            if (response.data.role !== 'user') {
-                $scope.IsUserChecked = false;
-                var div = $('#btnViewCaseToggle');
-                div.addClass('btnRadius');
-            }
+            userRole = response.data.role;
         });
     }
     $scope.getrole();

@@ -83,28 +83,28 @@
                             <a class="nav-link active" href="#tab-1" data-toggle="tab">
                                 <i style="font-size: 20px; text-align:center; display:block; margin:0 auto;" class="ti-pencil-alt"></i>
                                 <br> New Cases
-                                <span style="background-color: #E2523B;" ng-if="(allcomplaints | filter:{Status:'0'}).length > 0" class="badge badge-danger badge-circle newBadge m-r-5 m-b-5">{{(allcomplaints | filter:{Status:'0'}).length}}</span>
+                                <span style="background-color: #E2523B;" ng-if="(allcomplaints | filter:{Status:'0'}).length > 0" class="badge badge-danger badge-circle newBadge newLabel m-r-5 m-b-5">{{(allcomplaints | filter:{Status:'0'}).length}}</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#tab-2" data-toggle="tab">
                                 <i style="font-size: 20px; text-align:center; display:block; margin:0 auto;" class="ti-credit-card"></i>
                                 <br> Awaiting Payment
-                                <span style="background-color: rgb(119, 84, 247);" ng-if="(awaitingPayment | filter:{IsPaymentMade:'false'}).length > 0" class="badge badge-danger badge-circle newBadge m-r-5 m-b-5">{{(awaitingPayment | filter:{IsPaymentMade:'false'}).length}}</span>
+                                <span style="background-color: rgb(119, 84, 247);" ng-if="(awaitingPayment | filter:{IsPaymentMade:'false'}).length > 0" class="badge badge-danger badge-circle newBadge newLabel m-r-5 m-b-5">{{(awaitingPayment | filter:{IsPaymentMade:'false'}).length}}</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#tab-3" data-toggle="tab">
                                 <i style="font-size: 20px; text-align:center; display:block; margin:0 auto;" class="ti-comments"></i>
                                 <br> Pending Cases
-                                <span style="background-color: #ffc107;" ng-if="mediatorCase.length > 0" class="badge badge-warning badge-circle newBadge m-r-5 m-b-5">{{mediatorCase.length}}</span>
+                                <span style="background-color: #ffc107;" ng-if="mediatorCase.length > 0" class="badge badge-warning badge-circle newBadge newLabel m-r-5 m-b-5">{{mediatorCase.length}}</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#tab-4" data-toggle="tab">
                                 <i style="font-size: 20px; text-align:center; display:block; margin:0 auto;" class="ti-face-smile"></i>
                                 <br> Resolved Cases
-                                <span ng-if="(allcomplaints | filter:{Status:'2'}).length > 0" style="background-color:#00c851;" class="badge badge-success badge-circle newBadge m-r-5 m-b-5">{{(allcomplaints | filter:{Status:'2'}).length}}</span>
+                                <span ng-if="(allcomplaints | filter:{Status:'2'}).length > 0" style="background-color:#00c851;" class="badge badge-success badge-circle newBadge newLabel m-r-5 m-b-5">{{(allcomplaints | filter:{Status:'2'}).length}}</span>
                             </a>
                         </li>
                     </ul>

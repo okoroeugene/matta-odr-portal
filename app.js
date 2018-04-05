@@ -69,7 +69,10 @@ io.on('connection', function (socket) {
 
     socket.join(userId); // We are using room of socket io
 
+    var currentCount = 0;
     socket.on('notify', function (caseId, userId, sendername, content, allData) {
+        console.log(currentCount);
+        currentCount = currentCount + 1;
         getChatParticipants(caseId, userId, sendername, content, allData, function (data) {
             var result = {
                 'count': data.length,
@@ -94,13 +97,14 @@ io.on('connection', function (socket) {
                             'count': data.length,
                             'content': data
                         }
-                        io.sockets.in(convo[i].ParticipantId).emit('notifyCount', result, sendername, content, convo[i].ParticipantId, allData);
+
+                        io.sockets.in(convo[i].ParticipantId).emit('notifyCount', result, sendername, content, convo[i].ParticipantId, allData, currentCount);
                     });
                 else console.error('Something went wrong!!');
             }
         });
     }
-    
+
     // var chatData = [];
     function getUserNotificationData(response, callback) {
         model.NotificationModel.find({ ReceiverId: response, IsRead: false }).populate('ChatId').exec(function (err, data) {
