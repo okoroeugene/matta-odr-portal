@@ -31,7 +31,7 @@ module.exports.getmediatordata = function (req, res) {
         model.ProfilePicModel.findOne({ UserId: id }).sort({ _id: -1 }).exec(function (err, img) {
             var p = {
                 'MedProfileData': data,
-                'Image': img.Image
+                'Image': img
             };
             res.json(p);
         });

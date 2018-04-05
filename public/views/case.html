@@ -46,25 +46,31 @@
                                         <i class="ti-eye" style="color:#f26fac;font-size: 20px;
                                         position: relative;
                                         line-height: 0.6;
-                                        top: 1px;"></i>
+                                        top: 2px;"></i>
                                         <br>View Case</button>
-                                    <button ng-show="showBtn" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myUploadModal"
-                                        style="font-size:10px;color: black;" class="btn">
+                                    <button ng-show="showBtn" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myUploadModal" style="font-size:10px;color: black;"
+                                        class="btn">
                                         <i class="fa fa-upload" style="color:#18c5a9;font-size: 17px;"></i>
                                         <br>Upload</button>
                                     <!-- <button ng-if="role === 'mediator'" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myUploadModal" style="font-size:10px;"
                                         class="btn btn-default">
                                         <i class="fa fa-times" ng-click="btnCloseCase()" style="color:#a50000;font-size: 17px;"></i>
                                         <br>Close Case</button> -->
-                                    <button ng-show="userBtn" ng-click="btnMarkCaseAsResolved(showData.ComplaintId._id, showData._id)"
-                                        style="font-size:10px;color: black;" class="btn btn-default">
+                                    <button ng-show="userBtn" ng-click="btnMarkCaseAsResolved(showData.ComplaintId._id, showData._id)" style="font-size:10px;color: black;"
+                                        class="btn btn-default">
                                         <i class="fa fa-check" style="color:#00c851;font-size: 17px;"></i>
                                         <br>Resolved</button>
                                     <button style="font-size:10px;color: black;" id="statusBtn" class="btn">
                                         <!-- <img width="13" src="../Images/0915c44d62245550f9508bc99963b862.png"> -->
                                         <!-- <img width="9" src="../Images/clip-art-red-dot-clipart-1.jpg"> -->
-                                        <i ng-if="showData.ComplaintId.Status !== '2'" class="fa fa-circle" style="font-size: 17px;color:#e42b2b"></i>
-                                        <i ng-if="showData.ComplaintId.Status === '2'" class="fa fa-circle" style="font-size: 17px;color:#00c851"></i>
+                                        <i ng-if="showData.ComplaintId.Status !== '2'" class="ti-na" style="font-size: 17px;
+                                        position: relative;
+                                        line-height: 0.9;
+                                        top: 1px;
+                                        color:#e42b2b"></i>
+                                        <i ng-if="showData.ComplaintId.Status === '2'" class="ti-face-smile" style="font-size: 17px;color:#00c851;position: relative;
+                                        line-height: 1.0;
+                                        top: 1px;"></i>
                                         <br>
                                         <span ng-if="showData.ComplaintId.Status !== '2'">Not Resolved</span>
                                         <span ng-if="showData.ComplaintId.Status === '2'">Resolved</span>
@@ -78,10 +84,10 @@
 
                     <div class="ibox-body scroll" schroll-bottom="scrollTrigger" style="overflow: scroll;overflow-y: scroll;
                     overflow-x: hidden;height:550px;" id="chatBox">
-                    <div id="toBottomt_{{userId}}" class="to-bottom" style="display: none;position:absolute;bottom:180px;right:15px;">
-                        <span id="showCount_{{userId}}" style="position:absolute;bottom:12px;right:7px;background-color:#00c851;" class="badge badge-success badge-circle m-r-5 m-b-5">0</span>
-                        <i style="color: #6f85d6;" class="fa fa-angle-double-down"></i>
-                    </div>
+                        <div id="toBottom_{{userId}}" class="to-bottom" style="display: none;position:absolute;bottom:180px;right:15px;">
+                            <span id="showCount_{{userId}}" style="position:absolute;bottom:12px;right:7px;background-color:#00c851;" class="badge badge-success badge-circle m-r-5 m-b-5">0</span>
+                            <i style="color: #6f85d6;" class="fa fa-angle-double-down"></i>
+                        </div>
                         <br>
                         <img id="imgLoader" src="../Images/loading_apple.gif" style="display:none; margin:auto; width:45px;">
                         <br>

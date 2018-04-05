@@ -124,7 +124,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     var sIndex = 11, offSet = 10, isPreviousEventComplete = true, isDataAvailable = true;
     $('#chatBox').scroll(function () {
         // console.log($('#chatBox').scrollTop());
-        if ($('#chatBox').scrollTop() <= 20) {
+        if ($('#chatBox').scrollTop() <= 50) {
             // console.log(isPreviousEventComplete, isDataAvailable)
             if (isPreviousEventComplete && isDataAvailable) {
                 $scope.currentPage++;
@@ -274,6 +274,9 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
         $http.get('/getroles').then(function (response) {
             $scope.role = response.data.role;
             userRole = response.data.role;
+            if (response.data.role === 'user') {
+                $scope.userBtn = true;
+            }
         });
     }
     $scope.getrole();
@@ -414,6 +417,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.getuserId = function () {
         $http.get('/getuserid').then(function (response) {
             $scope.userId = response.data;
+            console.log(response.data);
         });
     }
     $scope.getuserId();
