@@ -18,7 +18,7 @@ module.exports.myPath = __dirname + '/public';
 var routes = require('./routes');
 var multer = require('multer');
 module.exports.multer = multer;
-var server = app.listen(3005)
+var server = app.listen(process.env.PORT || 3005)
 var io = require('socket.io').listen(server);
 app.use(express.static(path.join(__dirname, 'public')));
 var session = require('./Helpers/session');
