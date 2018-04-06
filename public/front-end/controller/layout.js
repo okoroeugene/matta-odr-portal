@@ -1,4 +1,6 @@
 myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLoadingBar', '$http', '$timeout', '$location', '$anchorScroll', '$window', function ($scope, $state, $stateParams, cfpLoadingBar, $http, $timeout, $location, $anchorScroll, $window) {
+    // var socket = io.connect('http://localhost:3005');
+    var socket = io.connect('https://matta.herokuapp.com');
     $scope.redirectToLogin = function () {
         $window.location.href = '/login';
     }
@@ -34,7 +36,6 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
     }
     $scope.getMediatorData();
 
-    var socket = io.connect('http://localhost:3005');
     socket.on('notifyCount', function (data, sendername, content, participantId, allData, currentCount) {
         var myContent;
         $('#toBottom_' + participantId).css('display', 'block');
