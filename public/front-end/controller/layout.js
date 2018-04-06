@@ -29,12 +29,12 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
     }
     $scope.getuserId();
 
-    $scope.getMediatorData = function () {
-        $http.get('/getmediatordata').then(function (response) {
-            $scope.mediatorData = response.data;
+    $scope.getProfilePic = function () {
+        $http.get('/getprofilepic').then(function (response) {
+            $scope.profilePic = response.data;
         });
     }
-    $scope.getMediatorData();
+    $scope.getProfilePic();
 
     socket.on('notifyCount', function (data, sendername, content, participantId, allData, currentCount) {
         var myContent;

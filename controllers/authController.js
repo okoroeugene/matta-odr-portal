@@ -126,6 +126,13 @@ module.exports.getuserid = function (req, res) {
     res.json(id);
 }
 
+module.exports.getprofilepic = async function (req, res) {
+    var id = utility.getCurrentLoggedInUser.id(req, res);
+    await model.ProfilePicModel.findOne({ UserId: id }).sort({ _id: -1 }).exec(function (err, data) {
+        res.json(data);
+    });
+}
+
 // module.exports.allusers = function (req, res) {
 //     model.ComplaintModel.find()
 //         .exec(function (err, data) {

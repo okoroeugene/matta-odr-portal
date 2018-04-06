@@ -111,6 +111,7 @@ app.get('/validate', function (req, res) {
 app.get('/allmediators', mediatorCtrl.allmediators);
 app.get('/checkstatus', complaintsCtrl.pendingcomplaint);
 app.get('/getmediatordata', utility.Authorize.mediator, mediatorCtrl.getmediatordata);
+app.get('/getprofilepic', authCtrl.getprofilepic);
 app.get('/GetMediatorDataById/:id', mediatorCtrl.GetMediatorDataById);
 app.get('/getcomplaintdata/:id', complaintsCtrl.getcomplaintdata);
 app.post('/addcasepayment/:id', utility.Authorize.mediator, complaintsCtrl.addcomplaintpayment);

@@ -202,8 +202,8 @@
                 <li class="dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
                         <span>{{showUserName}}</span>
-                        <img ng-if="mediatorData.Image === null" src="../Images/avatar_1.png" />
-                        <img ng-if="mediatorData.Image !== null" class="img-circle" style="width: 30px; height: 30px;object-fit: contain;" src="../uploads/{{mediatorData.Image.Image}}"
+                        <img ng-if="profilePic === null" src="../Images/avatar_1.png" />
+                        <img ng-if="profilePic !== null" class="img-circle" style="width: 30px; height: 30px;object-fit: contain;" src="../uploads/{{profilePic.Image}}"
                         />
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right">
