@@ -343,7 +343,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
             success: function (response) {
                 if (response.status == 1) {
                     toastr.success('Submitted!');
-                    $state.transitionTo($state.current, $stateParams, {
+                    $state.transitionTo($state.current, { id: response.result.CaseId }, {
                         reload: true,
                         inherit: false,
                         notify: true
@@ -427,6 +427,22 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
             $scope.chatData = response.data;
             $("#contentUpdate").val(response.data.Content);
         });
+    }
+
+    $scope.btnDeleteContent = function (e) {
+        alertify
+            .okBtn("Yes, Delete!")
+            .cancelBtn("Deny")
+            .confirm("Are you sure you want to delete this message?", function (ev) {
+                ev.preventDefault();
+                $http.post('/DeleteChatContent/' + e).then(function (response) {
+                    $('#removeChat_' + e).fadeOut();
+                });
+                alertify.success("Deleted successfully");
+            }, function (ev) {
+                ev.preventDefault();
+                alertify.error("You've Cancelled Request");
+            });
     }
 
     $scope.btnUpdateContent = function (e) {

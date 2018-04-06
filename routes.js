@@ -139,4 +139,5 @@ app.get('/getuserid', authCtrl.getuserid);
 app.get('/GetChatDataById/:id', caseCtrl.GetChatDataById);
 app.post('/updatechatcontent/:id', caseCtrl.updatechatcontent);
 app.post('/MarkAsResolved/:id', caseCtrl.MarkAsResolved);
+app.post('/DeleteChatContent/:id', caseCtrl.DeleteChatContent);
 // app.post('/previewfile', upload.array('Images', 6), utility.Authorize.all, caseCtrl.previewfile)

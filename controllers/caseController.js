@@ -125,6 +125,18 @@ module.exports.MarkAsResolved = function (req, res) {
     });
 }
 
+module.exports.DeleteChatContent = function (req, res) {
+    var Id = req.params.id;
+    model.ChatModel.findByIdAndRemove(Id, function (err, data) {
+        if (data) {
+            model.NotificationModel.findOneAndRemove({ ChatId: Id }, function (err, notify) {
+                if (notify) res.json(1);
+            });
+        }
+        else res.json(0);
+    });
+}
+
 
 
 //UPDATE ANY DATA

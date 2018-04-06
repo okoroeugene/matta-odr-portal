@@ -556,4 +556,11 @@ blink {
         border-radius: 5px!Important;
       }
 
-   
+      .moreTab:hover, .moreTab:after 
+      { 
+        position: relative;
+        bottom: 8px;
+        background-color: rgba(183, 200, 247, 0.405);
+        border-radius: 20px;
+        height: 18px;
+      }

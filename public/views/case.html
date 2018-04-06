@@ -92,7 +92,7 @@
                         <img id="imgLoader" src="../Images/loading_apple.gif" style="display:none; margin:auto; width:45px;">
                         <br>
                         <div class="cd-timeline-dark center-orientation timeline-2" id="cd-timeline">
-                            <div ng-show="textContent" ng-repeat="data in filteredData" class="cd-timeline-block">
+                            <div id="removeChat_{{data._id}}" ng-show="textContent" ng-repeat="data in filteredData" class="cd-timeline-block">
                                 <div style="background-color:#18c5a9!Important;" ng-if="data.SenderId === data.CaseId.MediatorId" class="cd-timeline-icon bg-green text-white">
                                     <span class="userText" style="font-size: 22px; font-weight: 300; text-transform: uppercase;position:relative;top:5px;">{{data.SenderName.charAt(0)}}</span>
                                 </div>
@@ -114,12 +114,53 @@
                                             <span style="background:#fff; 
                                             padding:0 10px; ">THIS IS A TEST</span>
                                         </h2> -->
-                                    <a style="position: relative;bottom: 6px;" href="javascript:void(0)" ng-click="btnEditContent(data._id)" ng-if="userId == data.SenderId && data.File === null"
+                                    <!-- <a style="position: relative;bottom: 6px;" href="javascript:void(0)" ng-click="btnEditContent(data._id)" ng-if="userId == data.SenderId && data.File === null"
                                         data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myEditContentModal"
                                         class="pull-right" href="">
                                         <i class="fa fa-edit"></i>
-                                    </a>
-                                    <br ng-if="userId == data.SenderId && data.File === null">
+                                    </a> -->
+                                    <ul style="position: relative;bottom: 8px;" ng-if="userId == data.SenderId" class="nav pull-right navbar-toolbar moreTab">
+                                            <li class="dropdown dropdown-inbox">
+                                            <a class="nav-link dropdown-toggle" data-toggle="dropdown">
+                                                <i style="font-size: 20px;" class="ti-more pull-right"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media" style="transform: translate3d(5px, 18px, 0px)!Important;">
+                                                <li class="list-group list-group-divider newDivider" data-color="#71808f">
+                                                    <div style="padding:5px;">
+                                                        <a href="javascript:void(0)" ng-click="btnEditContent(data._id)" ng-if="userId == data.SenderId && data.File === null"
+                                                        data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myEditContentModal" class="list-group-item">
+                                                            <div class="media">
+                                                                <div class="media-img">
+                                                                    <span class="badge badge-success badge-circle-big" style="background-color:#00c851;">
+                                                                        <i class="fa fa-edit"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <div class="font-13" style="margin-top: 5px;">Edit</div>
+                                                                    <!-- <small class="text-muted">22 mins</small> -->
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                
+                                                        <a href="javascript:void(0)" ng-click="btnDeleteContent(data._id)" ng-if="userId == data.SenderId" class="list-group-item">
+                                                                <div class="media">
+                                                                    <div class="media-img">
+                                                                        <span class="badge badge-success badge-circle-big" style="background-color:#ff3547;">
+                                                                            <i class="fa fa-times"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="media-body">
+                                                                        <div class="font-13" style="margin-top: 5px;">Delete</div>
+                                                                        <!-- <small class="text-muted">22 mins</small> -->
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    <br ng-if="userId == data.SenderId">
                                     <!-- <a href="#" ng-mouseover="showPopover=true;" ng-mouseleave="showPopover=false;">
                                                 <h4 ng-if="data.SenderName != null" style="font-size: 1.3rem!Important;">{{data.SenderName}}</h4>
                                                 <div class="ibox" style="position:absolute; top:0;display: block;">
@@ -156,7 +197,7 @@
                                     </a> -->
                                     <p>
                                         <div id="txtChatContent_{{data._id}}" ng-if="data.Content != null" ng-bind-html="data.Content"></div>
-                                        <div class="">
+                                        <div id="imageChatContent_{{data._id}}" class="">
                                             <div ng-if="data.File.length === 1">
                                                 <div class="col-md-12" ng-if="data.File != null" ng-repeat="(key, value) in data.File track by $index">
                                                     <a href="../uploads/{{value.filename}}" onclick="return false" data-toggle="lightbox">

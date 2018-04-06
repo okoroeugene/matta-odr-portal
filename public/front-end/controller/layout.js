@@ -27,6 +27,13 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
     }
     $scope.getuserId();
 
+    $scope.getMediatorData = function () {
+        $http.get('/getmediatordata').then(function (response) {
+            $scope.mediatorData = response.data;
+        });
+    }
+    $scope.getMediatorData();
+
     var socket = io.connect('http://localhost:3005');
     socket.on('notifyCount', function (data, sendername, content, participantId, allData, currentCount) {
         var myContent;

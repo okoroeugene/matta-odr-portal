@@ -26,25 +26,25 @@ var sharedsession = require("express-socket.io-session");
 app.use(session);
 
 //connect server
-var option = {
-    server: {
-        socketOptions: {
-            keepAlive: 300000,
-            connectTimeoutMS: 30000
-        }
-    },
-    replset: {
-        socketOptions: {
-            keepAlive: 300000,
-            connectTimeoutMS: 30000
-        }
-    }
-};
+// var option = {
+//     server: {
+//         socketOptions: {
+//             keepAlive: 300000,
+//             connectTimeoutMS: 30000
+//         }
+//     },
+//     replset: {
+//         socketOptions: {
+//             keepAlive: 300000,
+//             connectTimeoutMS: 30000
+//         }
+//     }
+// };
 
 // "dev": "node app.js",
 //     "start": "node app.js"
 
-mongoose.connect('mongodb://<matta>:<matta123>@ds237409.mlab.com:37409/heroku_24p8v70m?authSource=admin' || 'mongodb://127.0.0.1/mattaDb', option, (err, database) => {
+mongoose.connect('mongodb://<matta>:<matta123>@ds237409.mlab.com:37409/heroku_24p8v70m', {useMongoClient: true}, (err, database) => {
 // mongoose.connect('mongodb://127.0.0.1/mattaDb', option, (err, database) => {
     if (err) console.log(err.message)
     else {

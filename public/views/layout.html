@@ -33,7 +33,7 @@
     <link href="../content/dashboard/vendors/summernote/dist/summernote.css" rel="stylesheet" />
     <link href="../content/dashboard/vendors/bootstrap-markdown/css/bootstrap-markdown.min.css" rel="stylesheet" />
     <!-- THEME STYLES-->
-    <link href="../content/ekko-lightbox.css" rel="stylesheet">    
+    <link href="../content/ekko-lightbox.css" rel="stylesheet">
     <link href="../content/dashboard/assets/css/main.css" rel="stylesheet" />
     <link href="../content/dashboard/assets/css/pages/ecommerce.css" rel="stylesheet" />
     <link href="../content/custom.css" rel="stylesheet" />
@@ -202,7 +202,9 @@
                 <li class="dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
                         <span>{{showUserName}}</span>
-                        <img src="../Images/avatar_1.png">
+                        <img ng-if="mediatorData.Image === null" src="../Images/avatar_1.png" />
+                        <img ng-if="mediatorData.Image !== null" class="img-circle" style="width: 30px; height: 30px;object-fit: contain;" src="../uploads/{{mediatorData.Image.Image}}"
+                        />
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right">
                         <a ng-if="role === 'mediator'" class="dropdown-item" href="/profile">
@@ -381,7 +383,6 @@
     <script src="../scripts/SweetAlert.min.js"></script>
     <script src="../content/sweetalert/sweet-alert.min.js"></script>
     <script src="../front-end/controller/layout.js"></script>
-    <script src="../front-end/controller/main.js"></script>
     <script src="../front-end/controller/portal.js"></script>
     <script src="../front-end/controller/case.js"></script>
     <script src="../front-end/controller/profile.js"></script>
@@ -401,7 +402,7 @@
     <script src="../content/dashboard/assets/js/scripts/dashboard_1_demo.js" type="text/javascript"></script>
     <script src="../content/dashboard/vendors/bootstrap-table/dist/bootstrap-table.min.js" type="text/javascript"></script>
     <script src="../content/dashboard/assets/js/scripts/sweetalert-demo.js" type="text/javascript"></script>
-   
+
     <script src="../content/dashboard/vendors/jquery.steps/build/jquery.steps.min.js" type="text/javascript"></script>
     <script src="../content/dashboard/vendors/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
     <script src="../content/dashboard/vendors/alertifyjs/dist/js/alertify.js" type="text/javascript"></script>
