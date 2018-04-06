@@ -1,8 +1,8 @@
-var myApp = angular.module('myApp', ['ui.router', 'ui.bootstrap', 'ngSanitize', 'angular-loading-bar', 'ngAnimate', 'ngFlash', 'oitozero.ngSweetAlert'])
+var myApp = angular.module('myApp', ['ui.router', 'ui.bootstrap', 'ngSanitize', 'angular-loading-bar', 'ngAnimate', 'ngFlash'])
     .config(function (cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeSpinner = true;
     })
-
+    // oitozero.ngSweetAlert
 myApp.filter('removeHTMLTags', function () {
     return function (text) {
         return text ? String(text).replace(/<[^>]+>/gm, '') : '';

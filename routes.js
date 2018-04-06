@@ -35,6 +35,12 @@ var profileCtrl = require('./controllers/profileController');
 var mediatorCtrl = require('./controllers/mediatorController');
 var adminCtrl = require('./controllers/adminController');
 
+// const asyncMiddleware = fn =>
+//   (req, res, next) => {
+//     Promise.resolve(fn(req, res, next))
+//       .catch(next);
+//   };
+
 app.use(flash())
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/views/index.html')
@@ -104,7 +110,7 @@ app.get('/validate', function (req, res) {
 });
 app.get('/allmediators', mediatorCtrl.allmediators);
 app.get('/checkstatus', complaintsCtrl.pendingcomplaint);
-app.get('/getmediatordata', mediatorCtrl.getmediatordata);
+app.get('/getmediatordata', utility.Authorize.mediator, mediatorCtrl.getmediatordata);
 app.get('/GetMediatorDataById/:id', mediatorCtrl.GetMediatorDataById);
 app.get('/getcomplaintdata/:id', complaintsCtrl.getcomplaintdata);
 app.post('/addcasepayment/:id', utility.Authorize.mediator, complaintsCtrl.addcomplaintpayment);

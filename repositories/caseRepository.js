@@ -10,24 +10,24 @@ var path = require('path');
 
 
 var caseRepo = module.exports = {
-    GetCaseById: function (ID, callback) {
-        model.CaseModel.findById(ID)
+    GetCaseById: async function (ID, callback) {
+        await model.CaseModel.findById(ID)
             .populate('ComplaintId')
             .exec(function (err, data) {
                 callback(data);
             });
     },
 
-    GetAllCases: function (req, res, callback) {
-        model.CaseModel.find()
+    GetAllCases: async function (req, res, callback) {
+        await model.CaseModel.find()
             .populate('ComplaintId')
             .exec(function (err, data) {
                 callback(data);
             });
     },
 
-    AddInvitee: function (data, secretToken, caseId, key, callback) {
-        model.InviteeModel.create({
+    AddInvitee: async function (data, secretToken, caseId, key, callback) {
+        await model.InviteeModel.create({
             FullName: data.ComplaintId.TPName, //TP means third party
             Email: data.ComplaintId.TPEmail,
             SecretToken: secretToken,
@@ -39,8 +39,8 @@ var caseRepo = module.exports = {
         });
     },
 
-    AddCase: function (mediatorId, mediatorName, ID, userId, callback) {
-        model.CaseModel.create({
+    AddCase: async function (mediatorId, mediatorName, ID, userId, callback) {
+        await model.CaseModel.create({
             MediatorId: mediatorId,
             Mediator_Name: mediatorName,
             ComplaintId: ID,
@@ -81,16 +81,16 @@ var caseRepo = module.exports = {
         });
     },
 
-    SendMailToInvitee: function (data, caseId, callback) {
+    SendMailToInvitee: async function (data, caseId, callback) {
         if (data) {
             var key = crypto.randomBytes(16).toString("hex");
             var inviteeName = data.ComplaintId.TPName;
             var path = rootPath + '/views/Invite.html';
             var secretToken = utility.randomNumber.generateRan(8);
             var _res = mail.mail(path, secretToken, data.ComplaintId.TPEmail, inviteeName, 'MATTA needs you!');
-            caseRepo.AddInvitee(data, secretToken, caseId, key, function (_invitee) {
+            caseRepo.AddInvitee(data, secretToken, caseId, key, async function (_invitee) {
                 if (_invitee) {
-                    model.ConversationModel.create({
+                    await model.ConversationModel.create({
                         CaseId: caseId,
                         ParticipantId: key
                     }, function (err, conversation) {

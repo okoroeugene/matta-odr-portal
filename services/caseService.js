@@ -14,7 +14,7 @@ var routes = require('../routes');
 
 var caseD = module.exports = {
     ValidateCaseView: function (req, res, ID) {
-        caseRepo.GetCaseById(ID, function (data) {
+        caseRepo.GetCaseById(ID, async function (data) {
             if (data) {
                 if (data.Status == 0) {
                     res.redirect('/pending');
@@ -35,7 +35,7 @@ var caseD = module.exports = {
                     });
                 }
                 if (role == 'invitee') {
-                    model.InviteeModel.findOne({ SecretToken: req.session.SecretToken }, function (err, inv) {
+                    await model.InviteeModel.findOne({ SecretToken: req.session.SecretToken }, function (err, inv) {
                         if (inv.CaseId != data._id) res.redirect('/error');
                         // else res.sendFile(rootPath + '/views/layout.html')
                     });
@@ -72,8 +72,8 @@ var caseD = module.exports = {
         });
     },
 
-    AddNotification: function (userId, data, callback) {
-        model.ConversationModel.find({ CaseId: data.CaseId, ParticipantId: { $ne: userId } }).exec(function (err, result) {
+    AddNotification: async function (userId, data, callback) {
+        await model.ConversationModel.find({ CaseId: data.CaseId, ParticipantId: { $ne: userId } }).exec(async function (err, result) {
             if (result)
                 for (let i = 0; i < result.length; i++) {
                     var notify = new model.NotificationModel({
@@ -83,7 +83,7 @@ var caseD = module.exports = {
                         IsRead: false,
                         Date: currentDate
                     });
-                    notify.save(function (err, data) {
+                    await notify.save(function (err, data) {
                         let finalLength = result.length - 1;
                         if (notify && i === finalLength)
                             callback(notify);
@@ -92,8 +92,8 @@ var caseD = module.exports = {
         })
     },
 
-    GetAllChatsByCaseId: function (ID, callback) {
-        model.ChatModel.find()
+    GetAllChatsByCaseId: async function (ID, callback) {
+        await model.ChatModel.find()
             .where('CaseId')
             .in(ID)
             // .sort({ _id: -1 })
@@ -104,8 +104,8 @@ var caseD = module.exports = {
     },
 
     AddCaseAndUpdate: function (mediatorId, mediatorName, ID, userId, callback) {
-        caseRepo.AddCase(mediatorId, mediatorName, ID, userId, function (data) {
-            model.ComplaintModel.findByIdAndUpdate(ID, { Status: 2 }, function (err, result) {
+        caseRepo.AddCase(mediatorId, mediatorName, ID, userId, async function (data) {
+            await model.ComplaintModel.findByIdAndUpdate(ID, { Status: 2 }, function (err, result) {
                 if (result)
                     callback(data);
             })
@@ -118,14 +118,14 @@ var caseD = module.exports = {
         });
     },
 
-    uploadcasefiles: function (req, res, callback) {
+    uploadcasefiles: async function (req, res, callback) {
         var key = crypto.randomBytes(16).toString("hex");
         var ImageFile = [];
         if (req.files) {
             var files = req.files;
             // utility.uploadFile.apiUpload(req.files, key);
             
-            files.forEach(item => {
+            await files.forEach(item => {
                 ImageFile.push({
                     'filename': item.filename
                 });

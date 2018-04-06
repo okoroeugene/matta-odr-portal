@@ -40,7 +40,7 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
         var myContent;
         $('#toBottom_' + participantId).css('display', 'block');
         $('#showCount_' + participantId).val(currentCount);
-        console.log(currentCount);
+        // console.log(currentCount);
         if (content === null) myContent = 'Sent an Attachment';
         else myContent = content;
         $('.notification-counter').html(data.count);

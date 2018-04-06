@@ -19,22 +19,22 @@ module.exports.GetAllComplaints = function (req, res) {
 }
 
 module.exports = {
-    GetComplaintByFileCode: function (code, callback) {
-        model.ComplaintModel.findOne({ FileCode: code }, function (err, complaintData) {
+    GetComplaintByFileCode: async function (code, callback) {
+       await model.ComplaintModel.findOne({ FileCode: code }, function (err, complaintData) {
             if (complaintData) callback(complaintData);
         });
     },
 
-    GetCasePaymentByComplaintId: function (id, callback) {
-        model.CasePaymentModel.findOne({ ComplaintId: id }, function (err, data) {
+    GetCasePaymentByComplaintId: async function (id, callback) {
+        await model.CasePaymentModel.findOne({ ComplaintId: id }, function (err, data) {
             if (data) callback(data);
         });
     },
 
-    AddComplaint: function (req, res, callback) {
+    AddComplaint: async function (req, res, callback) {
         var _complaint = new model.ComplaintModel(req.body);
         var secretToken = utility.randomNumber.generateRan(8);
-        model.FileModel.findOne({ FileCode: req.session.code }, function (err, data) {
+        await model.FileModel.findOne({ FileCode: req.session.code }, function (err, data) {
             _complaint.FileCode = req.session.code;
             _complaint.DateGenerated = currentDate;
             _complaint.Status = 0;
@@ -58,10 +58,10 @@ module.exports = {
     //     });
     // },
 
-    AddCasePayment: function (req, res, callback) {
+    AddCasePayment: async function (req, res, callback) {
         var id = req.params.id;
         var mediatorId = utility.getCurrentLoggedInUser.id(req, res);
-        model.CasePaymentModel.create({
+        await model.CasePaymentModel.create({
             Amount: req.body.cost,
             ComplaintId: id,
             MediatorId: mediatorId,
@@ -75,8 +75,8 @@ module.exports = {
         })
     },
 
-    AddCase: function (mediatorId, mediatorName, ID, userId, callback) {
-        model.CaseModel.create({
+    AddCase: async function (mediatorId, mediatorName, ID, userId, callback) {
+        await model.CaseModel.create({
             MediatorId: mediatorId,
             Mediator_Name: mediatorName,
             ComplaintId: ID,

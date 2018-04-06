@@ -14,8 +14,8 @@ module.exports.verifyCode = function (req, res) {
     });
 }
 
-module.exports.genFileNumber = function (req, res) {
-    var code = 'MATTA/' + utility.randomNumber.generateNum(4) + '-' + utility.randomNumber.generateNum(4);
+module.exports.genFileNumber = async function (req, res) {
+    var code = 'MATTA/' + await utility.randomNumber.generateNum(4) + '-' + await utility.randomNumber.generateNum(4);
     req.session.fileNumber = code;
     req.session.fullname = req.body.fullname;
     req.session.email = req.body.email;
@@ -23,9 +23,9 @@ module.exports.genFileNumber = function (req, res) {
     res.json(1);
 }
 
-module.exports.openFile = function (req, res) {
+module.exports.openFile = async function (req, res) {
     var key = crypto.randomBytes(16).toString("hex");
-    model.FileModel.create({
+    await model.FileModel.create({
         FileCode: req.session.fileNumber,
         Name: req.session.fullname,
         Email: req.session.email,

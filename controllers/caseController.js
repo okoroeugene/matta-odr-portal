@@ -26,8 +26,8 @@ module.exports.chat = function (req, res) {
     });
 }
 
-module.exports.caseDetails = function (req, res) {
-    model.CaseModel.findById(req.params.id)
+module.exports.caseDetails = async function (req, res) {
+   await model.CaseModel.findById(req.params.id)
         .populate('ComplaintId')
         .exec(function (err, data) {
             // if (err) console.log(err.message);
@@ -45,10 +45,10 @@ module.exports.chatDetails = function (req, res) {
     });
 }
 
-exports.acceptCase = function (req, res) {
+exports.acceptCase = async function (req, res) {
     if (req.user != undefined) {
         // model.ComplaintModel.findByIdAndUpdate(req.body.complaintId, { Status: 2 }).populate('FileCode')
-        model.ComplaintModel.findById(req.body.complaintId).populate('FileId')
+        await model.ComplaintModel.findById(req.body.complaintId).populate('FileId')
             .exec(function (err, data) {
                 var mediatorId = req.user._id;
                 var mediatorName = req.user.FullName;
@@ -69,9 +69,9 @@ exports.acceptCase = function (req, res) {
 }
 
 
-module.exports.inviteUser = function (req, res) {
+module.exports.inviteUser = async function (req, res) {
     var caseId = req.body.caseId;
-    model.CaseModel.findById(caseId)
+    await model.CaseModel.findById(caseId)
         .populate('ComplaintId')
         .exec(function (err, data) {
             // console.log(data);
@@ -94,42 +94,42 @@ module.exports.uploadfile = function (req, res) {
     });
 };
 
-module.exports.checkinvite = function (req, res) {
+module.exports.checkinvite = async function (req, res) {
     var caseId = req.params.id;
-    model.InviteeModel.findOne({ CaseId: caseId }, function (err, data) {
+    await model.InviteeModel.findOne({ CaseId: caseId }, function (err, data) {
         if (data) res.json(1);
         else res.json(0);
     });
 }
 
-module.exports.GetChatDataById = function (req, res) {
+module.exports.GetChatDataById = async function (req, res) {
     var Id = req.params.id;
-    model.ChatModel.findById(Id, function (err, data) {
+    await model.ChatModel.findById(Id, function (err, data) {
         res.json(data);
     });
 }
 
-module.exports.updatechatcontent = function (req, res) {
+module.exports.updatechatcontent = async function (req, res) {
     var Id = req.params.id;
-    model.ChatModel.findByIdAndUpdate(Id, { Content: req.body.Content }, function (err, data) {
+    await model.ChatModel.findByIdAndUpdate(Id, { Content: req.body.Content }, function (err, data) {
         if (data) res.json(1);
         else res.json(0);
     });
 }
 
-module.exports.MarkAsResolved = function (req, res) {
+module.exports.MarkAsResolved = async function (req, res) {
     var Id = req.params.id;
-    model.ComplaintModel.findByIdAndUpdate(Id, { Status: 2 }, function (err, data) {
+    await model.ComplaintModel.findByIdAndUpdate(Id, { Status: 2 }, function (err, data) {
         if (data) res.json(1);
         else res.json(0);
     });
 }
 
-module.exports.DeleteChatContent = function (req, res) {
+module.exports.DeleteChatContent = async function (req, res) {
     var Id = req.params.id;
-    model.ChatModel.findByIdAndRemove(Id, function (err, data) {
+    await model.ChatModel.findByIdAndRemove(Id, async function (err, data) {
         if (data) {
-            model.NotificationModel.findOneAndRemove({ ChatId: Id }, function (err, notify) {
+            await model.NotificationModel.findOneAndRemove({ ChatId: Id }, function (err, notify) {
                 if (notify) res.json(1);
             });
         }

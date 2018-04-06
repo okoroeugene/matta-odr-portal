@@ -9,8 +9,8 @@ var crypto = require('crypto');
 var path = require('path');
 
 module.exports = {
-    GetFileByFileCode: function (code, callback) {
-        model.FileModel.findOne({ FileCode: code }, function (err, file) {
+    GetFileByFileCode: async function (code, callback) {
+        await model.FileModel.findOne({ FileCode: code }, function (err, file) {
             if (file)
                 callback(file);
             else
@@ -18,8 +18,8 @@ module.exports = {
         });
     },
 
-    GetInviteeByToken: function (code, callback) {
-        model.InviteeModel.findOne({ SecretToken: code }, function (err, data) {
+    GetInviteeByToken: async function (code, callback) {
+        await model.InviteeModel.findOne({ SecretToken: code }, function (err, data) {
             if (data)
                 callback(data);
             else
@@ -27,8 +27,8 @@ module.exports = {
         });
     },
 
-    GetAllCases: function (req, res, callback) {
-        model.CaseModel.find()
+    GetAllCases: async function (req, res, callback) {
+        await model.CaseModel.find()
             .populate('ComplaintId')
             .exec(function (err, data) {
                 callback(data);

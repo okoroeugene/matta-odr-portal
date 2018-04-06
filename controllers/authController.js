@@ -5,8 +5,8 @@ var utility = require('../Helpers/utility');
 var passport = index.myPassport;
 var currentDate = new Date();
 
-module.exports.authenticateUser = function (req, res, next) {
-    passport.authenticate('local-sign-in', function (err, user, info) {
+module.exports.authenticateUser = async function (req, res, next) {
+    await passport.authenticate('local-sign-in', function (err, user, info) {
         var returnUrl = req.session.returnUrl;
         if (err) {
             // return next(err); // will generate a 500 error
@@ -25,22 +25,22 @@ module.exports.authenticateUser = function (req, res, next) {
     })(req, res, next);
 }
 
-module.exports.createMediator = function (req, res) {
-    model.MediatorModel.findOne({ Email: req.body.email }, function (err, user) {
+module.exports.createMediator = async function (req, res) {
+    await model.MediatorModel.findOne({ Email: req.body.email }, async function (err, user) {
         if (err) console.log(err.message);
         else {
             if (user) { res.json("User already exists!"); }
             else {
-                model.MediatorModel.create({
+                await model.MediatorModel.create({
                     FullName: req.body.fullname,
                     Email: req.body.email,
                     Password: req.body.password,
                     IsVerified: false
-                }, function (err, new_user) {
+                }, async function (err, new_user) {
                     // var e = {
                     //     'email': 
                     // }
-                    passport.authenticate('local-sign-in', {});
+                    await passport.authenticate('local-sign-in', {});
                     req.login(new_user, loginErr => {
                         if (loginErr) {
                             // return next(loginErr);
@@ -64,16 +64,16 @@ module.exports.getUserName = function (req, res) {
     }
 };
 
-module.exports.getrole = function (req, res) {
-    var roles = utility.UserRole.GetRoleName(req);
+module.exports.getrole = async function (req, res) {
+    var roles = await utility.UserRole.GetRoleName(req);
     if (roles == 'user') res.json({ role: 'user' });
     if (roles == 'mediator') res.json({ role: 'mediator' });
     if (roles == 'invitee') res.json({ role: 'invitee' });
 };
 
-module.exports.getnotificationdata = function (req, res) {
+module.exports.getnotificationdata = async function (req, res) {
     var userId = utility.getCurrentLoggedInUser.id(req, res);
-    getUserNotificationData(userId, function (data) {
+    await getUserNotificationData(userId, function (data) {
         var result = {
             'count': data.length,
             'content': data
@@ -82,16 +82,16 @@ module.exports.getnotificationdata = function (req, res) {
     });
 };
 
-function getUserNotificationData(response, callback) {
-    model.NotificationModel.find({ ReceiverId: response, IsRead: false }).populate('ChatId').exec(function (err, data) {
+async function getUserNotificationData(response, callback) {
+    await model.NotificationModel.find({ ReceiverId: response, IsRead: false }).populate('ChatId').exec(function (err, data) {
         if (data)
             callback(data);
     });
 }
 
-module.exports.MarkAsRead = function (req, res) {
+module.exports.MarkAsRead = async function (req, res) {
     var userId = utility.getCurrentLoggedInUser.id(req);
-    model.NotificationModel.update({ ReceiverId: userId }, { IsRead: true }, { multi: true }, function (err, data) {
+    await model.NotificationModel.update({ ReceiverId: userId }, { IsRead: true }, { multi: true }, function (err, data) {
         if (data)
             res.json(1);
     });
@@ -104,8 +104,8 @@ module.exports.getRoleById = function (req, res) {
     });
 };
 
-module.exports.popoverdata = function (req, res) {
-    model.ProfilePicModel.findOne({ UserId: req.params.id }).sort({ _id: -1 }).exec(function (err, data) {
+module.exports.popoverdata = async function (req, res) {
+    await model.ProfilePicModel.findOne({ UserId: req.params.id }).sort({ _id: -1 }).exec(function (err, data) {
         utility.UserRole.GetRoleNameByUserId(req.params.id, function (result) {
             var src;
             if (data)

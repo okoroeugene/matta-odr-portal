@@ -43,7 +43,7 @@ var fileService = module.exports = {
         }
     },
 
-    ValidateInvitee: function (req, res, data, code, returnUrl) {
+    ValidateInvitee: async function (req, res, data, code, returnUrl) {
         if (data) {
             req.session.SecretToken = code;
             req.session.name = data.FullName;
@@ -52,7 +52,7 @@ var fileService = module.exports = {
                 res.json({ status: 3, url: returnUrl });
             }
             else {
-                model.InviteeModel.findOne({ SecretToken: code }, function (err, response) {
+                await model.InviteeModel.findOne({ SecretToken: code }, function (err, response) {
                     if (response)
                         res.json({ status: 4, caseId: response.CaseId });
                 });

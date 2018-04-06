@@ -6,9 +6,9 @@ var rootPath = index.myPath;
 var utility = require('../Helpers/utility');
 var complaintService = require('../services/complaintService');
 
-module.exports.viewNewComplaints = function (req, res) {
+module.exports.viewNewComplaints = async function (req, res) {
     var fileCode = req.session.code;
-    model.ComplaintModel.findOne({ FileCode: fileCode }, function (err, data) {
+    await model.ComplaintModel.findOne({ FileCode: fileCode }, function (err, data) {
         if (data) {
             res.redirect('/pending');
         }
@@ -23,16 +23,16 @@ module.exports.createComplaint = function (req, res) {
     });
 }
 
-module.exports.allcomplaints = function (req, res) {
-    model.ComplaintModel.find()
+module.exports.allcomplaints = async function (req, res) {
+    await model.ComplaintModel.find()
         .exec(function (err, data) {
             res.json(data);
         })
 }
 
-module.exports.getcomplaintdata = function (req, res) {
+module.exports.getcomplaintdata = async function (req, res) {
     var id = req.params.id;
-    model.ComplaintModel.findById(id, function (err, data) {
+    await model.ComplaintModel.findById(id, function (err, data) {
         res.json(data);
     });
 }
@@ -43,9 +43,9 @@ module.exports.addcomplaintpayment = function (req, res,) {
         res.json(0);
     else
     {
-        complaintService.AddCasePayment(req, res, function (_result) {
+        complaintService.AddCasePayment(req, res, async function (_result) {
             if (_result) {
-                model.ComplaintModel.findByIdAndUpdate(id, { Status: 1 }, function (err, data) {
+                await model.ComplaintModel.findByIdAndUpdate(id, { Status: 1 }, function (err, data) {
                     if (data) res.json(1);
                 });
             }
@@ -56,9 +56,9 @@ module.exports.addcomplaintpayment = function (req, res,) {
     }
 }
 
-module.exports.pendingcomplaint = function (req, res) {
+module.exports.pendingcomplaint = async function (req, res) {
     var filecode = req.session.code;
-    model.ComplaintModel.findOne({ FileCode: filecode }, function (err, complaintData) {
+    await model.ComplaintModel.findOne({ FileCode: filecode }, function (err, complaintData) {
         if (complaintData) {
             res.sendFile(rootPath + '/views/layout.html')
             // complaintService.getComplaintStatus(complaintData, function (data) {
@@ -77,8 +77,8 @@ module.exports.verifypayment = function (req, res) {
     complaintService.VerifyAndReturnPaymentData(req, res, code);
 }
 
-module.exports.makecomplaintpayment = function (req, res) {
-    model.CasePaymentModel.findByIdAndUpdate(req.params.id, { IsPaymentMade: 1 }, function (err, data) {
+module.exports.makecomplaintpayment = async function (req, res) {
+    await model.CasePaymentModel.findByIdAndUpdate(req.params.id, { IsPaymentMade: 1 }, function (err, data) {
         if (data) {
             model.ComplaintModel.findById(data.ComplaintId).populate('FileId')
                 .exec(function (err, result) {
@@ -100,9 +100,9 @@ module.exports.makecomplaintpayment = function (req, res) {
     });
 }
 
-module.exports.getawaitingpayment = function (req, res) {
+module.exports.getawaitingpayment = async function (req, res) {
     var mediatorId = utility.getCurrentLoggedInUser.id(req, res);
-    model.CasePaymentModel.find({ MediatorId: mediatorId })
+    await model.CasePaymentModel.find({ MediatorId: mediatorId })
     .populate('ComplaintId')
     .exec(function (err, data) {
         if (data)
@@ -110,14 +110,14 @@ module.exports.getawaitingpayment = function (req, res) {
     });
 };
 
-module.exports.declinecase = function(req,res) {
-    model.CasePaymentModel.findById(req.params.id, function(err, data) {
+module.exports.declinecase = async function(req,res) {
+    await model.CasePaymentModel.findById(req.params.id, async function(err, data) {
         if (data)
         {
-            model.ComplaintModel.findByIdAndUpdate(data.ComplaintId, { Status: 0 }, function(err, result) { 
+            await model.ComplaintModel.findByIdAndUpdate(data.ComplaintId, { Status: 0 }, async function(err, result) { 
                 if (result)
                 {
-                    model.CasePaymentModel.findByIdAndRemove(req.params.id, function(err, data) {
+                    await model.CasePaymentModel.findByIdAndRemove(req.params.id, function(err, data) {
                         res.json(1);
                     });
                 }

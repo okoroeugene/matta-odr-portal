@@ -12,9 +12,9 @@ module.exports.allmediators = function (req, res) {
         })
 }
 
-module.exports.GetMediatorDataById = function (req, res) {
+module.exports.GetMediatorDataById = async function (req, res) {
     var id = req.params.id;
-    model.MediatorProfileModel.findOne({ MediatorId: id }).populate('MediatorId').exec(function (err, data) {
+    await model.MediatorProfileModel.findOne({ MediatorId: id }).populate('MediatorId').exec(function (err, data) {
         model.ProfilePicModel.findOne({ UserId: id }).sort({ _id: -1 }).exec(function (err, img) {
             var p = {
                 'MedProfileData': data,
@@ -25,10 +25,10 @@ module.exports.GetMediatorDataById = function (req, res) {
     });
 }
 
-module.exports.getmediatordata = function (req, res) {
+module.exports.getmediatordata = async function (req, res) {
     var id = utility.getCurrentLoggedInUser.id(req, res);
-    model.MediatorModel.findById(id).exec(function (err, data) {
-        model.ProfilePicModel.findOne({ UserId: id }).sort({ _id: -1 }).exec(function (err, img) {
+    await model.MediatorModel.findById(id).exec(async function (err, data) {
+        await model.ProfilePicModel.findOne({ UserId: id }).sort({ _id: -1 }).exec(function (err, img) {
             var p = {
                 'MedProfileData': data,
                 'Image': img
@@ -38,19 +38,19 @@ module.exports.getmediatordata = function (req, res) {
     });
 }
 
-module.exports.getmediatorbycomplaintId = function (req, res) {
+module.exports.getmediatorbycomplaintId = async function (req, res) {
     var id = req.params.id;
-    model.CaseModel.findOne({ ComplaintId: id }, function (err, data) {
+    await model.CaseModel.findOne({ ComplaintId: id }, function (err, data) {
         if (data) {
             res.json(data.Mediator_Name);
         }
     });
 }
 
-module.exports.uploadMediatorImage = function (req, res) {
+module.exports.uploadMediatorImage = async function (req, res) {
     if (req.file && req.user !== undefined)
         utility.uploadFile.myUpload(req);
-    model.ProfilePicModel.create({
+    await model.ProfilePicModel.create({
         Image: req.file.filename,
         UserId: req.user._id
     });
@@ -58,19 +58,19 @@ module.exports.uploadMediatorImage = function (req, res) {
     // console.log('Invalid Credentials!');
 };
 
-module.exports.getprofilepic = function (req, res) {
+module.exports.getprofilepic = async function (req, res) {
     var userId = utility.getCurrentLoggedInUser.id(req, res);
-    model.ProfilePicModel.findOne({ UserId: userId }).sort({ _id: -1 }).exec(function (err, data) {
+    await model.ProfilePicModel.findOne({ UserId: userId }).sort({ _id: -1 }).exec(function (err, data) {
         res.json(data)
     });
 }
 
-app.post('/uploadpic', utility.Authorize.mediator, function (req, res) {
+app.post('/uploadpic', utility.Authorize.mediator, async function (req, res) {
     // console.log(req.file);
     if (req.file) {
         var files = req.file;
         utility.uploadFile.myUpload(req);
-        model.ProfilePicModel.create({
+       await model.ProfilePicModel.create({
             File: req.file.filename,
             MediatorId: req.user._id
         }, function (err, data) {
@@ -82,9 +82,9 @@ app.post('/uploadpic', utility.Authorize.mediator, function (req, res) {
     }
 });
 
-module.exports.getMediatorCases = function (req, res) {
+module.exports.getMediatorCases = async function (req, res) {
     var userId = req.user._id;
-    model.CaseModel.find()
+    await model.CaseModel.find()
         .where('MediatorId').in(userId)
         .populate('ComplaintId')
         .exec(function (err, data) {
@@ -95,8 +95,8 @@ module.exports.getMediatorCases = function (req, res) {
         });
 }
 
-module.exports.getallCases = function (req, res) {
-    model.ComplaintModel.find()
+module.exports.getallCases = async function (req, res) {
+    await model.ComplaintModel.find()
         .exec(function (err, data) {
             if (err) console.log(err.message);
             else {
@@ -105,15 +105,15 @@ module.exports.getallCases = function (req, res) {
         });
 }
 
-module.exports.createmediatorprofile = function (req, res) {
-    model.MediatorProfileModel.findOne({ MediatorId: req.user._id }, function (err, data) {
+module.exports.createmediatorprofile = async function (req, res) {
+    await model.MediatorProfileModel.findOne({ MediatorId: req.user._id }, async function (err, data) {
         var _profile = new model.MediatorProfileModel(req.body);
         if (data) {
             _profile.MediatorCertificate = data.MediatorCertificate;
-            model.MediatorProfileModel.findByIdAndRemove(data._id, function (err, result) { });
+            await model.MediatorProfileModel.findByIdAndRemove(data._id, async function (err, result) { });
         }
         if (req.file !== undefined) {
-            utility.uploadFile.myUpload(req);
+            await utility.uploadFile.myUpload(req);
             _profile.MediatorCertificate = req.file.filename;
         }
         _profile.Date = currentDate;
@@ -132,8 +132,8 @@ module.exports.uploadmediatorcert = function (req, res) {
     // res.json(req.file.filename);
 }
 
-module.exports.existingmediatorprofile = function (req, res) {
-    model.MediatorProfileModel.findOne({ MediatorId: req.user._id })
+module.exports.existingmediatorprofile = async function (req, res) {
+    await model.MediatorProfileModel.findOne({ MediatorId: req.user._id })
         .exec(function (err, data) {
             if (err) console.log(err.message);
             else {
