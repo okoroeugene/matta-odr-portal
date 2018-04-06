@@ -94,15 +94,15 @@
                         <div class="cd-timeline-dark center-orientation timeline-2" id="cd-timeline">
                             <div ng-show="textContent" ng-repeat="data in filteredData" class="cd-timeline-block">
                                 <div style="background-color:#18c5a9!Important;" ng-if="data.SenderId === data.CaseId.MediatorId" class="cd-timeline-icon bg-green text-white">
-                                    <span class="userText" style="font-size: 22px; text-transform: uppercase;position:relative;top:5px;">{{data.SenderName.charAt(0)}}</span>
+                                    <span class="userText" style="font-size: 22px; font-weight: 300; text-transform: uppercase;position:relative;top:5px;">{{data.SenderName.charAt(0)}}</span>
                                 </div>
                                 <div style="background-color: #6f85d6!Important;" ng-if="data.SenderId === data.CaseId.UserId" style="background-color:#7f8c8d!Important;"
                                     class="cd-timeline-icon bg-purple text-white">
-                                    <span class="userText" style="font-size: 22px; text-transform: uppercase;position:relative;top:5px;">{{data.SenderName.charAt(0)}}</span>
+                                    <span class="userText" style="font-size: 22px; font-weight: 300; text-transform: uppercase;position:relative;top:5px;">{{data.SenderName.charAt(0)}}</span>
                                 </div>
                                 <div style="background-color: #f26fac!Important;" ng-if="data.SenderId !== data.CaseId.UserId && data.SenderId !== data.CaseId.MediatorId"
                                     style="background-color:#7f8c8d!Important;" class="cd-timeline-icon bg-purple text-white">
-                                    <span class="userText" style="font-size: 22px; text-transform: uppercase;position:relative;top:5px;">{{data.SenderName.charAt(0)}}</span>
+                                    <span class="userText" style="font-size: 22px; font-weight: 300; text-transform: uppercase;position:relative;top:5px;">{{data.SenderName.charAt(0)}}</span>
                                 </div>
                                 <a id="{{data._id}}" href="#{{data._id}}"></a>
                                 <div class="cd-timeline-content">
