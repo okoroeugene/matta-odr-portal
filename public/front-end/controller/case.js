@@ -5,8 +5,8 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.userLoader = true;
     var currentId = $stateParams.id;
 
-    $scope.Complaints = function () {
-        $http.get('/complaints').then(function (response) {
+    $scope.Complaints = async function () {
+        await $http.get('/complaints').then(function (response) {
             if (response.data === 0) window.location = '/';
             else {
                 $scope.allcomplaints = response.data;
@@ -83,8 +83,8 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
         });
     };
 
-    $scope.getCaseData = function () {
-        $http.get('/casedata/' + currentId).then(function (response) {
+    $scope.getCaseData = async function () {
+        await $http.get('/casedata/' + currentId).then(function (response) {
             // $timeout(function () {
 
             // }, 6000);
@@ -114,8 +114,8 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.itemsPerPage = 10;
     $scope.currentPage = 1;
     $scope.chats = [];
-    $scope.getCaseChat = function () {
-        $http.get('/casechat/' + currentId).then(function (response) {
+    $scope.getCaseChat = async function () {
+        await $http.get('/casechat/' + currentId).then(function (response) {
             $scope.chats = response.data;
             $scope.chatDisplay();
         });
@@ -415,10 +415,9 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
             });
     }
 
-    $scope.getuserId = function () {
-        $http.get('/getuserid').then(function (response) {
+    $scope.getuserId = async function () {
+        await $http.get('/getuserid').then(function (response) {
             $scope.userId = response.data;
-            console.log(response.data);
         });
     }
     $scope.getuserId();

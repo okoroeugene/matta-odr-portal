@@ -12,8 +12,8 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
     }
 
     var currentId = $stateParams.id;
-    $scope.getUser = function () {
-        $http.get('/user').then(function (response) {
+    $scope.getUser = async function () {
+        await $http.get('/user').then(function (response) {
             if (response.data === 0) $scope.showUserName = 'Fake User';
             else {
                 $scope.showUserName = response.data;
@@ -22,8 +22,8 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
     }
     $scope.getUser();
 
-    $scope.getuserId = function () {
-        $http.get('/getuserid').then(function (response) {
+    $scope.getuserId = async function () {
+        await $http.get('/getuserid').then(function (response) {
             $scope.userId = response.data;
         });
     }

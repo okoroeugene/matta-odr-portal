@@ -3,8 +3,8 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
     var currentId = $stateParams.id;
 
     $scope.allcomplaints = [];
-    $scope.Complaints = function () {
-        $http.get('/allcomplaints').then(function (response) {
+    $scope.Complaints = async function () {
+        await $http.get('/allcomplaints').then(function (response) {
             // console.log(response.data);
             if (response.data === 0) window.location = '/';
             else {
@@ -15,8 +15,8 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
 
     $scope.Complaints();
 
-    $scope.MediatorCase = function () {
-        $http.get('/complaints').then(function (response) {
+    $scope.MediatorCase = async function () {
+        await $http.get('/complaints').then(function (response) {
             // console.log(response.data);
             if (response.data === 0) window.location = '/';
             else {
@@ -27,16 +27,16 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
 
     $scope.MediatorCase();
 
-    $scope.getallcases = function () {
-        $http.get('/getallcases').then(function (response) {
+    $scope.getallcases = async function () {
+        await $http.get('/getallcases').then(function (response) {
             $scope.allcases = response.data;
         });
     }
 
     $scope.getallcases();
 
-    $scope.getawaitingpayment = function () {
-        $http.get('/getawaitingpayment').then(function (response) {
+    $scope.getawaitingpayment = async function () {
+        await $http.get('/getawaitingpayment').then(function (response) {
             $scope.awaitingPayment = response.data;
         });
     }
@@ -177,8 +177,8 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
         });
     }
 
-    $scope.getUser = function () {
-        $http.get('/user').then(function (response) {
+    $scope.getUser = async function () {
+        await $http.get('/user').then(function (response) {
             if (response.data === 0) $scope.showUserName = 'Fake User';
             else {
                 $scope.showUserName = response.data;
@@ -212,15 +212,15 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
         return false;
     }
 
-    $scope.getMediatorData = function () {
-        $http.get('/getmediatordata').then(function (response) {
+    $scope.getMediatorData = async function () {
+        await $http.get('/getmediatordata').then(function (response) {
             $scope.mediatorData = response.data;
         });
     }
     $scope.getMediatorData();
 
-    $scope.getExistingMediatorProfile = function () {
-        $http.get('/existingmediatorprofile').then(function (response) {
+    $scope.getExistingMediatorProfile = async function () {
+        await $http.get('/existingmediatorprofile').then(function (response) {
             $scope.existingProfile = response.data;
             $scope.firstname = response.data.FirstName;
             $scope.lastname = response.data.LastName;

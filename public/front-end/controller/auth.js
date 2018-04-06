@@ -63,8 +63,8 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
         })
     }
 
-    $scope.getFileNumber = function () {
-        $http.get('/getNewRegData').then(function (response) {
+    $scope.getFileNumber = async function () {
+        await $http.get('/getNewRegData').then(function (response) {
             $scope.newFileCode = response.data;
         });
     };

@@ -10,8 +10,8 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
     // $scope.start();
 
     $scope.PaymentStatusInit = function () {
-        $scope.verifyPayment = function () {
-            $http.get('/verifypayment').then(function (response) {
+        $scope.verifyPayment = async function () {
+            await $http.get('/verifypayment').then(function (response) {
                 if (response.data.status == 1) {
                     $scope.result = response.data.result;
                     $scope.mediatorname = response.data.mediator;

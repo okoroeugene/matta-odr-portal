@@ -14,15 +14,15 @@ myApp.controller('adminController', ['$scope', '$state', '$stateParams', '$http'
 
     // $scope.getUser();
 
-    $scope.getAllCases = function () {
-        $http.get('/allcomplaints').then(function (response) {
+    $scope.getAllCases = async function () {
+        await $http.get('/allcomplaints').then(function (response) {
             $scope.complaints = response.data;
         });
     }
     $scope.getAllCases();
 
-    $scope.getMediators = function () {
-        $http.get('/allmediators').then(function (response) {
+    $scope.getMediators = async function () {
+        await $http.get('/allmediators').then(function (response) {
             $scope.mediators = response.data;
         });
     }
