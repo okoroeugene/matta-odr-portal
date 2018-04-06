@@ -1,3 +1,4 @@
+var compression = require('compression')
 const express = require('express')
 // var session = require('express-session');
 var cookieParser = require('cookie-parser');
@@ -23,6 +24,7 @@ var io = require('socket.io').listen(server);
 app.use(express.static(path.join(__dirname, 'public')));
 var session = require('./Helpers/session');
 var sharedsession = require("express-socket.io-session");
+app.use(compression());
 app.use(session);
 
 //connect server
@@ -45,7 +47,7 @@ app.use(session);
 //     "start": "node app.js"
 
 mongoose.connect('mongodb://matta:matta123@ds237409.mlab.com:37409/heroku_24p8v70m', {useMongoClient: true}, (err, database) => {
-// mongoose.connect('mongodb://127.0.0.1/mattaDb', option, (err, database) => {
+// mongoose.connect('mongodb://127.0.0.1/mattaDb', (err, database) => {
     if (err) console.log(err.message)
     else {
         // app.listen(3005, function () {
@@ -75,7 +77,6 @@ io.on('connection', function (socket) {
 
     var currentCount = 0;
     socket.on('notify', function (caseId, userId, sendername, content, allData) {
-        console.log(currentCount);
         currentCount = currentCount + 1;
         getChatParticipants(caseId, userId, sendername, content, allData, function (data) {
             var result = {
