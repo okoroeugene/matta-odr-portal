@@ -378,6 +378,35 @@
                         <b>CASE</b>
                         <span>: {{showData.ComplaintId.Complaint}}</span>
                     </span>
+                    <br>
+                    <br>
+                    <div class="ibox">
+                        <div class="ibox-body text-center">
+                            <div ng-show="userLoader">
+                                <div class="text-loader-lg"></div>
+                                <br>
+                                <div class="text-loader-lg"></div>
+                                <br>
+                            </div>
+    
+                            <span ng-show="userData">
+                                <b>Third Party Name</b>
+                                <span>: {{showData.ComplaintId.TPName}}</span>
+                                <br>
+                                <b>Email</b>
+                                <span>: {{showData.ComplaintId.TPEmail}}</span>
+                                <div ng-if="role == 'mediator'">
+                                    <br>
+                                    <div class="row">
+                                        <div class="btn-group-justified col-md-12">
+                                            <a style="margin:0 auto;display:block;text-align:center;" ng-if="IsInvited == false" ng-click="btnInvite(showData._id)" style="font-size: 12px;" class="btn btn-success" href="javascript:;">Invite Third Party</a>
+                                            <!-- <a style="font-size: 12px;" class="btn btn-default" href="javascript:;">Close Case</a> -->
+                                        </div>
+                                        <span style="margin:0 auto;display:block;text-align:center;" ng-if="IsInvited == true" class="badge badge-success">Invited</span>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

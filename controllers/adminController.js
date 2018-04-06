@@ -17,3 +17,26 @@ module.exports.unverifymediator = async function (req, res) {
         if (data) res.json(1);
     });
 }
+
+module.exports.getcounts = async function (req, res) {
+    var allCounts = [];
+    await model.MediatorModel.count(async function (err, data) {
+        var p = {
+            'mediatorCount': data
+        };
+        await allCounts.push(p);
+    });
+    await model.FileModel.count(async function (err, data) {
+        var p = {
+            'fileCount': data
+        };
+        await allCounts.push(p);
+    });
+    await model.ComplaintModel.count(async function (err, data) {
+        var p = {
+            'complaintCount': data
+        };
+        await allCounts.push(p);
+    });
+    res.json(allCounts);
+}

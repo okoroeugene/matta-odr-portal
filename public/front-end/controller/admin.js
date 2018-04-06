@@ -57,6 +57,13 @@ myApp.controller('adminController', ['$scope', '$state', '$stateParams', '$http'
         });
     }
 
+    $scope.getCounts = async function() {
+        await $http.get('/getcounts').then(function(response){
+            $scope.counts = response.data;
+        });
+    }
+    $scope.getCounts();
+    
     $scope.btnAssignPayment = function (res) {
         var a = {
             'cost': $scope.cost
