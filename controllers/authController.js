@@ -37,47 +37,30 @@ module.exports.authenticateUser = function (req, res, next) {
 }
 
 module.exports.createMediator = async function (req, res) {
-    await model.UserModel.findOne({ Email: req.body.email }, async (err, user) => {
-        if (err) console.log(err.message);
-        else {
-            if (user) { res.json("User already exists!"); }
-            else {
-                var _user = await new model.UserModel({
-                    username: req.body.email,
-                    email: req.body.email,
-                    password: req.body.password,
-                    role: 'mediator'
-                });
-
-                await _user.save(async (err, new_user) => {
-                    if (new_user) {
-                        await model.MediatorModel.findOne({ Email: req.body.email }, async function (err, user) {
-                            await model.MediatorModel.create({
-                                firstname: req.body.firstname,
-                                lastname: req.body.lastname,
-                                email: req.body.email,
-                                // password: req.body.password,
-                                IsVerified: false,
-                                userId: new_user.id
-                            }, async function (err, med) {
-                                if (med) {
-                                    await passport.authenticate('local-sign-in', {});
-                                    req.login(new_user, loginErr => {
-                                        if (loginErr) {
-                                            // return next(loginErr);
-                                        }
-                                        else {
-                                            req.session.role = 'mediator';
-                                            res.json(1);
-                                        }
-                                    });
-                                }
-                            });
-                        });
-                    }
-                });
-            }
-        }
+    utility.createuser(req.body.email, req.body.email, req.body.password, 'mediator', async cb => {
+        await model.MediatorModel.findOne({ Email: req.body.email }, async function (err, user) {
+            await model.MediatorModel.create({
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                email: req.body.email,
+                // password: req.body.password,
+                IsVerified: false,
+                userId: cb.id
+            }, async function (err, med) {
+                if (med) {
+                    await passport.authenticate('local-sign-in', {});
+                    req.login(cb, loginErr => {
+                        if (loginErr) {
+                            // return next(loginErr);
+                        }
+                        else {
+                            req.session.role = 'mediator';
+                            res.json(1);
+                        }
+                    });
+                }
+            });
+        });
     });
 }
 

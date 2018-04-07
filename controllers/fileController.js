@@ -27,45 +27,31 @@ module.exports.genFileNumber = async function (req, res) {
 }
 
 module.exports.openFile = async function (req, res) {
-    await model.UserModel.findOne({ Email: req.session.email }, async function (err, user) {
-        if (err) console.log(err.message);
-        else {
-            if (user) { res.json("User already exists!"); }
-            else {
-                await model.UserModel.create({
-                    username: req.session.fileNumber,
-                    email: req.session.email,
-                    password: req.body.password,
-                    role: req.session.role,
-                }, async function (err, new_user) {
-                    console.log(new_user);
-                    var key = crypto.randomBytes(16).toString("hex");
-                    await model.FileModel.create({
-                        filecode: req.session.fileNumber,
-                        firstname: req.session.firstname,
-                        lastname: req.session.lastname,
-                        email: req.session.email,
-                        phone: req.session.phone,
-                        // password: req.body.password,
-                        date: currentDate,
-                        userId: new_user._id
-                    }, async function (err, data) {
-                        if (data) {
-                            await passport.authenticate('local-sign-in', {});
-                            req.session.code = req.session.fileNumber;
-                            req.session.role = 'user';
-                            // req.session.name = req.session.fullname;
-                        }
-                        req.login(new_user, loginErr => {
-                            if (loginErr) {
-                                // return next(loginErr);
-                            }
-                            else res.json(1);
-                        });
-                    });
-                });
+    utility.createuser(req.session.fileNumber, req.session.email, req.body.password, 'user', async cb => {
+        var key = crypto.randomBytes(16).toString("hex");
+        await model.FileModel.create({
+            filecode: req.session.fileNumber,
+            firstname: req.session.firstname,
+            lastname: req.session.lastname,
+            email: req.session.email,
+            phone: req.session.phone,
+            // password: req.body.password,
+            date: currentDate,
+            userId: cb._id
+        }, async function (err, data) {
+            if (data) {
+                await passport.authenticate('local-sign-in', {});
+                req.session.code = req.session.fileNumber;
+                req.session.role = 'user';
+                // req.session.name = req.session.fullname;
             }
-        }
+            req.login(cb, loginErr => {
+                if (loginErr) {
+                    // return next(loginErr);
+                }
+                else res.json(1);
+            });
+        });
     });
 }
 

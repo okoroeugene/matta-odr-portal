@@ -108,19 +108,23 @@ module.exports.getCurrentLoggedInUser = {
     }
 }
 
-module.exports.GetUserNameByUserId = function (id, callback) {
-    model.MediatorModel.findById(id, function (err, data) {
-        if (data)
-            callback(data.FullName);
-    });
-    model.FileModel.findOne({ Key: id }, function (err, data) {
-        if (data)
-            callback(data.Name);
-    });
-    model.InviteeModel.findOne({ Key: id }, function (err, data) {
-        if (data)
-            callback(data.FullName);
-    });
+module.exports.GetUserNameByUserId = async function (req, id, callback) {
+    var username;
+    if (req.session.role === 'mediator') {
+        await model.MediatorModel.findOne({ userId: id }, function (err, data) {
+            callback(data.firstname + ' ' + data.lastname);
+        });
+    }
+    if (req.session.role === 'user') {
+        await model.FileModel.findOne({ userId: id }, function (err, data) {
+            callback(data.firstname + ' ' + data.lastname);
+        });
+    }
+    if (req.session.role === 'invitee') {
+        await model.InviteeModel.findOne({ userId: id }, function (err, data) {
+            callback(data.fullname);
+        });
+    }
 }
 
 module.exports.Authorize = {
@@ -231,4 +235,27 @@ module.exports.uploadFile = {
     delete: function () {
 
     }
+}
+
+
+module.exports.createuser = async function (username, email, password, role, callback) {
+    await model.UserModel.findOne({ Email: req.session.email }, async function (err, user) {
+        if (err) console.log(err.message);
+        else {
+            if (user) { res.json("User already exists!"); }
+            else {
+                var _user = await new model.UserModel({
+                    username: username,
+                    email: email,
+                    password: password,
+                    role: role,
+                });
+                await _user.save(async (err, new_user) => {
+                    if (new_user) {
+                        callback(new_user);
+                    }
+                });
+            }
+        }
+    });
 }

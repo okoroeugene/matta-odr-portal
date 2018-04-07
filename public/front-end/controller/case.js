@@ -16,6 +16,11 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
 
     $scope.Complaints();
 
+    $scope.$on('$viewContentLoaded', function(){
+        //Here your view content is fully loaded !!
+        console.log('loaded');
+      });
+
     $scope.btnChat = function () {
         $scope.searchButtonText = "chat";
         // $scope.start();

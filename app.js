@@ -64,7 +64,7 @@ app.post('/CreateAdminUser', async function (req, res) {
         email: req.body.email,
         Password: req.body.password,
     }, async function (err, new_user) {
-        if (new_user){}
+        if (new_user) { }
     });
 });
 
@@ -76,12 +76,9 @@ io.use(sharedsession(session, {
 var allConnectedUsers = [];
 io.on('connection', function (socket) {
     var userId;
-    if (socket.handshake.session)
-        if (socket.handshake.session.key)
-            userId = socket.handshake.session.key;
-        else if (socket.handshake.session.passport)
-            if (socket.handshake.session.passport.user)
-                userId = socket.handshake.session.passport.user;
+    if (socket.handshake.session.passport)
+        if (socket.handshake.session.passport.user)
+            userId = socket.handshake.session.passport.user;
 
 
     socket.join(userId); // We are using room of socket io
@@ -113,7 +110,7 @@ io.on('connection', function (socket) {
                             'count': data.length,
                             'content': data
                         }
-
+                        console.log(convo[i].ParticipantId);
                         io.sockets.in(convo[i].ParticipantId).emit('notifyCount', result, sendername, content, convo[i].ParticipantId, allData, currentCount);
                     });
                 else console.error('Something went wrong!!');

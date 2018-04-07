@@ -88,7 +88,7 @@ app.post('/uploadpic', utility.Authorize.mediator, async function (req, res) {
 
 module.exports.getMediatorCases = async function (req, res) {
     var userId = req.user._id;
-    await model.CaseModel.findOne({ MediatorId: userId })
+    await model.CaseModel.find({ MediatorId: userId })
         .populate('ComplaintId')
         .exec(function (err, data) {
             if (err) console.log(err.message);

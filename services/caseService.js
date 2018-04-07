@@ -46,28 +46,28 @@ var caseD = module.exports = {
         });
     },
 
-    AddCaseChat: async function (req, res, content, files, callback) {
+    AddCaseChat: function (req, res, content, files, callback) {
         var _chat = new model.ChatModel({ CaseId: req.params.id, Content: content, File: files, Date: currentDate });
         var role = utility.UserRole.GetRoleName(req, res);
-        await utility.getCurrentLoggedInUser.name(req, res, cb => {
+        utility.getCurrentLoggedInUser.name(req, res, cb => {
             _chat.SenderName = cb;
-        });
-        _chat.SenderId = req.user._id;
-        _chat.save(function (err, data) {
-            if (data) {
-                var userId;
-                if (req.user != undefined)
-                    userId = req.user._id;
-                caseD.AddNotification(userId, data, function (result) {
-                    if (result)
-                        callback(data);
-                });
-            }
+            _chat.SenderId = req.user._id;
+            _chat.save(function (err, data) {
+                if (data) {
+                    var userId;
+                    if (req.user != undefined)
+                        userId = req.user._id;
+                    caseD.AddNotification(userId, data, function (result) {
+                        if (result)
+                            callback(data);
+                    });
+                }
+            });
         });
     },
 
-    AddNotification: async function (userId, data, callback) {
-        await model.ConversationModel.find({ CaseId: data.CaseId, ParticipantId: { $ne: userId } }).exec(async function (err, result) {
+    AddNotification: function (userId, data, callback) {
+        model.ConversationModel.find({ CaseId: data.CaseId, ParticipantId: { $ne: userId } }).exec(async function (err, result) {
             if (result)
                 for (let i = 0; i < result.length; i++) {
                     var notify = new model.NotificationModel({
@@ -98,8 +98,8 @@ var caseD = module.exports = {
     },
 
     AddCaseAndUpdate: function (mediatorId, mediatorName, ID, userId, callback) {
-        caseRepo.AddCase(mediatorId, mediatorName, ID, userId, async function (data) {
-            await model.ComplaintModel.findByIdAndUpdate(ID, { Status: 2 }, function (err, result) {
+        caseRepo.AddCase(mediatorId, mediatorName, ID, userId, function (data) {
+            model.ComplaintModel.findByIdAndUpdate(ID, { Status: 2 }, function (err, result) {
                 if (result)
                     callback(data);
             })

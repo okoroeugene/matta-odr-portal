@@ -53,7 +53,7 @@ exports.acceptCase = async function (req, res) {
                 var mediatorId = req.user._id;
                 var mediatorName = req.user.FullName;
                 var ID = req.body.complaintId;
-                caseService.AddCaseAndUpdate(mediatorId, mediatorName, ID, data.FileId.Key, function (data) {
+                caseService.AddCaseAndUpdate(mediatorId, mediatorName, ID, data.FileId.userId, function (data) {
                     if (data) {
                         res.json({ status: 1, message: data.id });
                     }

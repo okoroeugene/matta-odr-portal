@@ -37,12 +37,11 @@ module.exports.getcomplaintdata = async function (req, res) {
     });
 }
 
-module.exports.addcomplaintpayment = function (req, res,) {
+module.exports.addcomplaintpayment = function (req, res, ) {
     var id = req.params.id;
     if (req.body.cost === undefined || req.body.estNoDays === undefined)
         res.json(0);
-    else
-    {
+    else {
         complaintService.AddCasePayment(req, res, async function (_result) {
             if (_result) {
                 await model.ComplaintModel.findByIdAndUpdate(id, { Status: 1 }, function (err, data) {
@@ -81,20 +80,17 @@ module.exports.makecomplaintpayment = async function (req, res) {
     await model.CasePaymentModel.findByIdAndUpdate(req.params.id, { IsPaymentMade: 1 }, function (err, data) {
         if (data) {
             model.ComplaintModel.findById(data.ComplaintId).populate('FileId')
-                .exec(function (err, result) {
+                .exec(async function (err, result) {
                     var mediatorId = data.MediatorId;
-                    var mediatorName = utility.getCurrentLoggedInUser.name(req, res, function (userName) {
-                        complaintService.AddCaseAndUpdate(mediatorId, userName, data.ComplaintId, result.FileId.Key, function (e) {
+                    await model.MediatorModel.findOne({ userId: mediatorId }, (err, med) => {
+                        var medName = med.firstname + ' ' + med.lastname;
+                        complaintService.AddCaseAndUpdate(mediatorId, medName, data.ComplaintId, result.FileId.userId, function (e) {
                             if (e) {
-                                // res.json({ status: 1, message: e.id });
                                 res.json(1);
                             }
-                            // else {
-                            //     res.json({ status: 0, message: 'Something went wrong!!' });
-                            // }
                         });
-                    })
-                })
+                    });
+                });
         }
         else res.json(0);
     });
@@ -103,21 +99,19 @@ module.exports.makecomplaintpayment = async function (req, res) {
 module.exports.getawaitingpayment = async function (req, res) {
     var mediatorId = utility.getCurrentLoggedInUser.id(req, res);
     await model.CasePaymentModel.find({ MediatorId: mediatorId })
-    .populate('ComplaintId')
-    .exec(function (err, data) {
-        if (data)
-            res.json(data);
-    });
+        .populate('ComplaintId')
+        .exec(function (err, data) {
+            if (data)
+                res.json(data);
+        });
 };
 
-module.exports.declinecase = async function(req,res) {
-    await model.CasePaymentModel.findById(req.params.id, async function(err, data) {
-        if (data)
-        {
-            await model.ComplaintModel.findByIdAndUpdate(data.ComplaintId, { Status: 0 }, async function(err, result) { 
-                if (result)
-                {
-                    await model.CasePaymentModel.findByIdAndRemove(req.params.id, function(err, data) {
+module.exports.declinecase = async function (req, res) {
+    await model.CasePaymentModel.findById(req.params.id, async function (err, data) {
+        if (data) {
+            await model.ComplaintModel.findByIdAndUpdate(data.ComplaintId, { Status: 0 }, async function (err, result) {
+                if (result) {
+                    await model.CasePaymentModel.findByIdAndRemove(req.params.id, function (err, data) {
                         res.json(1);
                     });
                 }
@@ -127,6 +121,12 @@ module.exports.declinecase = async function(req,res) {
 };
 
 //UPDATE ANY DATA
+app.get('/d', (req, res) => {
+    model.CasePaymentModel.findByIdAndUpdate('5ac8f646c4d6f80f0089c1d6', { IsPaymentMade: false },
+        function (err, newData) {
+            if (newData) res.json('success');
+        })
+})
 // app.get('/g', function (req, res) {
 //     model.ComplaintModel.find()
 //         .exec(function (err, data) {
