@@ -5,8 +5,9 @@ var utility = require('../Helpers/utility');
 var passport = index.myPassport;
 var currentDate = new Date();
 
-module.exports.authenticateUser = async function (req, res, next) {
-    await passport.authenticate('local-sign-in', function (err, user, info) {
+module.exports.authenticateUser = function (req, res, next) {
+    passport.authenticate('local-sign-in', function (err, user, info) {
+        // console.log(user);
         var returnUrl = req.session.returnUrl;
         if (err) {
             // return next(err); // will generate a 500 error
@@ -18,35 +19,58 @@ module.exports.authenticateUser = async function (req, res, next) {
             if (loginErr) {
                 // return next(loginErr);
             }
-            else if (returnUrl != undefined)
+            else if (returnUrl !== undefined)
                 return res.json({ success: true, url: returnUrl });
-            else return res.json({ success: true });
+            else {
+                try {
+                    utility.UserRole.GetRoleName(req, res, data => {
+                        if (data === 'user') req.session.code = user.username;
+                        return res.json({ success: true, role: data });
+                    });
+                } catch (error) {
+                    console.log(error);
+                }
+            }
         });
     })(req, res, next);
 }
 
 module.exports.createMediator = async function (req, res) {
-    await model.MediatorModel.findOne({ Email: req.body.email }, async function (err, user) {
+    await model.UserModel.findOne({ Email: req.body.email }, async (err, user) => {
         if (err) console.log(err.message);
         else {
             if (user) { res.json("User already exists!"); }
             else {
-                await model.MediatorModel.create({
-                    FullName: req.body.fullname,
-                    Email: req.body.email,
-                    Password: req.body.password,
-                    IsVerified: false
-                }, async function (err, new_user) {
-                    // var e = {
-                    //     'email': 
-                    // }
-                    await passport.authenticate('local-sign-in', {});
-                    req.login(new_user, loginErr => {
-                        if (loginErr) {
-                            // return next(loginErr);
-                        }
-                        else res.json(1);
-                    });
+                var _user = await new model.UserModel({
+                    username: req.body.email,
+                    email: req.body.email,
+                    password: req.body.password,
+                    role: 'mediator'
+                });
+
+                await _user.save(async (err, new_user) => {
+                    if (new_user) {
+                        await model.MediatorModel.findOne({ Email: req.body.email }, async function (err, user) {
+                            await model.MediatorModel.create({
+                                firstname: req.body.firstname,
+                                lastname: req.body.lastname,
+                                email: req.body.email,
+                                // password: req.body.password,
+                                IsVerified: false,
+                                userId: new_user.id
+                            }, async function (err, med) {
+                                if (med) {
+                                    await passport.authenticate('local-sign-in', {});
+                                    req.login(new_user, loginErr => {
+                                        if (loginErr) {
+                                            // return next(loginErr);
+                                        }
+                                        else res.json(1);
+                                    });
+                                }
+                            });
+                        });
+                    }
                 });
             }
         }
@@ -54,14 +78,19 @@ module.exports.createMediator = async function (req, res) {
 }
 
 module.exports.getUserName = function (req, res) {
-    var user = req.session.code;
-    var mediator = req.user;
-    var invitee = req.session.SecretToken;
-    if (user == undefined && mediator == undefined && invitee == undefined) res.json(0);
-    else {
-        if (user != undefined || invitee != undefined) res.json(req.session.name);
-        if (mediator != undefined) res.json(req.user.FullName);
-    }
+    // var Id = req.user.id;
+    // var user = req.session.code;
+    // var mediator = req.user;
+    // var invitee = req.session.SecretToken;
+    // if (user == undefined && mediator == undefined && invitee == undefined) res.json(0);
+    // else {
+    //     if (user != undefined || invitee != undefined) res.json(req.session.name);
+    //     if (mediator != undefined) res.json(req.user.FullName);
+    // }
+    var userName;
+    if (req.user !== undefined) userName === req.user.username;
+    else userName === 'No User';
+    res.json(userName);
 };
 
 module.exports.getrole = async function (req, res) {
@@ -99,7 +128,7 @@ module.exports.MarkAsRead = async function (req, res) {
 
 module.exports.getRoleById = function (req, res) {
     var id = utility.getCurrentLoggedInUser.id(req, res);
-    utility.UserRole.GetRoleNameByUserId(id, function (result) {
+    utility.UserRole.GetRoleName(req, res, function (result) {
         res.json(result);
     });
 };

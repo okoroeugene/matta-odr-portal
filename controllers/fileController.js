@@ -2,6 +2,7 @@ const index = require('../app');
 var app = index.myApp;
 var model = require('../models/entitymodels');
 var utility = require('../Helpers/utility');
+var passport = index.myPassport;
 var currentDate = new Date();
 var crypto = require('crypto');
 var fileService = require('../services/fileService');
@@ -17,29 +18,52 @@ module.exports.verifyCode = function (req, res) {
 module.exports.genFileNumber = async function (req, res) {
     var code = 'MATTA/' + await utility.randomNumber.generateNum(4) + '-' + await utility.randomNumber.generateNum(4);
     req.session.fileNumber = code;
-    req.session.fullname = req.body.fullname;
+    req.session.firstname = req.body.firstname;
+    req.session.lastname = req.body.lastname;
     req.session.email = req.body.email;
     req.session.phone = req.body.phone;
+    req.session.role = req.body.role;
     res.json(1);
 }
 
 module.exports.openFile = async function (req, res) {
-    var key = crypto.randomBytes(16).toString("hex");
-    await model.FileModel.create({
-        FileCode: req.session.fileNumber,
-        Name: req.session.fullname,
-        Email: req.session.email,
-        Phone: req.session.phone,
-        Key: key,
-        Password: req.body.password,
-        Date: currentDate,
-    }, function (err, data) {
+    await model.UserModel.findOne({ Email: req.session.email }, async function (err, user) {
         if (err) console.log(err.message);
         else {
-            req.session.code = req.session.fileNumber;
-            req.session.name = req.session.fullname;
-            req.session.key = key;
-            res.json(1);
+            if (user) { res.json("User already exists!"); }
+            else {
+                await model.UserModel.create({
+                    username: req.session.fileNumber,
+                    email: req.session.email,
+                    password: req.body.password,
+                    role: req.session.role,
+                }, async function (err, new_user) {
+                    console.log(new_user);
+                    var key = crypto.randomBytes(16).toString("hex");
+                    await model.FileModel.create({
+                        filecode: req.session.fileNumber,
+                        firstname: req.session.firstname,
+                        lastname: req.session.lastname,
+                        email: req.session.email,
+                        phone: req.session.phone,
+                        // password: req.body.password,
+                        date: currentDate,
+                        userId: new_user._id
+                    }, async function (err, data) {
+                        if (data) {
+                            await passport.authenticate('local-sign-in', {});
+                            req.session.code = req.session.fileNumber;
+                            // req.session.name = req.session.fullname;
+                        }
+                        req.login(new_user, loginErr => {
+                            if (loginErr) {
+                                // return next(loginErr);
+                            }
+                            else res.json(1);
+                        });
+                    });
+                });
+            }
         }
     });
 }

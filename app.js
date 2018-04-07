@@ -55,7 +55,18 @@ mongoose.connect('mongodb://127.0.0.1/mattaDb', (err, database) => {
         // })
         console.log('MATTA DB is Connected!')
     }
-})
+});
+
+//Create first admin user
+app.post('/CreateAdminUser', async function (req, res) {
+    await model.UserModel.create({
+        username: req.body.email,
+        email: req.body.email,
+        Password: req.body.password,
+    }, async function (err, new_user) {
+        if (new_user){}
+    });
+});
 
 io.use(sharedsession(session, {
     autoSave: true,

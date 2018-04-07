@@ -27,7 +27,8 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
         var data = {
             'email': $scope.email,
             'password': $scope.password,
-            'fullname': $scope.fullname,
+            'firstname': $scope.firstname,
+            'lastname': $scope.lastname,
         };
         $http.post('/register', data).then(function (response) {
             if (response.data == 1) {
@@ -45,7 +46,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
         // flash.setMessage(message);
         // $location.path("/login");
         var data = {
-            'email': $scope.email,
+            'username': $scope.username,
             'password': $scope.password
         };
         $http.post('/login', data).then(function (response) {
@@ -55,8 +56,11 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
             if (response.data.success == true) {
                 if (response.data.url != undefined)
                     window.location.href = response.data.url;
-                else
-                    window.location.href = '/profile';
+                else {
+                    if (response.data.role === 'user') window.location.href = '/pending';
+                    if (response.data.role === 'mediator') window.location.href = '/profile';
+                    if (response.data.role === 'invitee') window.location.href = '/case';
+                }
             }
 
             // toastr.success('Submitted!');

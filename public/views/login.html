@@ -9,11 +9,12 @@
                 <form class="col-12" id="lock-form" action="/login" method="post">
                     <p class="font-13 text-center">Please enter your MATTA PIN to enter the ODR Portal</p>
                     <div class="form-group">
-                        <input ng-model="email" style="padding: 11px 10px;" class="form-control" type="text" name="email" placeholder="Enter Email Address ">
+                        <input ng-model="username" style="padding: 11px 10px;" class="form-control" type="text" name="username" placeholder="Enter User Name">
                     </div>
                     <div class="form-group">
                         <input ng-model="password" style="padding: 11px 10px;" class="form-control" type="password" name="password" placeholder="Enter Password">
                     </div>
+                    <!-- <input type="hidden" name="role" ng-model="role" value="mediator"> -->
                     <div class="form-group">
                         <button style="padding: 15px;" class="btn btn-success btn-block" ng-click="btnLogin()" type="button">
                             <i class="ti-unlock m-r-5"></i>Login</button>

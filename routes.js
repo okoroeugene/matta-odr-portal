@@ -40,7 +40,6 @@ var adminCtrl = require('./controllers/adminController');
 //     Promise.resolve(fn(req, res, next))
 //       .catch(next);
 //   };
-
 app.use(flash())
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/views/index.html')

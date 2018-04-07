@@ -12,7 +12,10 @@
                     <!-- <h5 class="font-strong m-b-10 text-center">James Brown</h5> -->
                     <p class="font-13 text-center">Please enter your MATTA PIN to enter the ODR Portal</p>
                     <div class="form-group">
-                        <input style="padding: 11px 10px;" ng-model="fullname" class="form-control" type="text" name="fullname" placeholder="Enter Full Name ">
+                        <input style="padding: 11px 10px;" ng-model="firstname" class="form-control" type="text" name="firstname" placeholder="Enter First Name ">
+                    </div>
+                    <div class="form-group">
+                        <input style="padding: 11px 10px;" ng-model="lastname" class="form-control" type="text" name="lastname" placeholder="Enter Last Name ">
                     </div>
                     <div class="form-group">
                         <input style="padding: 11px 10px;" ng-model="email" class="form-control" type="email" name="email" placeholder="Enter Email Address ">
@@ -27,6 +30,7 @@
                         <button id="btnReg" style="padding: 15px;" class="btn btn-success btn-block" ng-click="myForm.$valid && btnReg()" type="submit">
                             <i class="ti-unlock m-r-5"></i>Register</button>
                     </div>
+                    <input type="hidden" name="role" ng-model="role" value="mediator">
                     <p>Already have an Account?
                         <a href="/login"> Login here</a>
                     </p>

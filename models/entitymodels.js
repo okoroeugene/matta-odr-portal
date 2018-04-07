@@ -3,36 +3,43 @@ const Schema = mongoose.Schema
 var bcrypt = require('bcrypt-nodejs')
 var SALT_WORK_FACTOR = 10;
 
-var MediatorSchema = new Schema({
-    FullName: { type: String, required: true },
-    Email: { type: String, required: true },
-    Password: { type: String, required: true },
+var UserSchema = new Schema({
+    username: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    role: { type: String, required: true },
+})
+
+var MediatorDataSchema = new Schema({
+    userId: { type: String, required: true },
+    firstname: { type: String, required: true },
+    lastname: { type: String, required: true },
+    email: { type: String, required: true },
+    // password: { type: String, required: true },
     NotificationLastRead: Date,
     IsVerified: { type: Boolean, required: true }
 })
 
-MediatorSchema.pre('save', function (next) {
-    var user = this;
+// UserSchema.pre('save', function (next) {
+//     var user = this;
+//     // only hash the password if it has been modified (or is new)
+//     if (!user.isModified(user.Password)) return next();
+//     // generate a salt
+//     bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+//         if (err) return next(err);
+//         console.log(salt);
+//         // hash the password using our new salt
+//         bcrypt.hash(user.Password, salt, function (err, hash) {
+//             if (err) return next(err);
+//             console.log(hash);
+//             // override the cleartext password with the hashed one
+//             user.Password = hash;
+//             next();
+//         });
+//     });
+// });
 
-    // only hash the password if it has been modified (or is new)
-    if (!user.isModified(user.Password)) return next();
-
-    // generate a salt
-    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-        if (err) return next(err);
-        console.log(salt);
-        // hash the password using our new salt
-        bcrypt.hash(user.Password, salt, function (err, hash) {
-            if (err) return next(err);
-            console.log(hash);
-            // override the cleartext password with the hashed one
-            user.Password = hash;
-            next();
-        });
-    });
-});
-
-MediatorSchema.methods.comparePassword = function (candidatePassword, cb) {
+UserSchema.methods.comparePassword = function (candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
         if (err) return cb(err);
         cb(null, isMatch);
@@ -57,18 +64,20 @@ var ComplaintSchema = new Schema({
 })
 
 var FileSchema = new Schema({
-    FileCode: { type: String, required: true },
-    Password: { type: String, required: true },
-    Name: { type: String, required: true },
-    Email: { type: String, required: true },
-    Phone: { type: String, required: true },
-    Key: { type: String, required: true },
-    Date: Date,
-    NotificationLastRead: Date
+    userId: { type: String, required: true },
+    filecode: { type: String, required: true },
+    // password: { type: String, required: true },
+    firstname: { type: String, required: true },
+    lastname: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String, required: true },
+    // Key: { type: String, required: true },
+    date: Date,
+    // NotificationLastRead: Date
 });
 
 var CaseSchema = new Schema({
-    MediatorId: { type: String },
+    MediatorDataId: { type: String },
     UserId: { type: String },
     TP_Id: { type: String },
     Mediator_Name: { type: String },
@@ -80,7 +89,7 @@ var CasePaymentSchema = new Schema({
     Amount: { type: String, required: true },
     EstimatedNumberOfDays: { type: String, required: true },
     ComplaintId: { type: String, required: true, ref: 'Complaint' },
-    MediatorId: { type: String, required: true, ref: 'Mediator' },
+    MediatorDataId: { type: String, required: true, ref: 'Mediator' },
     IsPaymentMade: Boolean,
     Date: Date
 });
@@ -96,11 +105,12 @@ var ChatSchema = new Schema({
 });
 
 var InviteeSchema = new Schema({
+    userId: { type: String, required: true },
     FullName: { type: String }, //TP means third party
     Email: { type: String, required: true },
     SecretToken: { type: String, required: true },
     CaseId: { type: String, required: true, ref: 'Case' },
-    Key: { type: String },
+    // Key: { type: String },
     DateInvited: Date
 });
 
@@ -130,11 +140,14 @@ var MediatorProfileSchema = new Schema({
     Phone: { type: String, required: true },
     Address: { type: String, required: true },
     MediatorCertificate: { type: String, required: true },
-    MediatorId: { type: String, required: true, ref: 'Mediator' },
+    MediatorDataId: { type: String, required: true, ref: 'Mediator' },
     Date: Date,
 });
 
-var Mediator = mongoose.model('Mediator', MediatorSchema);
+var User = mongoose.model('User', UserSchema);
+module.exports.UserModel = User;
+
+var Mediator = mongoose.model('Mediator', MediatorDataSchema);
 module.exports.MediatorModel = Mediator;
 
 var Complaint = mongoose.model('Complaint', ComplaintSchema);

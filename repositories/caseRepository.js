@@ -66,12 +66,12 @@ var caseRepo = module.exports = {
     AddCaseChat: function (caseId, content, role, callback) {
         var _chat = new model.ChatModel({ CaseId: caseId, Content: content, Date: currentDate });
         if (role == 'user' || role == 'invitee') {
-            _chat.TP_Name = req.session.name;
-            _chat.TP_Id = req.session.key;
+            _chat.TP_Name = req.user.FirstName + ' ' + req.user.LastName;
+            _chat.TP_Id = req.user._id;
             _chat.Mediator_Name = null;
         }
         if (role == 'mediator') {
-            mediator = req.user.FullName;
+            mediator = req.user.FirstName + ' ' + req.user.LastName;
             _chat.TP_Name = null;
             _chat.Mediator_Id = req.user._id;
             _chat.Mediator_Name = mediator;

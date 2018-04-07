@@ -21,7 +21,7 @@ var caseD = module.exports = {
                 }
                 var role = utility.UserRole.GetRoleName(req, res);
                 if (role == 'mediator') {
-                    if (data.MediatorId != req.user.id) {
+                    if (data.MediatorId != req.user._id) {
                         res.redirect('/error');
                     }
                 }
@@ -29,7 +29,7 @@ var caseD = module.exports = {
                 if (role == 'user') {
                     fileRepo.GetFileByFileCode(data.ComplaintId.FileCode, function (data) {
                         if (data) {
-                            if (data.Key != req.session.key) res.redirect('/error');
+                            if (data.Key != req.user._id) res.redirect('/error');
                         }
                         else res.redirect('/error');
                     });
@@ -49,19 +49,11 @@ var caseD = module.exports = {
     AddCaseChat: function (req, res, content, files, callback) {
         var _chat = new model.ChatModel({ CaseId: req.params.id, Content: content, File: files, Date: currentDate });
         var role = utility.UserRole.GetRoleName(req);
-        if (role == 'user' || role == 'invitee') {
-            _chat.SenderName = req.session.name;
-            _chat.SenderId = req.session.key;
-        }
-        if (role == 'mediator') {
-            _chat.SenderId = req.user._id;
-            _chat.SenderName = req.user.FullName;
-        }
+        _chat.SenderName = req.user.FirstName + ' ' + req.user.LastName;
+        _chat.SenderId = req.user._id;
         _chat.save(function (err, data) {
             if (data) {
                 var userId;
-                if (req.session != undefined)
-                    userId = req.session.key;
                 if (req.user != undefined)
                     userId = req.user._id;
                 caseD.AddNotification(userId, data, function (result) {
@@ -124,7 +116,7 @@ var caseD = module.exports = {
         if (req.files) {
             var files = req.files;
             // utility.uploadFile.apiUpload(req.files, key);
-            
+
             await files.forEach(item => {
                 ImageFile.push({
                     'filename': item.filename

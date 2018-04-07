@@ -34,7 +34,7 @@ module.exports = {
     AddComplaint: async function (req, res, callback) {
         var _complaint = new model.ComplaintModel(req.body);
         var secretToken = utility.randomNumber.generateRan(8);
-        await model.FileModel.findOne({ FileCode: req.session.code }, function (err, data) {
+        await model.FileModel.findOne({ filecode: req.session.code }, function (err, data) {
             _complaint.FileCode = req.session.code;
             _complaint.DateGenerated = currentDate;
             _complaint.Status = 0;

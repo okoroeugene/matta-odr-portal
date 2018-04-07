@@ -23,7 +23,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((userId, done) => {
     // console.log(userId);
-    model.MediatorModel.findById(userId, (error, user) => {
+    model.UserModel.findById(userId, (error, user) => {
         if (error) return done(error, false)
         //console.log(user)
         done(null, user)
@@ -31,15 +31,15 @@ passport.deserializeUser((userId, done) => {
 })
 
 passport.use('local-sign-in', new LocalStrategy({
-    usernameField : 'email',
+    usernameField : 'username',
     passwordField : 'password',
     passReqToCallback: true
 },
-    function (req, email, password, done) {
-        model.MediatorModel.findOne({ Email: email }, function (err, user) {
+    function (req, username, password, done) {
+        model.UserModel.findOne({ username: username }, function (err, user) {
             if (err) { return done(err); }
             if (!user) { return done(null, false); }
-            if (user.Password != password) { done(null, false, { message: 'bad password' }); }
+            if (user.password != password) { return done(null, false, { message: 'bad password' }); }
             // console.log(user)
             return done(null, user);
         });

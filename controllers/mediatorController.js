@@ -5,24 +5,37 @@ var utility = require('../Helpers/utility');
 var passport = index.myPassport;
 var currentDate = new Date();
 
-module.exports.allmediators = function (req, res) {
-    model.MediatorModel.find()
+module.exports.allmediators = async function (req, res) {
+    await model.MediatorModel.find()
         .exec(function (err, data) {
             res.json(data);
         })
 }
 
 module.exports.GetMediatorDataById = async function (req, res) {
+    var allData = [];
     var id = req.params.id;
-    await model.MediatorProfileModel.findOne({ MediatorId: id }).populate('MediatorId').exec(function (err, data) {
-        model.ProfilePicModel.findOne({ UserId: id }).sort({ _id: -1 }).exec(function (err, img) {
-            var p = {
-                'MedProfileData': data,
-                'Image': img
-            };
-            res.json(p);
-        });
+    await model.MediatorProfileModel.findOne({ MediatorId: id }).populate('MediatorId').exec(async function (err, data) {
+        var p = {
+            'MedProfileData': data,
+        };
+        await allData.push(p);
     });
+
+    await model.ProfilePicModel.findOne({ UserId: id }).sort({ _id: -1 }).exec(async (err, img) => {
+        var p = {
+            'Image': img,
+        };
+        await allData.push(p);
+    });
+
+    await model.MediatorModel.findOne({ userId: id }, async (err, medData) => {
+        var p = {
+            'MedData': medData
+        };
+        await allData.push(p);
+    });
+    res.json(allData);
 }
 
 module.exports.getmediatordata = async function (req, res) {
@@ -70,7 +83,7 @@ app.post('/uploadpic', utility.Authorize.mediator, async function (req, res) {
     if (req.file) {
         var files = req.file;
         utility.uploadFile.myUpload(req);
-       await model.ProfilePicModel.create({
+        await model.ProfilePicModel.create({
             File: req.file.filename,
             MediatorId: req.user._id
         }, function (err, data) {

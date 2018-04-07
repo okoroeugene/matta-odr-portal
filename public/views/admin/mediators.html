@@ -17,14 +17,15 @@
                 <tbody>
                     <tr ng-repeat="data in mediators">
                         <td>{{$index + 1}}</td>
-                        <td>{{data.FullName}}</td>
-                        <td>{{data.Email}}</td>
+                        <td ng-if="data.FullName !=== 'null'">{{data.FullName}}</td>
+                        <td ng-if="data.fullname !=== 'null'">{{data.fullname}}</td>
+                        <td>{{data.email}}</td>
                         <td>
                             <div ng-if="data.IsVerified === true" class="badge badge-success m-r-5 m-b-5" style="background-color:#00c851;">Verified</div>
                             <div ng-if="data.IsVerified === false || !data.IsVerified" class="badge badge-danger m-r-5 m-b-5">Not Verified</div>
                         </td>
                         <td>
-                            <a href="javascript:void(0)" data-backdrop="static" ng-click="btnView(data._id)" data-keyboard="false" data-toggle="modal"
+                            <a href="javascript:void(0)" data-backdrop="static" ng-click="btnView(data.userId)" data-keyboard="false" data-toggle="modal"
                                 data-target="#myModal">
                                 <i class="fa fa-edit"></i>
                             </a>
@@ -42,7 +43,7 @@
     <div class="modal-dialog cascading-modal modal-avatar modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <img ng-if="imgPath === null" class="img-circle" style="width: 100px; height: 100px; margin:0 auto;" src="../Images/u1.png"
+                <img ng-if="imgPath[1] === null" class="img-circle" style="width: 100px; height: 100px; margin:0 auto;" src="../Images/u1.png"
                 />
                 <img ng-if="imgPath !== null" width="120" height="120" style="margin:0 auto;" src="../uploads/{{imgPath.Image}}"
                     class="rounded-circle img-responsive" alt="Avatar photo">
@@ -58,42 +59,41 @@
                 <div ng-show="hasData">
                     <p>
                         <h6>Full Name:
-                            <span style="font-weight:300;">{{mediatordata.MedProfileData.FirstName}} {{mediatordata.MedProfileData.LastName}} {{mediatordata.MedProfileData.OtherNames}}</span>
+                            <span style="font-weight:300;">{{mediatordata[0].MedProfileData.FirstName}} {{mediatordata.MedProfileData.LastName}} {{mediatordata.MedProfileData.OtherNames}}</span>
                         </h6>
                         <hr>
                         <h6>Email:
-                            <span style="font-weight:300;">{{mediatordata.MedProfileData.MediatorId.Email}}</span>
+                            <span style="font-weight:300;">{{mediatordata.MedProfileData.MediatorId.email}}</span>
                         </h6>
                         <hr>
                         <h6>Mini Biography:
-                            <span style="font-weight:300;">{{mediatordata.MedProfileData.MiniBio}}</span>
+                            <span style="font-weight:300;">{{mediatordata[0].MedProfileData.MiniBio}}</span>
                         </h6>
                         <hr>
                         <h6>Phone Number:
-                            <span style="font-weight:300;">{{mediatordata.MedProfileData.Phone}}</span>
+                            <span style="font-weight:300;">{{mediatordata[0].MedProfileData.Phone}}</span>
                         </h6>
                         <hr>
                         <h6>Address:
-                            <span style="font-weight:300;">{{mediatordata.MedProfileData.Address}}</span>
+                            <span style="font-weight:300;">{{mediatordata[0].MedProfileData.Address}}</span>
                         </h6>
                         <hr>
                         <h6>Status:
-                            <span ng-if="mediatordata.MedProfileData.MediatorId.IsVerified === false || !mediatordata.MedProfileData.MediatorId.IsVerified" class="badge badge-danger badge-pill m-r-5 m-b-5">Not Verified</span>
-                            <span ng-if="mediatordata.MedProfileData.MediatorId.IsVerified === true" style="background-color:#00c851;" class="badge badge-success badge-pill m-r-5 m-b-5">Verified</span>
+                            <span ng-if="mediatordata[2].MedData.IsVerified === false || !mediatordata.MedProfileData.MediatorId.IsVerified" class="badge badge-danger badge-pill m-r-5 m-b-5">Not Verified</span>
+                            <span ng-if="mediatordata[2].MedData.IsVerified === true" style="background-color:#00c851;" class="badge badge-success badge-pill m-r-5 m-b-5">Verified</span>
                         </h6>
                         <hr>
                         <h6>Proof of Mediation:
                             <span style="font-weight:300;">
-                                <a ng-click="myImg(mediatordata.MedProfileData.MediatorCertificate)" href="javascript:void(0)" style="font-size: 18px;position: relative;top: 2.7px;">
+                                <a ng-click="myImg(mediatordata[0].MedProfileData.MediatorCertificate)" href="javascript:void(0)" style="font-size: 18px;position: relative;top: 2.7px;">
                                     <i class="ti-eye"></i>
                                 </a>
                             </span>
                         </h6>
                     </p>
                 </div>
-
                 <div class="text-center mt-4">
-                    <button ng-if="mediatordata.MedProfileData.MediatorId.IsVerified === false || !mediatordata.MedProfileData.MediatorId.IsVerified" ng-click="btnVerify(mediatordata.MedProfileData.MediatorId._id)"
+                    <button style="background-color:#00c851; border-color:#00c851;" ng-if="mediatordata.MedProfileData.MediatorId.IsVerified === false || !mediatordata.MedProfileData.MediatorId.IsVerified" ng-click="btnVerify(mediatordata.MedProfileData.MediatorId._id)"
                         class="btn btn-success waves-effect waves-light">Verify
                         <i class="fa fa-sign-in ml-1"></i>
                     </button>
