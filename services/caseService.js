@@ -46,10 +46,12 @@ var caseD = module.exports = {
         });
     },
 
-    AddCaseChat: function (req, res, content, files, callback) {
+    AddCaseChat: async function (req, res, content, files, callback) {
         var _chat = new model.ChatModel({ CaseId: req.params.id, Content: content, File: files, Date: currentDate });
-        var role = utility.UserRole.GetRoleName(req);
-        _chat.SenderName = req.user.FirstName + ' ' + req.user.LastName;
+        var role = utility.UserRole.GetRoleName(req, res);
+        await utility.getCurrentLoggedInUser.name(req, res, cb => {
+            _chat.SenderName = cb;
+        });
         _chat.SenderId = req.user._id;
         _chat.save(function (err, data) {
             if (data) {

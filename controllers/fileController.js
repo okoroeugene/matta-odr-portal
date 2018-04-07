@@ -53,6 +53,7 @@ module.exports.openFile = async function (req, res) {
                         if (data) {
                             await passport.authenticate('local-sign-in', {});
                             req.session.code = req.session.fileNumber;
+                            req.session.role = 'user';
                             // req.session.name = req.session.fullname;
                         }
                         req.login(new_user, loginErr => {

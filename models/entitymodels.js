@@ -77,7 +77,7 @@ var FileSchema = new Schema({
 });
 
 var CaseSchema = new Schema({
-    MediatorDataId: { type: String },
+    MediatorId: { type: String },
     UserId: { type: String },
     TP_Id: { type: String },
     Mediator_Name: { type: String },
@@ -89,7 +89,7 @@ var CasePaymentSchema = new Schema({
     Amount: { type: String, required: true },
     EstimatedNumberOfDays: { type: String, required: true },
     ComplaintId: { type: String, required: true, ref: 'Complaint' },
-    MediatorDataId: { type: String, required: true, ref: 'Mediator' },
+    MediatorId: { type: String, required: true, ref: 'Mediator' },
     IsPaymentMade: Boolean,
     Date: Date
 });
@@ -140,7 +140,7 @@ var MediatorProfileSchema = new Schema({
     Phone: { type: String, required: true },
     Address: { type: String, required: true },
     MediatorCertificate: { type: String, required: true },
-    MediatorDataId: { type: String, required: true, ref: 'Mediator' },
+    MediatorId: { type: String, required: true, ref: 'Mediator' },
     Date: Date,
 });
 

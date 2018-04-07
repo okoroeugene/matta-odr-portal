@@ -83,7 +83,7 @@ module.exports.makecomplaintpayment = async function (req, res) {
             model.ComplaintModel.findById(data.ComplaintId).populate('FileId')
                 .exec(function (err, result) {
                     var mediatorId = data.MediatorId;
-                    var mediatorName = utility.GetUserNameByUserId(mediatorId, function (userName) {
+                    var mediatorName = utility.getCurrentLoggedInUser.name(req, res, function (userName) {
                         complaintService.AddCaseAndUpdate(mediatorId, userName, data.ComplaintId, result.FileId.Key, function (e) {
                             if (e) {
                                 // res.json({ status: 1, message: e.id });

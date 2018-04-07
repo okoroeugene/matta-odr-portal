@@ -15,32 +15,23 @@ module.exports.allmediators = async function (req, res) {
 module.exports.GetMediatorDataById = async function (req, res) {
     var allData = [];
     var id = req.params.id;
-    await model.MediatorProfileModel.findOne({ MediatorId: id }).populate('MediatorId').exec(async function (err, data) {
-        var p = {
-            'MedProfileData': data,
-        };
-        await allData.push(p);
+    await model.MediatorProfileModel.findOne({ MediatorId: id }).exec(async function (err, data) {
+        await model.MediatorModel.findOne({ userId: id }, async (err, medData) => {
+            await model.ProfilePicModel.findOne({ UserId: id }).sort({ _id: -1 }).exec(async (err, img) => {
+                var p = {
+                    'MedProfileData': data,
+                    'Image': img,
+                    'MedData': medData,
+                };
+                res.json(p);
+            });
+        });
     });
-
-    await model.ProfilePicModel.findOne({ UserId: id }).sort({ _id: -1 }).exec(async (err, img) => {
-        var p = {
-            'Image': img,
-        };
-        await allData.push(p);
-    });
-
-    await model.MediatorModel.findOne({ userId: id }, async (err, medData) => {
-        var p = {
-            'MedData': medData
-        };
-        await allData.push(p);
-    });
-    res.json(allData);
 }
 
 module.exports.getmediatordata = async function (req, res) {
     var id = utility.getCurrentLoggedInUser.id(req, res);
-    await model.MediatorModel.findById(id).exec(async function (err, data) {
+    await model.MediatorModel.findOne({ userId: id }).exec(async function (err, data) {
         await model.ProfilePicModel.findOne({ UserId: id }).sort({ _id: -1 }).exec(function (err, img) {
             var p = {
                 'MedProfileData': data,
@@ -97,8 +88,7 @@ app.post('/uploadpic', utility.Authorize.mediator, async function (req, res) {
 
 module.exports.getMediatorCases = async function (req, res) {
     var userId = req.user._id;
-    await model.CaseModel.find()
-        .where('MediatorId').in(userId)
+    await model.CaseModel.findOne({ MediatorId: userId })
         .populate('ComplaintId')
         .exec(function (err, data) {
             if (err) console.log(err.message);

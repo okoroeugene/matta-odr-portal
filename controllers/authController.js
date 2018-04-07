@@ -19,18 +19,19 @@ module.exports.authenticateUser = function (req, res, next) {
             if (loginErr) {
                 // return next(loginErr);
             }
-            else if (returnUrl !== undefined)
-                return res.json({ success: true, url: returnUrl });
-            else {
-                try {
-                    utility.UserRole.GetRoleName(req, res, data => {
-                        if (data === 'user') req.session.code = user.username;
-                        return res.json({ success: true, role: data });
-                    });
-                } catch (error) {
-                    console.log(error);
+            try {
+                if (user.role === 'user') req.session.code = user.username;
+                req.session.role = user.role;
+                if (returnUrl !== undefined)
+                    return res.json({ success: true, url: returnUrl });
+                else {
+                    return res.json({ success: true, role: user.role });
                 }
+
+            } catch (error) {
+                console.log(error);
             }
+
         });
     })(req, res, next);
 }
@@ -65,7 +66,10 @@ module.exports.createMediator = async function (req, res) {
                                         if (loginErr) {
                                             // return next(loginErr);
                                         }
-                                        else res.json(1);
+                                        else {
+                                            req.session.role = 'mediator';
+                                            res.json(1);
+                                        }
                                     });
                                 }
                             });
@@ -88,13 +92,13 @@ module.exports.getUserName = function (req, res) {
     //     if (mediator != undefined) res.json(req.user.FullName);
     // }
     var userName;
-    if (req.user !== undefined) userName === req.user.username;
-    else userName === 'No User';
+    if (req.user !== undefined) userName = req.user.username;
+    else userName = 'No User';
     res.json(userName);
 };
 
 module.exports.getrole = async function (req, res) {
-    var roles = await utility.UserRole.GetRoleName(req);
+    var roles = await utility.UserRole.GetRoleName(req, res);
     if (roles == 'user') res.json({ role: 'user' });
     if (roles == 'mediator') res.json({ role: 'mediator' });
     if (roles == 'invitee') res.json({ role: 'invitee' });
@@ -128,9 +132,7 @@ module.exports.MarkAsRead = async function (req, res) {
 
 module.exports.getRoleById = function (req, res) {
     var id = utility.getCurrentLoggedInUser.id(req, res);
-    utility.UserRole.GetRoleName(req, res, function (result) {
-        res.json(result);
-    });
+    res.json(req.session.role);
 };
 
 module.exports.popoverdata = async function (req, res) {

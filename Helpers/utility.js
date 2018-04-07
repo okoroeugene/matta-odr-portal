@@ -34,11 +34,9 @@ module.exports.randomNumber = {
 }
 
 module.exports.UserRole = {
-    GetRoleName: async function (req, res, callback) {
-        if (req.user !== undefined) {
-            await model.UserModel.findById(req.user.id, function (err, data) {
-                callback(data.role);
-            });
+    GetRoleName: async function (req, res) {
+        if (req.session !== undefined) {
+            return req.session.role;
         }
     },
 
@@ -92,9 +90,21 @@ module.exports.getCurrentLoggedInUser = {
 
     name: async function (req, res, callback) {
         var username;
-        await model.UserModel.findById(req.user.id, function (err, data) {
-            callback(data.username);
-        });
+        if (req.session.role === 'mediator') {
+            await model.MediatorModel.findOne({ userId: req.user.id }, function (err, data) {
+                callback(data.firstname + ' ' + data.lastname);
+            });
+        }
+        if (req.session.role === 'user') {
+            await model.FileModel.findOne({ userId: req.user.id }, function (err, data) {
+                callback(data.firstname + ' ' + data.lastname);
+            });
+        }
+        if (req.session.role === 'invitee') {
+            await model.InviteeModel.findOne({ userId: req.user.id }, function (err, data) {
+                callback(data.fullname);
+            });
+        }
     }
 }
 
@@ -117,6 +127,7 @@ module.exports.Authorize = {
     user: async function (req, res, next) {
         try {
             var url = req.url;
+            req.session.returnUrl = url;
             if (req.user === undefined) res.redirect('/login?returnUrl=' + url);
             else {
                 await model.UserModel.findById(req.user.id, function (err, data) {
@@ -132,6 +143,7 @@ module.exports.Authorize = {
     mediator: async function (req, res, next) {
         try {
             var url = req.url;
+            req.session.returnUrl = url;
             if (req.user === undefined) res.redirect('/login?returnUrl=' + url);
             else {
                 await model.UserModel.findById(req.user.id, function (err, data) {
@@ -146,6 +158,7 @@ module.exports.Authorize = {
     invitee: async function (re, res, next) {
         try {
             var url = req.url;
+            req.session.returnUrl = url;
             if (req.user === undefined) res.redirect('/login?returnUrl=' + url);
             else {
                 await model.UserModel.findById(req.user.id, function (err, data) {
@@ -161,6 +174,7 @@ module.exports.Authorize = {
     all: function (req, res, next) {
         if (req.user === undefined) {
             var url = req.url;
+            req.session.returnUrl = url;
             res.redirect('/login?returnUrl=' + url);
         }
         else next();

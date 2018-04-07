@@ -17,7 +17,7 @@ module.exports.viewCase = function (req, res) {
 module.exports.chat = function (req, res) {
     var code;
     var mediator;
-    var role = utility.UserRole.GetRoleName(req);
+    var role = utility.UserRole.GetRoleName(req, res);
     caseService.AddCaseChat(req, res, req.body.Content, null, function (data) {
         if (data)
             res.json({ status: 1, result: data });
@@ -86,7 +86,7 @@ module.exports.uploadfile = function (req, res) {
     caseService.uploadcasefiles(req, res, function (files) {
         var caseId = req.params.id;
         var caption = req.body.caption;
-        var role = utility.UserRole.GetRoleName(req);
+        var role = utility.UserRole.GetRoleName(req, res);
         caseService.AddCaseChat(req, res, caption, files, function (data) {
             if (data) res.json({ status: 1, result: data });
             else res.json({ status: 0, message: 'Something went wrong!!' });

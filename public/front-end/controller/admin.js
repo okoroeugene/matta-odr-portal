@@ -37,7 +37,7 @@ myApp.controller('adminController', ['$scope', '$state', '$stateParams', '$http'
     $scope.btnView = function (res) {
         $scope.imgPath = null;
         $http.get('/GetMediatorDataById/' + res).then(function (response) {
-            if (response.data[1].Image !== null) $scope.imgPath = response.data[1].Image;
+            if (response.data.Image !== null) $scope.imgPath = response.data.Image.Image;
             if (response.data.MedProfileData === null) {
                 $scope.hasData = false;
                 $scope.noData = true;

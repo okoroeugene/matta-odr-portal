@@ -222,12 +222,14 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
     $scope.getExistingMediatorProfile = async function () {
         await $http.get('/existingmediatorprofile').then(function (response) {
             $scope.existingProfile = response.data;
-            $scope.firstname = response.data.FirstName;
-            $scope.lastname = response.data.LastName;
-            $scope.othernames = response.data.OtherNames;
-            $scope.bio = response.data.MiniBio;
-            $scope.phone = response.data.Phone;
-            $scope.address = response.data.Address;
+            if (response.data !== null) {
+                $scope.firstname = response.data.FirstName;
+                $scope.lastname = response.data.LastName;
+                $scope.othernames = response.data.OtherNames;
+                $scope.bio = response.data.MiniBio;
+                $scope.phone = response.data.Phone;
+                $scope.address = response.data.Address;
+            }
         });
     }
     $scope.getExistingMediatorProfile();
