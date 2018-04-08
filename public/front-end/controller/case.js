@@ -18,11 +18,11 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
 
     $scope.Complaints();
 
-    $scope.divHide = true;
-    $scope.$on('$viewContentLoaded', function () {
-        $scope.divHide = false;
-        $scope.divShow = true;
-    });
+    // $scope.divHide = true;
+    // $scope.$on('$viewContentLoaded', async function () {
+    //     $scope.divHide = false;
+    //     $scope.divShow = true;
+    // });
 
     $scope.btnChat = function () {
         $scope.searchButtonText = "chat";
@@ -448,8 +448,8 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                 ev.preventDefault();
                 $http.post('/DeleteChatContent/' + e).then(function (response) {
                     $('#removeChat_' + e).fadeOut();
+                    alertify.success("Deleted successfully");
                 });
-                alertify.success("Deleted successfully");
             }, function (ev) {
                 ev.preventDefault();
                 alertify.error("You've Cancelled Request");
