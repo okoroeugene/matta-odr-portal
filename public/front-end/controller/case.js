@@ -1,5 +1,7 @@
 myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoadingBar', '$http', '$timeout', '$location', '$anchorScroll', '$window', function ($scope, $state, $stateParams, cfpLoadingBar, $http, $timeout, $location, $anchorScroll, $window) {
-    var socket = io.connect('http://localhost:3005');
+    var url = $location.absUrl().split('/')[2];
+    var socket = io.connect(url);
+    // console.log(url);
     // var socket = io.connect('https://matta.herokuapp.com');
     $scope.contentLoader = true;
     $scope.userLoader = true;
