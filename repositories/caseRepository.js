@@ -32,7 +32,7 @@ var caseRepo = module.exports = {
             Email: data.ComplaintId.TPEmail,
             SecretToken: secretToken,
             CaseId: caseId,
-            userId: key,
+            userId: userId,
             DateInvited: currentDate
         }, function (err, data) {
             callback(data);
@@ -87,14 +87,15 @@ var caseRepo = module.exports = {
             var inviteeName = data.ComplaintId.TPName;
             var path = rootPath + '/views/Invite.html';
             var secretToken = utility.randomNumber.generateRan(8);
-            mail.mail(path, secretToken, data.ComplaintId.TPEmail, inviteeName, 'MATTA needs you!', cb => {
+            await mail.mail(path, secretToken, data.ComplaintId.TPEmail, inviteeName, 'MATTA needs you!', async cb => {
                 if (cb === 1) {
-                    utility.createuser(req, res, cb => {
+                    await utility.createuser(secretToken, data.ComplaintId.TPEmail, '000000', 'invitee', cb => {
+                        console.log(cb);
                         caseRepo.AddInvitee(data, secretToken, caseId, cb.id, async function (_invitee) {
                             if (_invitee) {
                                 await model.ConversationModel.create({
                                     CaseId: caseId,
-                                    ParticipantId: key
+                                    ParticipantId: cb.id
                                 }, function (err, conversation) {
                                     if (conversation)
                                         callback(_invitee);

@@ -4,7 +4,7 @@ var bcrypt = require('bcrypt-nodejs')
 var SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
-    username: { type: String, required: true },
+    username: { type: String, unique: true, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
     role: { type: String, required: true },
@@ -20,24 +20,30 @@ var MediatorDataSchema = new Schema({
     IsVerified: { type: Boolean, required: true }
 })
 
-// UserSchema.pre('save', function (next) {
-//     var user = this;
-//     // only hash the password if it has been modified (or is new)
-//     if (!user.isModified(user.Password)) return next();
-//     // generate a salt
-//     bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-//         if (err) return next(err);
-//         console.log(salt);
-//         // hash the password using our new salt
-//         bcrypt.hash(user.Password, salt, function (err, hash) {
-//             if (err) return next(err);
-//             console.log(hash);
-//             // override the cleartext password with the hashed one
-//             user.Password = hash;
-//             next();
-//         });
-//     });
-// });
+UserSchema.pre('save', function (next) {
+    var user = this;
+    // only hash the password if it has been modified (or is new)
+    // if (!user.isModified(user.password)) return next();
+    // generate a salt
+    if (user.password !== '000000') {
+        if (this.isModified(user.password) || this.isNew) {
+            bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+                if (err) return next(err);
+                // console.log(salt);
+                // hash the password using our new salt
+                bcrypt.hash(user.password, salt, null, function (err, hash) {
+                    if (err) return next(err);
+                    // override the cleartext password with the hashed one
+                    user.password = hash;
+                    next();
+                });
+            });
+        }
+    }
+    else {
+        next();
+    }
+});
 
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {

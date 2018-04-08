@@ -16,10 +16,10 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
 
     $scope.Complaints();
 
-    $scope.$on('$viewContentLoaded', function(){
+    $scope.$on('$viewContentLoaded', function () {
         //Here your view content is fully loaded !!
         console.log('loaded');
-      });
+    });
 
     $scope.btnChat = function () {
         $scope.searchButtonText = "chat";
@@ -252,6 +252,9 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                     inherit: false,
                     notify: true
                 });
+                $('#myModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
             }
             if (response.data.status == 0) toastr["error"]("Error," + " " + response.data.message);
         });

@@ -1,43 +1,45 @@
 <div style="height:100px;"></div>
-    <div class="ibox">
-        <div class="lock-header m-b-20">Have you opened a file with us?</div>
-        <div class="ibox-body">
-            <!-- <div class="row">
+<div class="ibox">
+    <div class="lock-header m-b-20">Have you opened a file with us?</div>
+    <div class="ibox-body">
+        <!-- <div class="row">
                 <div class="col-md-12">
                     <img class="img-circle center" src="../content/dashboard/assets/img/users/u3.jpg" width="110px" />
                 </div>
             </div> -->
-            <div class="row">
-                <form class="col-12" id="reg-form" action="javascript:void(0)" name="myForm">
-                    <!-- <h5 class="font-strong m-b-10 text-center">James Brown</h5> -->
-                    <p class="font-13 text-center">Please enter your MATTA PIN to enter the ODR Portal</p>
-                    <div class="form-group">
-                        <input style="padding: 11px 10px;" ng-model="firstname" class="form-control" type="text" name="firstname" placeholder="Enter First Name ">
-                    </div>
-                    <div class="form-group">
-                        <input style="padding: 11px 10px;" ng-model="lastname" class="form-control" type="text" name="lastname" placeholder="Enter Last Name ">
-                    </div>
-                    <div class="form-group">
-                        <input style="padding: 11px 10px;" ng-model="email" class="form-control" type="email" name="email" placeholder="Enter Email Address ">
-                    </div>
-                    <div class="form-group">
-                        <input style="padding: 11px 10px;" ng-model="password" class="form-control" type="password" id="password" name="password" placeholder="Enter Password">
-                    </div>
-                    <div class="form-group">
-                        <input style="padding: 11px 10px;" ng-model="repeatpassword" class="form-control" type="password" name="repeatpassword" placeholder="Repeat Password">
-                    </div>
-                    <div class="form-group">
-                        <button id="btnReg" style="padding: 15px;" class="btn btn-success btn-block" ng-click="myForm.$valid && btnReg()" type="submit">
-                            <i class="ti-unlock m-r-5"></i>Register</button>
-                    </div>
-                    <input type="hidden" name="role" ng-model="role" value="mediator">
-                    <p>Already have an Account?
-                        <a href="/login"> Login here</a>
-                    </p>
-                </form>
-            </div>
+        <div class="row">
+            <form class="col-12" id="reg-form" action="javascript:void(0)" name="myForm">
+                <!-- <h5 class="font-strong m-b-10 text-center">James Brown</h5> -->
+                <p class="font-13 text-center">Please enter your MATTA PIN to enter the ODR Portal</p>
+                <div class="form-group">
+                    <input style="padding: 11px 10px;" ng-model="firstname" class="form-control" type="text" name="firstname" placeholder="Enter First Name ">
+                </div>
+                <div class="form-group">
+                    <input style="padding: 11px 10px;" ng-model="lastname" class="form-control" type="text" name="lastname" placeholder="Enter Last Name ">
+                </div>
+                <div class="form-group">
+                    <input style="padding: 11px 10px;" ng-model="email" class="form-control" type="email" name="email" placeholder="Enter Email Address ">
+                </div>
+                <div class="form-group">
+                    <input style="padding: 11px 10px;" ng-model="password" class="form-control" type="password" id="password" name="password"
+                        placeholder="Enter Password">
+                </div>
+                <div class="form-group">
+                    <input style="padding: 11px 10px;" ng-model="repeatpassword" class="form-control" type="password" name="repeatpassword" placeholder="Repeat Password">
+                </div>
+                <div class="form-group">
+                    <button id="btnReg" style="padding: 15px;" class="btn btn-success btn-block" ng-disabled="!firstname || !lastname || !email || !password || !repeatpassword || password!==repeatpassword"
+                        ng-click="btnReg()" type="submit">
+                        <i class="ti-unlock m-r-5"></i>Register</button>
+                </div>
+                <input type="hidden" name="role" ng-model="role" value="mediator">
+                <p>Already have an Account?
+                    <a href="/login"> Login here</a>
+                </p>
+            </form>
         </div>
     </div>
+</div>
 
 
 <script type="text/javascript">
@@ -45,7 +47,8 @@
         $('#reg-form').validate({
             errorClass: "help-block",
             rules: {
-                fullname: { required: true },
+                firstname: { required: true },
+                lastname: { required: true },
                 email: { required: true },
                 password: { required: true, minlength: 6 },
                 repeatpassword: { required: true },
@@ -62,17 +65,17 @@
         });
     });
 
-    function btnReg() {
-        var form = $('#reg-form');
-        var v = form.serializeJSON();
-        $.post("/register", v, function (response) {
-            // alert(response);
-            if (response == 1) {
-                window.location.href = '/portal';
-            }
-            toastr["error"]("Sorry," + " " + response);
-            $(':input[type="submit"]').prop('disabled', true);
-        });
-    }
+    // function btnReg() {
+    //     var form = $('#reg-form');
+    //     var v = form.serializeJSON();
+    //     $.post("/register", v, function (response) {
+    //         // alert(response);
+    //         if (response == 1) {
+    //             window.location.href = '/portal';
+    //         }
+    //         toastr["error"]("Sorry," + " " + response);
+    //         $(':input[type="submit"]').prop('disabled', true);
+    //     });
+    // }
 
 </script>
