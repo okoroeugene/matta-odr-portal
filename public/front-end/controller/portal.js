@@ -9,6 +9,12 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
     // };
     // $scope.start();
 
+    $scope.divHide = true;
+    $scope.$on('$viewContentLoaded', function () {
+        $scope.divHide = false;
+        $scope.divShow = true;
+    });
+
     $scope.PaymentStatusInit = function () {
         $scope.verifyPayment = async function () {
             await $http.get('/verifypayment').then(function (response) {

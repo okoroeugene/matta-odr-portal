@@ -75,6 +75,23 @@ img.center {
     position: relative;
 }
 
+.text-loader-img {
+    animation-duration: 1s;
+    border-radius: 50px;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: placeHolderShimmer;
+    animation-timing-function: linear;
+    background: #f6f7f8;
+    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+    background-size: 800px 104px;
+    height: 100px;
+    width: 100px;
+    position: relative;
+    display: block;
+    margin: 0 auto;
+}
+
 .text-loader-sm {
     animation-duration: 1s;
     border-radius: 5px;

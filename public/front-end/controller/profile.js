@@ -2,6 +2,12 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
 
     var currentId = $stateParams.id;
 
+    $scope.divHide = true;
+    $scope.$on('$viewContentLoaded', function () {
+        $scope.divHide = false;
+        $scope.divShow = true;
+    });
+
     $scope.allcomplaints = [];
     $scope.Complaints = async function () {
         await $http.get('/allcomplaints').then(function (response) {

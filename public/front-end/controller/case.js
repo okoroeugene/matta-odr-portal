@@ -8,7 +8,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     var currentId = $stateParams.id;
 
     $scope.Complaints = async function () {
-        await $http.get('/complaints').then(function (response) {
+        await $http.get('/complaints', { cache: true}).then(function (response) {
             if (response.data === 0) window.location = '/';
             else {
                 $scope.allcomplaints = response.data;
@@ -18,9 +18,10 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
 
     $scope.Complaints();
 
+    $scope.divHide = true;
     $scope.$on('$viewContentLoaded', function () {
-        //Here your view content is fully loaded !!
-        console.log('loaded');
+        $scope.divHide = false;
+        $scope.divShow = true;
     });
 
     $scope.btnChat = function () {
@@ -91,7 +92,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     };
 
     $scope.getCaseData = async function () {
-        await $http.get('/casedata/' + currentId).then(function (response) {
+        await $http.get('/casedata/' + currentId, { cache: true}).then(function (response) {
             // $timeout(function () {
 
             // }, 6000);
@@ -122,7 +123,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.currentPage = 1;
     $scope.chats = [];
     $scope.getCaseChat = async function () {
-        await $http.get('/casechat/' + currentId).then(function (response) {
+        await $http.get('/casechat/' + currentId, { cache: true}).then(function (response) {
             $scope.chats = response.data;
             $scope.chatDisplay();
         });
@@ -293,7 +294,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.getrole();
 
     $scope.checkInvite = function () {
-        $http.get('/checkinvite/' + currentId).then(function (response) {
+        $http.get('/checkinvite/' + currentId, { cache: true}).then(function (response) {
             if (response.data == 1) $scope.IsInvited = true;
             else $scope.IsInvited = false;
         });
@@ -426,7 +427,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     }
 
     $scope.getuserId = async function () {
-        await $http.get('/getuserid').then(function (response) {
+        await $http.get('/getuserid', { cache: true}).then(function (response) {
             $scope.userId = response.data;
         });
     }

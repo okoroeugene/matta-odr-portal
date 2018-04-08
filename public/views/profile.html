@@ -8,13 +8,51 @@
     </ol>
 </div>
 
-<div class="page-content" style="font-size: 12px;">
+<div class="page-content" ng-show="divHide">
+    <div class="row">
+        <div class="col-lg-3 col-md-4">
+            <div class="ibox">
+                <div class="ibox-body text-center">
+                    <div class="text-loader-img"></div>
+                    <br>
+                    <div class="text-loader-lg"></div>
+                    <br>
+                    <div class="text-loader-lg"></div>
+                    <br>
+                    <div class="text-loader-lg"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-8">
+            <div class="ibox">
+                <div class="ibox-body">
+                    <div class="text-loader-lg"></div>
+                    <br>
+                    <div class="text-loader-lg"></div>
+                    <br>
+                    <div class="text-loader-lg"></div>
+                    <div style="height: 100px;"></div>
+                    <div class="text-loader-lg"></div>
+                    <br>
+                    <div class="text-loader-lg"></div>
+                    <br>
+                    <div class="text-loader-lg"></div>
+                    <div style="height: 100px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Display DIV after page is fully LOADED-->
+<div class="page-content" style="font-size: 12px;" ng-show="divShow">
     <div class="row">
         <div class="col-lg-3 col-md-4">
             <div class="ibox">
                 <div class="ibox-body text-center">
                     <ul class="nav pull-right navbar-toolbar">
-                            <li class="dropdown dropdown-inbox">
+                        <li class="dropdown dropdown-inbox">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown">
                                 <i style="font-size: 25px;" class="ti-more pull-right"></i>
                             </a>
@@ -36,24 +74,24 @@
                                         </a>
 
                                         <a class="list-group-item">
-                                                <div class="media">
-                                                    <div class="media-img">
-                                                        <span class="badge badge-success badge-circle-big" style="background-color:#ff3547;">
-                                                            <i style="position: relative;top: 1.7px;left: .3px;" class="ti-settings"></i>
-                                                        </span>
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <div class="font-13" style="margin-top: 5px;">Change Password</div>
-                                                        <!-- <small class="text-muted">22 mins</small> -->
-                                                    </div>
+                                            <div class="media">
+                                                <div class="media-img">
+                                                    <span class="badge badge-success badge-circle-big" style="background-color:#ff3547;">
+                                                        <i style="position: relative;top: 1.7px;left: .3px;" class="ti-settings"></i>
+                                                    </span>
                                                 </div>
-                                            </a>
+                                                <div class="media-body">
+                                                    <div class="font-13" style="margin-top: 5px;">Change Password</div>
+                                                    <!-- <small class="text-muted">22 mins</small> -->
+                                                </div>
+                                            </div>
+                                        </a>
                                     </div>
                                 </li>
                             </ul>
                         </li>
                     </ul>
-                    
+
                     <div class="m-t-20">
                         <img ng-if="mediatorData.Image === null" class="img-circle" style="width: 100px; height: 100px;" src="../Images/u1.png" />
                         <img ng-if="mediatorData.Image !== null" class="img-circle" style="width: 100px; height: 100px;object-fit: contain;" src="../uploads/{{mediatorData.Image.Image}}"
@@ -62,7 +100,8 @@
                     <br>
                     <h5 style="font-size: 23px;font-weight: 400!important;" class="font-strong m-b-10 m-t-10">{{showUserName}}</h5>
                     <img ng-if="mediatorData.MedProfileData.IsVerified === true" src="../Images/icon-41-512.png" width="40" style="display:block; margin:0 auto;">
-                    <img ng-if="mediatorData.MedProfileData.IsVerified === false || !mediatorData.MedProfileData.IsVerified" src="../Images/Red_Cross.png" width="60" style="display:block; margin:0 auto;">
+                    <img ng-if="mediatorData.MedProfileData.IsVerified === false || !mediatorData.MedProfileData.IsVerified" src="../Images/Red_Cross.png"
+                        width="60" style="display:block; margin:0 auto;">
                     <div ng-if="mediatorData.MedProfileData.IsVerified === true" class="m-b-20 text-muted">Verified</div>
                     <div ng-if="mediatorData.MedProfileData.IsVerified === false || !mediatorData.MedProfileData.IsVerified" class="m-b-20 text-muted">Not Verified</div>
                     <!-- @*<div class="profile-social m-b-20"><a href="javascript:;"><i class="fa fa-twitter"></i></a><a href="javascript:;"><i class="fa fa-facebook"></i></a><a href="javascript:;"><i class="fa fa-pinterest"></i></a><a href="javascript:;"><i class="fa fa-dribbble"></i></a></div>*@ -->
@@ -90,7 +129,8 @@
                             <a class="nav-link" href="#tab-2" data-toggle="tab">
                                 <i style="font-size: 20px; text-align:center; display:block; margin:0 auto;" class="ti-credit-card"></i>
                                 <br> Awaiting Payment
-                                <span style="background-color: rgb(119, 84, 247);" ng-if="(awaitingPayment | filter:{IsPaymentMade:'false'}).length > 0" class="badge badge-danger badge-circle newBadge newLabel m-r-5 m-b-5">{{(awaitingPayment | filter:{IsPaymentMade:'false'}).length}}</span>
+                                <span style="background-color: rgb(119, 84, 247);" ng-if="(awaitingPayment | filter:{IsPaymentMade:'false'}).length > 0"
+                                    class="badge badge-danger badge-circle newBadge newLabel m-r-5 m-b-5">{{(awaitingPayment | filter:{IsPaymentMade:'false'}).length}}</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -145,7 +185,8 @@
                                             </a>
                                             <br>
                                             <a class="product-name" href="javascript:;">{{data.ComplaintId.UName}}</a>
-                                            <div>{{data.ComplaintId.Complaint | limitTo: 100}}{{data.ComplaintId.Complaint.length > 20 ? '...' : ''}}</div>
+                                            <div>{{data.ComplaintId.Complaint | limitTo: 100}}{{data.ComplaintId.Complaint.length
+                                                > 20 ? '...' : ''}}</div>
                                             <div style="position: absolute;bottom: 8px;" class="m-t-10 d-flex justify-content-between align-items-center">
                                                 <h3 style="color: #898686;">&#8358;{{data.Amount}}</h2>
                                                     <!-- <button ng-click="AcceptCase(data._id)" class="btn btn-outline-info btn-rounded">
@@ -319,7 +360,8 @@
                                 <div class="col-md-5">
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon3">&#8358;</span>
-                                        <input style="padding: 12px 0px 12px 30px;" ng-model="cost" name="cost" id="cost" type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                                        <input style="padding: 12px 0px 12px 30px;" ng-model="cost" name="cost" id="cost" type="text" class="form-control" id="basic-url"
+                                            aria-describedby="basic-addon3">
                                     </div>
                                     <!-- <div class="input-icon">
                                         <i>&#8358;</i>

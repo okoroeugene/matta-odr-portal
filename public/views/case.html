@@ -17,8 +17,32 @@
         border-radius: 50px 0 0 50px!Important;
     }
 </style>
+<div class="page-content" ng-show="divHide">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="ibox">
+                <div class="ibox-body">
+                    <div class="text-loader-lg"></div>
+                    <br>
+                    <div class="text-loader-lg"></div>
+                    <br>
+                    <div class="text-loader-lg"></div>
+                    <div style="height: 100px;"></div>
+                    <div class="text-loader-lg"></div>
+                    <br>
+                    <div class="text-loader-lg"></div>
+                    <br>
+                    <div class="text-loader-lg"></div>
+                    <div style="height: 100px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div style="font-size: 11.5px!Important;">
+
+<!--Display DIV after page is fully LOADED-->
+<div style="font-size: 11.5px!Important;" ng-show="divShow">
     <!-- style="pointer-events: none;opacity: 0.2;" -->
     <div class="page-content">
 
@@ -120,15 +144,16 @@
                                         <i class="fa fa-edit"></i>
                                     </a> -->
                                     <ul style="position: relative;bottom: 8px;" ng-if="userId == data.SenderId" class="nav pull-right navbar-toolbar moreTab">
-                                            <li class="dropdown dropdown-inbox">
+                                        <li class="dropdown dropdown-inbox">
                                             <a class="nav-link dropdown-toggle" data-toggle="dropdown">
                                                 <i style="font-size: 20px;" class="ti-more pull-right"></i>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media" style="transform: translate3d(5px, 18px, 0px)!Important;">
                                                 <li class="list-group list-group-divider newDivider" data-color="#71808f">
                                                     <div style="padding:5px;">
-                                                        <a href="javascript:void(0)" ng-click="btnEditContent(data._id)" ng-if="userId == data.SenderId && data.File === null"
-                                                        data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myEditContentModal" class="list-group-item">
+                                                        <a href="javascript:void(0)" ng-click="btnEditContent(data._id)" ng-if="userId == data.SenderId && data.File === null" data-backdrop="static"
+                                                            data-keyboard="false" data-toggle="modal" data-target="#myEditContentModal"
+                                                            class="list-group-item">
                                                             <div class="media">
                                                                 <div class="media-img">
                                                                     <span class="badge badge-success badge-circle-big" style="background-color:#00c851;">
@@ -141,20 +166,20 @@
                                                                 </div>
                                                             </div>
                                                         </a>
-                
+
                                                         <a href="javascript:void(0)" ng-click="btnDeleteContent(data._id)" ng-if="userId == data.SenderId" class="list-group-item">
-                                                                <div class="media">
-                                                                    <div class="media-img">
-                                                                        <span class="badge badge-success badge-circle-big" style="background-color:#ff3547;">
-                                                                            <i class="fa fa-times"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                    <div class="media-body">
-                                                                        <div class="font-13" style="margin-top: 5px;">Delete</div>
-                                                                        <!-- <small class="text-muted">22 mins</small> -->
-                                                                    </div>
+                                                            <div class="media">
+                                                                <div class="media-img">
+                                                                    <span class="badge badge-success badge-circle-big" style="background-color:#ff3547;">
+                                                                        <i class="fa fa-times"></i>
+                                                                    </span>
                                                                 </div>
-                                                            </a>
+                                                                <div class="media-body">
+                                                                    <div class="font-13" style="margin-top: 5px;">Delete</div>
+                                                                    <!-- <small class="text-muted">22 mins</small> -->
+                                                                </div>
+                                                            </div>
+                                                        </a>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -388,7 +413,7 @@
                                 <div class="text-loader-lg"></div>
                                 <br>
                             </div>
-    
+
                             <span ng-show="userData">
                                 <b>Third Party Name</b>
                                 <span>: {{showData.ComplaintId.TPName}}</span>
@@ -399,7 +424,8 @@
                                     <br>
                                     <div class="row">
                                         <div class="btn-group-justified col-md-12">
-                                            <a style="margin:0 auto;display:block;text-align:center;" ng-if="IsInvited == false" ng-click="btnInvite(showData._id)" style="font-size: 12px;" class="btn btn-success" href="javascript:;">Invite Third Party</a>
+                                            <button id="btnInvite" style="margin:0 auto;display:block;text-align:center;" ng-if="IsInvited == false" ng-click="btnInvite(showData._id)" style="font-size: 12px;"
+                                                class="btn btn-success" href="javascript:;">Invite Third Party</button>
                                             <!-- <a style="font-size: 12px;" class="btn btn-default" href="javascript:;">Close Case</a> -->
                                         </div>
                                         <span style="margin:0 auto;display:block;text-align:center;" ng-if="IsInvited == true" class="badge badge-success">Invited</span>
