@@ -159,7 +159,7 @@ module.exports.Authorize = {
             console.log(error);
         }
     },
-    invitee: async function (re, res, next) {
+    invitee: async function (req, res, next) {
         try {
             var url = req.url;
             req.session.returnUrl = url;
@@ -168,6 +168,22 @@ module.exports.Authorize = {
                 await model.UserModel.findById(req.user.id, function (err, data) {
                     var url = req.url;
                     if (data.role !== 'invitee') res.redirect('/login?returnUrl=' + url);
+                    else next();
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    admin: async function (req, res, next) {
+        try {
+            var url = req.url;
+            req.session.returnUrl = url;
+            if (req.user === undefined) res.redirect('/login?returnUrl=' + url);
+            else {
+                await model.UserModel.findById(req.user.id, function (err, data) {
+                    var url = req.url;
+                    if (data.role !== 'admin') res.redirect('/login?returnUrl=' + url);
                     else next();
                 });
             }

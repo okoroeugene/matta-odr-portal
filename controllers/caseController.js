@@ -76,6 +76,7 @@ module.exports.inviteUser = async function (req, res) {
         .exec(function (err, data) {
             // console.log(data);
             caseService.SendMailToInvitee(data, caseId, function (_result) {
+                if (_result === 0) res.json({ status: 0 });
                 if (_result) res.json({ status: 1 });
                 else res.json({ status: 0 });
             });

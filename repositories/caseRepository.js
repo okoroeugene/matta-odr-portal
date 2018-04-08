@@ -90,7 +90,6 @@ var caseRepo = module.exports = {
             await mail.mail(path, secretToken, data.ComplaintId.TPEmail, inviteeName, 'MATTA needs you!', async cb => {
                 if (cb === 1) {
                     await utility.createuser(secretToken, data.ComplaintId.TPEmail, '000000', 'invitee', cb => {
-                        console.log(cb);
                         caseRepo.AddInvitee(data, secretToken, caseId, cb.id, async function (_invitee) {
                             if (_invitee) {
                                 await model.ConversationModel.create({
@@ -104,6 +103,7 @@ var caseRepo = module.exports = {
                         });
                     });
                 }
+                else callback(0);
             });
         }
     }

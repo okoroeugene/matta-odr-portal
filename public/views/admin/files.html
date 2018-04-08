@@ -1,0 +1,84 @@
+<div class="ibox" style="font-size:12px;">
+        <div class="ibox-head">
+          <div class="ibox-title">Cases</div>
+        </div>
+        <div class="ibox-body">
+          <div class="table-responsive">
+            <table class="table table-stripped">
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  <th>File Number</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email</th>
+                  <th>Date Created</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="data in files">
+                  <td>{{$index + 1}}</td>
+                  <td>{{data.filecode}}</td>
+                  <td>{{data.firstname}}</td>
+                  <td>{{data.lastname}}</td>
+                  <td>{{data.email}}</td>
+                  <td>{{data.date | date : "MMM d, y h:mm a"}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-md">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Complaints Details</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table table-stripped">
+                <thead>
+                  <tr>
+                    <th>Complaint</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{complaintdata.Complaint}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                <b>Cost</b>
+                <div class="form-group">
+                  <input class="form-control" ng-model="cost" placeholder="Enter due Cost">
+                </div>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button ng-style="backgroundColor" class="btn btn-success" ng-click="btnAssignPayment(complaintdata._id)" type="button">
+                </i> Assign Cost</button>
+            </div>
+          </div>
+      
+        </div>
+      </div>
+      
+      <script>
+        $(document).ready(function () {
+          var socket = io.connect('http://localhost:3005');
+          $('#btnAlert').click(function (e) {
+            socket.emit('notify', 'Hello');
+          })
+      
+          socket.on('notifyCount', function (data) {
+            alert(data);
+          });
+        })
+      </script>

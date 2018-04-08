@@ -91,16 +91,8 @@ app.post('/InviteThirdParty', caseCtrl.inviteUser);
 app.get('/checkinvite/:id', caseCtrl.checkinvite);
 app.post('/uploadfile/:id', upload.array('uploadfile', 6), utility.Authorize.all, caseCtrl.uploadfile)
 app.get('/pending', utility.Authorize.user, complaintsCtrl.pendingcomplaint);
-app.get('/admin', function (req, res) {
-    res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
-})
-app.get('/admin/complaints', function (req, res) {
-    res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
-})
 app.get('/allcomplaints', complaintsCtrl.allcomplaints);
-app.get('/admin/mediators', function (req, res) {
-    res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
-})
+
 app.get('/validate', function (req, res) {
     if (req.session.fileNumber === undefined)
         res.redirect('/open-file');
@@ -139,12 +131,32 @@ app.get('/getNewRegData', fileCtrl.getNewRegData);
 app.post('/createmediatorprofile', utility.Authorize.mediator, upload.single('MediatorCert'), mediatorCtrl.createmediatorprofile);
 app.post('/uploadmediatorcert', upload.single('MediatorCert'), mediatorCtrl.uploadmediatorcert);
 app.get('/existingmediatorprofile', utility.Authorize.mediator, mediatorCtrl.existingmediatorprofile);
-app.post('/verifymediator/:id', adminCtrl.verifymediator);
-app.post('/unverifymediator/:id', adminCtrl.unverifymediator);
+
 app.get('/getuserid', authCtrl.getuserid);
 app.get('/GetChatDataById/:id', caseCtrl.GetChatDataById);
 app.post('/updatechatcontent/:id', caseCtrl.updatechatcontent);
 app.post('/MarkAsResolved/:id', caseCtrl.MarkAsResolved);
+
+
+
+//ADMIN
+app.get('/admin/mediators', utility.Authorize.admin, function (req, res) {
+    res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
+})
+app.get('/admin/files', utility.Authorize.admin, function (req, res) {
+    res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
+})
 app.post('/DeleteChatContent/:id', caseCtrl.DeleteChatContent);
 app.get('/getcounts', adminCtrl.getcounts);
+app.get('/admin/allfiles', utility.Authorize.admin, adminCtrl.allfiles);
+app.post('/verifymediator/:id', adminCtrl.verifymediator);
+app.post('/unverifymediator/:id', adminCtrl.unverifymediator);
+app.get('/admin', utility.Authorize.admin, function (req, res) {
+    res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
+})
+app.get('/admin/complaints', utility.Authorize.admin, function (req, res) {
+    res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
+})
+
+
 // app.post('/previewfile', upload.array('Images', 6), utility.Authorize.all, caseCtrl.previewfile)

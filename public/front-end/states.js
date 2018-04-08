@@ -201,7 +201,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
         .state('tips', {
             url: '/legal-tips',
             data: {
-                pageTitle: 'Error'
+                pageTitle: 'Legal Tips'
             },
             templateUrl: '../views/legal-tips.html',
             controller: 'authController'
@@ -210,7 +210,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
         .state('validate', {
             url: '/validate',
             data: {
-                pageTitle: 'Error'
+                pageTitle: 'Validate User'
             },
             templateUrl: '../views/validate.html',
             controller: 'authController'
@@ -219,12 +219,21 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
         .state('mediatorProfile', {
             url: '/mediator-profile',
             data: {
-                pageTitle: 'Error'
+                pageTitle: 'Update Mediator Profile'
             },
             templateUrl: '../views/mediator-profile.html',
             controller: 'profileController'
         })
 
+
+        .state('files', {
+            url: '/admin/files',
+            data: {
+                pageTitle: 'All Opened Files'
+            },
+            templateUrl: '../views/admin/files.html',
+            controller: 'adminController'
+        })
         .state('error', {
             url: '/error',
             data: {

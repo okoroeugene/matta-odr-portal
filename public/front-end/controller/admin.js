@@ -63,6 +63,13 @@ myApp.controller('adminController', ['$scope', '$state', '$stateParams', '$http'
         });
     }
     $scope.getCounts();
+
+    $scope.getAllFiles = async function() {
+        await $http.get('/admin/allfiles').then(function(response){
+            $scope.files = response.data;
+        });
+    }
+    $scope.getAllFiles();
     
     $scope.btnAssignPayment = function (res) {
         var a = {

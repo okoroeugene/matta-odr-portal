@@ -63,7 +63,7 @@
                 <a class="dropdown-item" href="profile.html">
                   <i class="ti-settings"></i>Settings</a>
                 <li class="dropdown-divider"></li>
-                <a class="dropdown-item" href="#" ng-click="logout()">
+                <a class="dropdown-item" href="javascript:void(0)" ng-click="logout()">
                     <i class="ti-power-off"></i>Logout</a>
               </ul>
             </li>
@@ -80,7 +80,11 @@
               </a>
             </li>
             <li class="dropdown">
-              <a class="dropdown-toggle" href="/admin/complaints" data-toggle="dropdown">Complaints
+                <a class="dropdown-toggle" href="/admin/files">Files
+                </a>
+              </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" href="/admin/complaints">Complaints
               </a>
             </li>
             <!-- <li class="dropdown">
@@ -91,10 +95,10 @@
               <a class="dropdown-toggle" href="/admin/mediators">Mediator Management
               </a>
             </li>
-            <li class="dropdown">
+            <!-- <li class="dropdown">
               <a class="dropdown-toggle" href="/admin/tips">Legal Tips
               </a>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
@@ -137,79 +141,6 @@
   </form>
   <!-- END SEARCH PANEL-->
   <!-- BEGIN THEME CONFIG PANEL-->
-  <div class="theme-config">
-    <div class="theme-config-toggle">
-      <i class="ti-settings theme-config-show"></i>
-      <i class="ti-close theme-config-close"></i>
-    </div>
-    <div class="theme-config-box">
-      <div class="text-center font-18 m-b-20">SETTINGS</div>
-      <div class="font-strong">LAYOUT OPTIONS</div>
-      <div class="check-list m-b-20 m-t-10">
-        <label class="ui-checkbox ui-checkbox-gray">
-          <input type="checkbox" id="_fixedNavbar">
-          <span class='input-span'></span>Fixed navbar</label>
-        <label class="ui-checkbox ui-checkbox-gray">
-          <input type="checkbox" id="_drawerSidebar">
-          <span class='input-span'></span>Drawer sidebar</label>
-        <label class="ui-checkbox ui-checkbox-gray">
-          <input type="checkbox" class='js-sidebar-toggler'>
-          <span class='input-span'></span>Collapse sidebar</label>
-      </div>
-      <div class="font-strong">LAYOUT STYLE</div>
-      <div class="m-t-10">
-        <label class="ui-radio ui-radio-gray m-r-10">
-          <input type="radio" name="layout-style" value=''>
-          <span class='input-span'></span>Fluid</label>
-        <label class="ui-radio ui-radio-gray">
-          <input type="radio" name="layout-style" value="1" checked>
-          <span class='input-span'></span>Boxed</label>
-      </div>
-      <div class="m-t-20 m-b-10 font-strong">THEME COLORS</div>
-      <div>
-        <div class="color-skin-box bg-ebony" data-toggle="tooltip" data-original-title="Default">
-          <label>
-            <input type="radio" name="setting-theme" value="default" checked>
-            <span class="color-check-icon">
-              <i class="fa fa-check"></i>
-            </span>
-          </label>
-        </div>
-        <div class="color-skin-box bg-green" data-toggle="tooltip" data-original-title="Green">
-          <label>
-            <input type="radio" name="setting-theme" value="green">
-            <span class="color-check-icon">
-              <i class="fa fa-check"></i>
-            </span>
-          </label>
-        </div>
-        <div class="color-skin-box bg-blue" data-toggle="tooltip" data-original-title="Blue">
-          <label>
-            <input type="radio" name="setting-theme" value="blue">
-            <span class="color-check-icon">
-              <i class="fa fa-check"></i>
-            </span>
-          </label>
-        </div>
-        <div class="color-skin-box bg-purple" data-toggle="tooltip" data-original-title="Purple">
-          <label>
-            <input type="radio" name="setting-theme" value="purple">
-            <span class="color-check-icon">
-              <i class="fa fa-check"></i>
-            </span>
-          </label>
-        </div>
-        <div class="color-skin-box bg-silver" data-toggle="tooltip" data-original-title="Light">
-          <label>
-            <input type="radio" name="setting-theme" value="light">
-            <span class="color-check-icon">
-              <i class="fa fa-check"></i>
-            </span>
-          </label>
-        </div>
-      </div>
-    </div>
-  </div>
   <!-- END THEME CONFIG PANEL-->
   <!-- BEGIN PAGA BACKDROPS-->
   <div class="sidenav-backdrop backdrop"></div>

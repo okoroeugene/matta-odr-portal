@@ -10,6 +10,7 @@ var passport = index.myPassport;
 var LocalStrategy = require('passport-local').Strategy;
 var session = require('../Helpers/session');
 var cookieParser = require('cookie-parser');
+var bcrypt = require('bcrypt-nodejs')
 // var methodOverride = require('method-override')
 
 
@@ -31,17 +32,25 @@ passport.deserializeUser((userId, done) => {
 })
 
 passport.use('local-sign-in', new LocalStrategy({
-    usernameField : 'username',
-    passwordField : 'password',
+    usernameField: 'username',
+    passwordField: 'password',
     passReqToCallback: true
 },
     function (req, username, password, done) {
         model.UserModel.findOne({ username: username }, function (err, user) {
             if (err) { return done(err); }
             if (!user) { return done(null, false); }
-            if (user.password != password) { return done(null, false, { message: 'bad password' }); }
+            bcrypt.compare(password, user.password, function (err, res) {
+                if (res) {
+                    // Passwords match
+                    return done(null, user);
+                } else {
+                    // Passwords don't match
+                    return done(null, false, { message: 'bad password' });
+                }
+            });
+            // if (user.password != password) { return done(null, false, { message: 'bad password' }); }
             // console.log(user)
-            return done(null, user);
         });
     }
 ));

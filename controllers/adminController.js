@@ -18,6 +18,12 @@ module.exports.unverifymediator = async function (req, res) {
     });
 }
 
+module.exports.allfiles = async function (req, res) {
+    await model.FileModel.find((err, data) => {
+        res.json(data);
+    });
+}
+
 module.exports.getcounts = async function (req, res) {
     var allCounts = [];
     await model.MediatorModel.count(async function (err, data) {

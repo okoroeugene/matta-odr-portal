@@ -18,6 +18,7 @@ var model = require('./models/entitymodels');
 module.exports.myPath = __dirname + '/public';
 var routes = require('./routes');
 var multer = require('multer');
+var utility = require('./Helpers/utility');
 module.exports.multer = multer;
 var server = app.listen(process.env.PORT || 3005)
 var io = require('socket.io').listen(server);
@@ -59,12 +60,8 @@ mongoose.connect('mongodb://127.0.0.1/mattaDb', (err, database) => {
 
 //Create first admin user
 app.post('/CreateAdminUser', async function (req, res) {
-    await model.UserModel.create({
-        username: req.body.email,
-        email: req.body.email,
-        Password: req.body.password,
-    }, async function (err, new_user) {
-        if (new_user) { }
+    utility.createuser('admin', 'admin@matta.com.ng', '@matta123#', 'admin', async cb => {
+        //Successful
     });
 });
 

@@ -60,6 +60,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
                     if (response.data.role === 'user') window.location.href = '/pending';
                     if (response.data.role === 'mediator') window.location.href = '/profile';
                     if (response.data.role === 'invitee') window.location.href = '/case';
+                    if (response.data.role === 'admin') window.location.href = '/admin';
                 }
             }
 
