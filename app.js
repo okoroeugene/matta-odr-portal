@@ -59,7 +59,7 @@ mongoose.connect('mongodb://matta:matta123@ds237409.mlab.com:37409/heroku_24p8v7
 });
 
 //Create first admin user
-app.post('/CreateAdminUser', async function (req, res) {
+app.get('/CreateAdminUser', async function (req, res) {
     utility.createuser('admin', 'admin@matta.com.ng', '@matta123#', 'admin', async cb => {
         //Successful
     });
