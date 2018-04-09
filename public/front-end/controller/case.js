@@ -8,7 +8,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     var currentId = $stateParams.id;
 
     $scope.Complaints = async function () {
-        await $http.get('/complaints', { cache: true}).then(function (response) {
+        await $http.get('/complaints').then(function (response) {
             if (response.data === 0) window.location = '/';
             else {
                 $scope.allcomplaints = response.data;
@@ -18,18 +18,20 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
 
     $scope.Complaints();
 
-    // $scope.divHide = true;
-    // $scope.$on('$viewContentLoaded', async function () {
-    //     $scope.divHide = false;
-    //     $scope.divShow = true;
-    // });
+    $scope.divHide = true;
+    $scope.$on('$viewContentLoaded', async function () {
+        $scope.divHide = false;
+        $scope.divShow = true;
+    });
 
     $scope.btnChat = function () {
+        $('#btnChat').prop('disabled', true);
         $scope.searchButtonText = "chat";
         // $scope.start();
         var content = $('.note-editable').html();
         if ($.trim($(".note-editable").html()) == '') {
             toastr["error"]("Error," + " " + "Please enter a valid text...");
+            $('#btnChat').prop('disabled', false);
             return;
         }
 
@@ -92,7 +94,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     };
 
     $scope.getCaseData = async function () {
-        await $http.get('/casedata/' + currentId, { cache: true}).then(function (response) {
+        await $http.get('/casedata/' + currentId).then(function (response) {
             // $timeout(function () {
 
             // }, 6000);
@@ -123,7 +125,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.currentPage = 1;
     $scope.chats = [];
     $scope.getCaseChat = async function () {
-        await $http.get('/casechat/' + currentId, { cache: true}).then(function (response) {
+        await $http.get('/casechat/' + currentId).then(function (response) {
             $scope.chats = response.data;
             $scope.chatDisplay();
         });
@@ -244,6 +246,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
 
     $scope.btnInvite = function (caseId) {
         $('#btnInvite').prop('disabled', true);
+        $('#divLoading').css('display', 'block');
         var req = {
             'caseId': caseId
         }
@@ -255,6 +258,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                     inherit: false,
                     notify: true
                 });
+                $('#divLoading').css('display', 'block');
                 $('#myModal').modal('hide');
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
@@ -294,7 +298,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.getrole();
 
     $scope.checkInvite = function () {
-        $http.get('/checkinvite/' + currentId, { cache: true}).then(function (response) {
+        $http.get('/checkinvite/' + currentId).then(function (response) {
             if (response.data == 1) $scope.IsInvited = true;
             else $scope.IsInvited = false;
         });
@@ -427,7 +431,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     }
 
     $scope.getuserId = async function () {
-        await $http.get('/getuserid', { cache: true}).then(function (response) {
+        await $http.get('/getuserid').then(function (response) {
             $scope.userId = response.data;
         });
     }
@@ -436,7 +440,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.btnEditContent = function (e) {
         $http.get('/GetChatDataById/' + e).then(function (response) {
             $scope.chatData = response.data;
-            $("#contentUpdate").val(response.data.Content);
+            $("#contentUpdate").innerHTML(response.data.Content);
         });
     }
 
@@ -458,7 +462,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
 
     $scope.btnUpdateContent = function (e) {
         var p = {
-            'Content': $('#contentUpdate').val()
+            'Content': $('.note-editable').html()
         }
         $http.post('/updatechatcontent/' + e, p).then(function (response) {
             if (response.data === 1) {
