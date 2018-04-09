@@ -19,6 +19,10 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
                 $scope.allcomplaints = response.data;
                 $scope.divImageHide = false;
                 $scope.divImageShow = true;
+                $scope.divContentHide = false;
+                $scope.divContentShow = true;
+                $scope.divHide = false;
+                $scope.divShow = true;
             }
         })
     }
@@ -225,10 +229,6 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
     $scope.getMediatorData = async function () {
         await $http.get('/getmediatordata').then(function (response) {
             $scope.mediatorData = response.data;
-            $scope.divContentHide = false;
-            $scope.divContentShow = true;
-            $scope.divHide = false;
-            $scope.divShow = true;
         });
     }
     $scope.getMediatorData();
