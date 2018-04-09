@@ -18,7 +18,7 @@ module.exports.GetAllComplaints = function (req, res) {
 
 }
 
-module.exports = {
+var complaintRepo = module.exports = {
     GetComplaintByFileCode: async function (code, callback) {
        await model.ComplaintModel.findOne({ FileCode: code }, function (err, complaintData) {
             if (complaintData) callback(complaintData);
@@ -93,5 +93,33 @@ module.exports = {
             callback(data);
         });
     },
+
+    ValidatePaymentUser: async function (req, res, callback) {
+        await complaintRepo.GetComplaintByFileCode(code, async data => {
+            if (data) {
+                if (data.Status == 0) res.json({ status: 0 });
+                await complaintRepo.GetCasePaymentByComplaintId(data._id, async function (newData) {
+                    if (newData) {
+                        var result = {
+                            'CasePaymentId': newData._id,
+                            'Email': data.UEmail,
+                            'Phone': data.UPhone,
+                            'UName': data.UName,
+                            'TPName': data.TPName,
+                            'FileCode': code,
+                            'Amount': newData.Amount
+                        };
+                        callback(newData, result, data);
+                    }
+                });
+            }
+        });
+    },
+    
+    ValidatePaymentInvitee: async function (req, res, callback) {
+        await complaintRepo.AddCasePayment(req, res, function (data) {
+            callback(data);
+        });
+    }
 }
 

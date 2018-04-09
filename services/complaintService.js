@@ -28,45 +28,35 @@ module.exports.AddCasePayment = function (req, res, callback) {
     });
 }
 
+//GET USER DATE ON DASHBOARD, STATUS CODE 3 IS FOR INVITEE
 module.exports.VerifyAndReturnPaymentData = function (req, res, code) {
-    complaintRepo.GetComplaintByFileCode(code, function (data) {
-        if (data) {
-            if (data.Status == 0) res.json({ status: 0 });
-            complaintRepo.GetCasePaymentByComplaintId(data._id, async function (newData) {
-                if (newData) {
-                    var result = {
-                        'CasePaymentId': newData._id,
-                        'Email': data.UEmail,
-                        'Phone': data.UPhone,
-                        'UName': data.UName,
-                        'TPName': data.TPName,
-                        'FileCode': code,
-                        'Amount': newData.Amount
-                    };
-                    if (newData.IsPaymentMade == true) {
-                        await model.CaseModel.findOne({ ComplaintId: data._id }, function (err, casedata) {
-                            if (casedata) {
-                                res.json({ status: 1, result: result, caseId: casedata._id, mediator: casedata.Mediator_Name });
-                            }
-                            // else res.json({ status: 3, result: result });
-                        });
+    var userId = req.user.id;
+    var role = req.session.role;
+    if (role == 'user') {
+        complaintRepo.ValidatePaymentUser(req, res, async (newData, result, data) => {
+            if (newData.IsPaymentMade == true) {
+                await model.CaseModel.findOne({ ComplaintId: data._id }, function (err, casedata) {
+                    if (casedata) {
+                        res.json({ status: 1, result: result, caseId: casedata._id, mediator: casedata.Mediator_Name });
                     }
-                    else {
-                        res.json({ status: 2, result: result });
-                    }
+                });
+            }
+            else res.json({ status: 2, result: result });
+        });
+    }
+    if (role == 'invitee') {
+        model.InviteeModel.findOne({ userId: req.user.id }).populate('CaseId').exec(async (err, data) => {
+            await model.ComplaintModel.findById(data.CaseId.ComplaintId, function (err, complaintData) {
+                if (complaintData) {
+                    res.json({ status: 3, invData: data, complaintData: complaintData });
                 }
-                // else res.json({ status: 0 });
             });
-        }
-    });
+        });
+    }
 }
 
 module.exports.AddCaseAndUpdate = function (mediatorId, mediatorName, ID, userId, callback) {
     complaintRepo.AddCase(mediatorId, mediatorName, ID, userId, function (data) {
-        // model.ComplaintModel.findByIdAndUpdate(ID, { Status: 2 }, function (err, result) {
-        //     if (result)
-        //         callback(data);
-        // })
         callback(data);
     });
 };

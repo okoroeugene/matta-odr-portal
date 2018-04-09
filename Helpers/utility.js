@@ -102,11 +102,18 @@ module.exports.getCurrentLoggedInUser = {
         }
         if (req.session.role === 'invitee') {
             await model.InviteeModel.findOne({ userId: req.user.id }, function (err, data) {
-                callback(data.fullname);
+                callback(data.FullName);
             });
         }
     }
 }
+
+// module.exports.GetUserNameByUserId = async function (req, id, callback) {
+//     var username;
+//     await model.UserModel.find(id, function (err, data) {
+//         callback(data.username);
+//     });
+// }
 
 module.exports.GetUserNameByUserId = async function (req, id, callback) {
     var username;
@@ -121,6 +128,25 @@ module.exports.GetUserNameByUserId = async function (req, id, callback) {
         });
     }
     if (req.session.role === 'invitee') {
+        await model.InviteeModel.findOne({ userId: id }, function (err, data) {
+            callback(data.fullname);
+        });
+    }
+}
+
+module.exports.GetUserNameByUserIdAndRole = async function (req, id, role, callback) {
+    var username;
+    if (role === 'mediator') {
+        await model.MediatorModel.findOne({ userId: id }, function (err, data) {
+            callback(data.firstname + ' ' + data.lastname);
+        });
+    }
+    if (role === 'user') {
+        await model.FileModel.findOne({ userId: id }, function (err, data) {
+            callback(data.firstname + ' ' + data.lastname);
+        });
+    }
+    if (role === 'invitee') {
         await model.InviteeModel.findOne({ userId: id }, function (err, data) {
             callback(data.fullname);
         });

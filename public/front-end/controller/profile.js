@@ -3,10 +3,12 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
     var currentId = $stateParams.id;
 
     $scope.divHide = true;
-    $scope.$on('$viewContentLoaded', function () {
-        $scope.divHide = false;
-        $scope.divShow = true;
-    });
+    $scope.divImageHide = true;
+    $scope.divContentHide = true;
+    // $scope.$on('$viewContentLoaded', function () {
+    //     $scope.divHide = false;
+    //     $scope.divShow = true;
+    // });
 
     $scope.allcomplaints = [];
     $scope.Complaints = async function () {
@@ -15,6 +17,8 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
             if (response.data === 0) window.location = '/';
             else {
                 $scope.allcomplaints = response.data;
+                $scope.divImageHide = false;
+                $scope.divImageShow = true;
             }
         })
     }
@@ -221,6 +225,10 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
     $scope.getMediatorData = async function () {
         await $http.get('/getmediatordata').then(function (response) {
             $scope.mediatorData = response.data;
+            $scope.divContentHide = false;
+            $scope.divContentShow = true;
+            $scope.divHide = false;
+            $scope.divShow = true;
         });
     }
     $scope.getMediatorData();

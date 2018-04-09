@@ -1,7 +1,8 @@
-
-<div style="height:100px;"></div>
+<div style="height:100px;">
+</div>
+<div data-ng-init="GetInviteeData()"></div>
 <div class="ibox">
-    <div class="lock-header m-b-20">Have you opened a file with us?</div>
+    <div class="lock-header m-b-20">Complete Verification</div>
     <div class="ibox-body">
         <!-- <div class="row">
             <div class="col-md-12">
@@ -11,15 +12,25 @@
         <div class="row">
             <form class="col-12" id="lock-form" action="javascript:void(0)">
                 <!-- <h5 class="font-strong m-b-10 text-center">James Brown</h5> -->
-                <p class="font-13 text-center">Please enter your MATTA PIN/SECRET TOKEN to enter the ODR Portal</p>
+                <p class="font-13 text-center">Hello,
+                    <b>{{InviteeData.FullName}}</b>, please kindly enter a password to complete verification.</p>
                 <div class="form-group">
-                    <input style="padding: 11px 10px;" ng-model="filecode" class="form-control" type="text" name="filecode" placeholder="Enter a Valid File Number">
+                    <input style="padding: 11px 10px;" readonly ng-model="secretToken" class="form-control" type="text" name="secretToken">
                 </div>
                 <div class="form-group">
-                    <button style="padding: 15px;" class="btn btn-success btn-block" ng-click="checkCode()" type="submit">
-                        <i class="ti-unlock m-r-5"></i>Enter Portal</button>
+                    <input style="padding: 11px 10px;" ng-model="password" class="form-control" type="password" name="password" placeholder="Enter Password">
                 </div>
-                <p>Don't have a code?<a href="/open-file"> Open file here</a></p>
+                <div class="form-group">
+                    <input style="padding: 11px 10px;" ng-model="confirmpassword" class="form-control" type="password" name="confirmpassword" placeholder="Confirm Password">
+                </div>
+                <div class="form-group">
+                    <button style="padding: 15px;" ng-disabled="!password || !confirmpassword || password !== confirmpassword" class="btn btn-success btn-block"
+                        ng-click="btnRegInvitee()" id="btnRegInvitee" type="submit">
+                        <i class="ti-unlock m-r-5"></i>Complete Verification</button>
+                </div>
+                <!-- <p>Don't have a code?
+                    <a href="/open-file"> Open file here</a>
+                </p> -->
             </form>
         </div>
     </div>
@@ -27,18 +38,22 @@
 
 
 <script type="text/javascript">
-    $(function(){
-      $('#lock-form').validate({
-          errorClass:"help-block",
-          rules: {
-            filecode: {required:true}
-          },
-          highlight:function(e){$(e).closest(".form-group").addClass("has-error")},
-          unhighlight:function(e){$(e).closest(".form-group").removeClass("has-error")},
-          errorPlacement:function(e,r){
-              var i=$(r).parents(".input-group, .check-list");
-              i.length ? i.after(e) : r.after(e)
-          },
-      });
+    $(function () {
+        $('#lock-form').validate({
+            errorClass: "help-block",
+            rules: {
+                password: { required: true },
+                confirmpassword: { required: true },
+                confirmpassword: {
+                    confirmpassword: "#password"
+                }
+            },
+            highlight: function (e) { $(e).closest(".form-group").addClass("has-error") },
+            unhighlight: function (e) { $(e).closest(".form-group").removeClass("has-error") },
+            errorPlacement: function (e, r) {
+                var i = $(r).parents(".input-group, .check-list");
+                i.length ? i.after(e) : r.after(e)
+            },
+        });
     });
-  </script>
+</script>

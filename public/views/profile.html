@@ -10,7 +10,7 @@
 
 <div class="page-content" ng-show="divHide">
     <div class="row">
-        <div class="col-lg-3 col-md-4">
+        <div class="col-lg-3 col-md-4" ng-show="divImageHide">
             <div class="ibox">
                 <div class="ibox-body text-center">
                     <div class="text-loader-img"></div>
@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-9 col-md-8">
+        <div class="col-lg-9 col-md-8" ng-show="divContentHide">
             <div class="ibox">
                 <div class="ibox-body">
                     <div class="text-loader-lg"></div>
@@ -48,7 +48,7 @@
 <!--Display DIV after page is fully LOADED-->
 <div class="page-content" style="font-size: 12px;" ng-show="divShow">
     <div class="row">
-        <div class="col-lg-3 col-md-4">
+        <div class="col-lg-3 col-md-4" ng-show="divImageShow">
             <div class="ibox">
                 <div class="ibox-body text-center">
                     <ul class="nav pull-right navbar-toolbar">
@@ -114,7 +114,7 @@
             </div>
             <!-- <button style="width: 100%;" class="btn btn-primary btn-lg">Large button</button> -->
         </div>
-        <div class="col-lg-9 col-md-8">
+        <div class="col-lg-9 col-md-8" ng-show="divContentShow">
             <div class="ibox">
                 <div class="ibox-body" ng-if="mediatorData.MedProfileData.IsVerified === true">
                     <ul class="nav nav-tabs tabs-line">

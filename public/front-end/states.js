@@ -106,8 +106,26 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
             controller: 'authController'
         })
 
+        .state('forgotpassword', {
+            url: '/forgot-password',
+            data: {
+                pageTitle: 'Forgot Password'
+            },
+            templateUrl: '../views/forgot-password.html',
+            controller: 'authController'
+        })
+
+        .state('resetpassword', {
+            url: '/reset-password/:id',
+            data: {
+                pageTitle: 'Reset Password'
+            },
+            templateUrl: '../views/reset-password.html',
+            controller: 'authController'
+        })
+
         .state('verify', {
-            url: '/verify',
+            url: '/verify/:id',
             data: {
                 pageTitle: 'Verify User'
             },

@@ -39,7 +39,10 @@
 <div class="page-content" style="font-size: 12px;" ng-show="divShow">
     <div data-ng-init="PaymentStatusInit()"></div>
     <div class="page-content fade-in-up">
-        <div class="row">
+
+
+        <!--USER TAB-->
+        <div class="row" ng-if="role === 'user'">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="NotAssignedPayment">
                 <div ng-show="NotAssignedPayment" class="loader loaderP" style="width: 220px; height: 220px; left: 44.4%; top: 30%;"></div>
                 <div class="ibox" id="container">
@@ -106,40 +109,72 @@
 
             <div ng-show="AssignedPayment" class="col-sm-12 col-sm-offset-3">
                 <div class="card card-1 col-md-6 text-md-center" id="card1">
-                    <h2 class="text-center">Make Payment</h3>
-                        <br>
-                        <p>
-                            <h6>Name:
-                                <span style="font-weight:300;">{{result.UName}}</span>
+                    <h2 class="text-center">Make Payment</h2>
+                    <br>
+                    <p>
+                        <h6>Name:
+                            <span style="font-weight:300;">{{result.UName}}</span>
+                        </h6>
+                        <hr>
+                        <h6>File Number:
+                            <span style="font-weight:300;">{{result.FileCode}}</span>
+                        </h6>
+                        <hr>
+                        <h6>Third Party Name:
+                            <span style="font-weight:300;">{{result.TPName}}</span>
+                        </h6>
+                        <hr>
+                        <h6>Amount Due:
+                            <span style="color:rgb(131, 133, 135); font-size: 25px;">&#8358;{{result.Amount}}</span>
+                        </h6>
+                        <hr>
+                        <div ng-show="Paid">
+                            <h6>Assigned Mediator:
+                                <span style="font-weight:300;">{{mediatorname}}</span>
                             </h6>
-                            <hr>
-                            <h6>File Number:
-                                <span style="font-weight:300;">{{result.FileCode}}</span>
-                            </h6>
-                            <hr>
-                            <h6>Third Party Name:
-                                <span style="font-weight:300;">{{result.TPName}}</span>
-                            </h6>
-                            <hr>
-                            <h6>Amount Due:
-                                <span style="color:rgb(131, 133, 135); font-size: 25px;">&#8358;{{result.Amount}}</span>
-                            </h6>
-                            <hr>
-                            <div ng-show="Paid">
-                                <h6>Assigned Mediator:
-                                    <span style="font-weight:300;">{{mediatorname}}</span>
-                                </h6>
-                            </div>
-                        </p>
-                        <div class="col-md-12 text-center">
-                            <script src="https://js.paystack.co/v1/inline.js"></script>
-                            <button class="btn btn-info btn-lg" id="btnPayment" onclick="payWithPaystack()">Make Payment</button>
                         </div>
+                    </p>
+                    <div class="col-md-12 text-center">
+                        <script src="https://js.paystack.co/v1/inline.js"></script>
+                        <button class="btn btn-info btn-lg" id="btnPayment" onclick="payWithPaystack()">Make Payment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!--INVITEE TAB-->
+        <div class="row" ng-show="InviteeData" ng-if="role === 'invitee'">
+            <div class="col-sm-12 col-sm-offset-3">
+                <div class="card card-1 col-md-6 text-md-center" id="card1">
+                    <br>
+                    <p>
+                        <h6>Name:
+                            <span style="font-weight:300;">{{invData.FullName}}</span>
+                        </h6>
+                        <hr>
+                        <h6>Email:
+                            <span style="font-weight:300;">{{invData.Email}}</span>
+                        </h6>
+                        <hr>
+                        <h6>Complainant:
+                            <span style="font-weight:300;">{{complaintData.UName}}</span>
+                        </h6>
+                        <hr>
+                        <h6>Complaint:
+                            <span style="font-weight:300;">{{complaintData.Complaint}}</span>
+                        </h6>
+                    </p>
+                    <br>
+                    <br>
+                    <div class="text-center">
+                        <button style="padding: 1.2rem 3rem;" class="btn btn-success btn-lg col-md-12" ng-click="btnGotoCase(invData.CaseId._id)" type="button">Proceed to Case Portal</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 

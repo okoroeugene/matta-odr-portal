@@ -44,14 +44,21 @@ app.use(flash())
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/views/index.html')
 });
-app.get('/verify', function (req, res) {
-    var returnUrl = req.query.returnUrl;
-    if (returnUrl != undefined) {
-        req.session.returnUrl = returnUrl;
-    }
+app.get('/verify/:id', caseCtrl.validateInvitee, function (req, res) {
+    if (req.params.id === undefined) res.redirect('/login');
     res.sendFile(__dirname + '/public/views/auth.html')
 });
 app.get('/login', function (req, res) {
+    var returnUrl = req.query.returnUrl;
+    if (returnUrl === undefined) {
+        req.session.returnUrl = undefined;
+    }
+    res.sendFile(__dirname + '/public/views/auth.html')
+});
+app.get('/forgot-password', function (req, res) {
+    res.sendFile(__dirname + '/public/views/auth.html')
+});
+app.get('/reset-password/:id', function (req, res) {
     res.sendFile(__dirname + '/public/views/auth.html')
 });
 app.post('/login', authCtrl.authenticateUser);
@@ -90,7 +97,7 @@ app.post('/createcase', caseCtrl.acceptCase);
 app.post('/InviteThirdParty', caseCtrl.inviteUser);
 app.get('/checkinvite/:id', caseCtrl.checkinvite);
 app.post('/uploadfile/:id', upload.array('uploadfile', 6), utility.Authorize.all, caseCtrl.uploadfile)
-app.get('/pending', utility.Authorize.user, complaintsCtrl.pendingcomplaint);
+app.get('/pending', complaintsCtrl.pendingcomplaint); //
 app.get('/allcomplaints', complaintsCtrl.allcomplaints);
 
 app.get('/validate', function (req, res) {
@@ -106,7 +113,7 @@ app.get('/getprofilepic', authCtrl.getprofilepic);
 app.get('/GetMediatorDataById/:id', mediatorCtrl.GetMediatorDataById);
 app.get('/getcomplaintdata/:id', complaintsCtrl.getcomplaintdata);
 app.post('/addcasepayment/:id', utility.Authorize.mediator, complaintsCtrl.addcomplaintpayment);
-app.get('/verifypayment', utility.Authorize.user, complaintsCtrl.verifypayment);
+app.get('/verifypayment', complaintsCtrl.verifypayment); //
 app.post('/makecomplaintpayment/:id', complaintsCtrl.makecomplaintpayment);
 app.get('/getMediatorName/:id', mediatorCtrl.getmediatorbycomplaintId);
 app.get('/legal-tips', function (req, res) {
@@ -136,10 +143,16 @@ app.get('/getuserid', authCtrl.getuserid);
 app.get('/GetChatDataById/:id', caseCtrl.GetChatDataById);
 app.post('/updatechatcontent/:id', caseCtrl.updatechatcontent);
 app.post('/MarkAsResolved/:id', caseCtrl.MarkAsResolved);
+app.get('/getInvitee/:id', caseCtrl.getInvitee);
+app.post('/regInvitee/:id', caseCtrl.regInvitee);
+app.post('/forgotpassword', authCtrl.forgotpassword);
+app.get('/GetUserDataByToken/:id', authCtrl.GetUserDataByToken);
+app.post('/resetpassword/:id', authCtrl.resetpassword);
 
 
 
-//ADMIN
+
+//ADMIN END-POINTS
 app.get('/admin/mediators', utility.Authorize.admin, function (req, res) {
     res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
 })

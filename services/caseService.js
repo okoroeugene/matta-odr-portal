@@ -14,34 +14,8 @@ var routes = require('../routes');
 
 var caseD = module.exports = {
     ValidateCaseView: function (req, res, ID) {
-        caseRepo.GetCaseById(ID, async function (data) {
-            if (data) {
-                if (data.Status == 0) {
-                    res.redirect('/pending');
-                }
-                var role = utility.UserRole.GetRoleName(req, res);
-                if (role == 'mediator') {
-                    if (data.MediatorId != req.user._id) {
-                        res.redirect('/error');
-                    }
-                }
-                //Authenticate User
-                if (role == 'user') {
-                    fileRepo.GetFileByFileCode(data.ComplaintId.FileCode, function (data) {
-                        if (data) {
-                            if (data.Key != req.user._id) res.redirect('/error');
-                        }
-                        else res.redirect('/error');
-                    });
-                }
-                if (role == 'invitee') {
-                    await model.InviteeModel.findOne({ SecretToken: req.session.SecretToken }, function (err, inv) {
-                        if (inv.CaseId != data._id) res.redirect('/error');
-                        // else res.sendFile(rootPath + '/views/layout.html')
-                    });
-                }
-                res.sendFile(rootPath + '/views/layout.html')
-            }
+        model.ConversationModel.findOne({ $and: [{ CaseId: ID }, { ParticipantId: req.user.id }] }).exec((err, data) => {
+            if (data) res.sendFile(rootPath + '/views/layout.html');
             else res.redirect('/error');
         });
     },
@@ -126,6 +100,11 @@ var caseD = module.exports = {
             });
         }
         callback(ImageFile);
-    }
+    },
 
+    getInviteeByToken: async function (Id, callback) {
+        caseRepo.getInviteeByToken(Id, function (data) {
+            callback(data);
+        });
+    }
 }

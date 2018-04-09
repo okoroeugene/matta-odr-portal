@@ -10,14 +10,16 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
     // $scope.start();
 
     $scope.divHide = true;
-    $scope.$on('$viewContentLoaded', function () {
-        $scope.divHide = false;
-        $scope.divShow = true;
-    });
+    // $scope.$on('$viewContentLoaded', function () {
+    //     $scope.divHide = false;
+    //     $scope.divShow = true;
+    // });
 
     $scope.PaymentStatusInit = function () {
         $scope.verifyPayment = async function () {
             await $http.get('/verifypayment').then(function (response) {
+                $scope.divHide = false;
+                $scope.divShow = true;
                 if (response.data.status == 1) {
                     $scope.result = response.data.result;
                     $scope.mediatorname = response.data.mediator;
@@ -32,12 +34,22 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                     $scope.AssignedPayment = true;
                     $scope.result = response.data.result;
                 }
+                if (response.data.status == 3) {
+                    $scope.InviteeData = true;
+                    $scope.invData = response.data.invData;
+                    $scope.complaintData = response.data.complaintData;
+                }
             });
         }
         $scope.verifyPayment();
     }
 
-
+    $scope.getRole = async function () {
+        await $http.get('/userrole').then(function (response) {
+            $scope.role = response.data;
+        });
+    }
+    $scope.getRole();
 
     $scope.btnGotoCase = function (res) {
         window.location.href = '/case/' + res;

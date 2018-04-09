@@ -3,8 +3,8 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     var socket = io.connect(url);
     // console.log(url);
     // var socket = io.connect('https://matta.herokuapp.com');
-    $scope.contentLoader = true;
-    $scope.userLoader = true;
+    // $scope.contentLoader = true;
+    // $scope.userLoader = true;
     var currentId = $stateParams.id;
 
     $scope.Complaints = async function () {
@@ -19,10 +19,12 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.Complaints();
 
     $scope.divHide = true;
-    $scope.$on('$viewContentLoaded', async function () {
-        $scope.divHide = false;
-        $scope.divShow = true;
-    });
+    // $scope.divImageHide = true;
+    // $scope.divContentHide = true;
+    // $scope.$on('$viewContentLoaded', async function () {
+    //     $scope.divHide = false;
+    //     $scope.divShow = true;
+    // });
 
     $scope.btnChat = function () {
         $('#btnChat').prop('disabled', true);
@@ -190,11 +192,13 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                 }, 100);
             }
             else $scope.filteredData = $scope.chats.slice(begin);
+            $scope.divHide = false;
+            $scope.divShow = true;
             if ($scope.chats.length == $scope.filteredData.length) isDataAvailable = false;
             else isDataAvailable = true;
             $scope.scrollTrigger = $scope.chats;
-            $scope.contentLoader = false;
-            $scope.textContent = true;
+            // $scope.contentLoader = false;
+            // $scope.textContent = true;
             // return false;
             sIndex = sIndex + offSet;
             isPreviousEventComplete = true;

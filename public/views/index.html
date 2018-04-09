@@ -86,14 +86,16 @@
 					<li>
 						<a href="#features">Features</a>
 					</li>
-					{{caseId}}
-					<li ng-if="showUserName === 'Fake User'">
+					<li ng-if="showUserName === 'No User'">
 						<a class="external" href="javascript:void()" ng-click="btnOpenFile()">Open File</a>
 					</li>
-					<li ng-if="showUserName !== 'Fake User'">
-						<a class="external" href="javascript:void()" ng-click="btnGotoCase(caseId)">Case Portal</a>
+					<li ng-if="showUserName !== 'No User'">
+						<a class="external" href="javascript:void()" ng-click="btnGotoDashboard()">Dashboard</a>
 					</li>
-					<li ng-if="showUserName !== 'Fake User'">
+					<li ng-if="role == 'mediator'">
+							<a class="external" href="javascript:void()" ng-click="btnGotoProfile()">Profile</a>
+						</li>
+					<li ng-if="showUserName !== 'No User'">
 						<a class="external" href="javascript:void()" ng-click="logout()">Logout</a>
 					</li>
 				</ul>

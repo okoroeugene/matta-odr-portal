@@ -21,7 +21,7 @@ var transporter = nodemailer.createTransport({
 });
 
 
-module.exports.mail = function (path, secretToken, email, name, subject, callback) {
+module.exports.mail = function (path, secretToken, token, email, name, subject, callback) {
     // console.log(path, email, name, subject);
     // var path = rootPath + '/views/Invite.html';
     fs.readFile(path, { encoding: 'utf-8' }, function (err, html) {
@@ -33,7 +33,8 @@ module.exports.mail = function (path, secretToken, email, name, subject, callbac
             var template = handlebars.compile(html);
             var replacements = {
                 username: name,
-                token: secretToken
+                secret_token: secretToken,
+                token: token
             };
             var htmlToSend = template(replacements);
             var mailOptions = {

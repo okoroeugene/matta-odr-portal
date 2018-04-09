@@ -151,8 +151,12 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
     }
     $scope.getRole();
 
-    $scope.btnGotoCase = function (res) {
-        window.location.href = '/case/' + res;
+    $scope.btnGotoDashboard = function () {
+        window.location.href = '/profile';
+    }
+
+    $scope.btnGotoProfile = function (res) {
+        window.location.href = '/profile';
     }
 
     $scope.btnOpenFile = function () {

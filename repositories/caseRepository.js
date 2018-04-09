@@ -26,13 +26,14 @@ var caseRepo = module.exports = {
             });
     },
 
-    AddInvitee: async function (data, secretToken, caseId, userId, callback) {
+    AddInvitee: async function (data, secretToken, token, caseId, userId, callback) {
         await model.InviteeModel.create({
             FullName: data.ComplaintId.TPName, //TP means third party
             Email: data.ComplaintId.TPEmail,
             SecretToken: secretToken,
             CaseId: caseId,
             userId: userId,
+            token: token,
             DateInvited: currentDate
         }, function (err, data) {
             callback(data);
@@ -87,10 +88,11 @@ var caseRepo = module.exports = {
             var inviteeName = data.ComplaintId.TPName;
             var path = rootPath + '/views/Invite.html';
             var secretToken = utility.randomNumber.generateRan(8);
-            await mail.mail(path, secretToken, data.ComplaintId.TPEmail, inviteeName, 'MATTA needs you!', async cb => {
+            var token = utility.randomNumber.generateRan(15);
+            await mail.mail(path, secretToken, token, data.ComplaintId.TPEmail, inviteeName, 'MATTA needs you!', async cb => {
                 if (cb === 1) {
                     await utility.createuser(secretToken, data.ComplaintId.TPEmail, '000000', 'invitee', cb => {
-                        caseRepo.AddInvitee(data, secretToken, caseId, cb.id, async function (_invitee) {
+                        caseRepo.AddInvitee(data, secretToken, token, caseId, cb.id, async function (_invitee) {
                             if (_invitee) {
                                 await model.ConversationModel.create({
                                     CaseId: caseId,
@@ -106,5 +108,13 @@ var caseRepo = module.exports = {
                 else callback(0);
             });
         }
+    },
+
+    getInviteeByToken: async function (Id, callback) {
+        await model.InviteeModel.findOne({ token: Id }).populate('userId').exec((err, data) => {
+            if (data) {
+                callback(data);
+            }
+        });
     }
 }

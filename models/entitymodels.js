@@ -11,7 +11,7 @@ var UserSchema = new Schema({
 })
 
 var MediatorDataSchema = new Schema({
-    userId: { type: String, required: true },
+    userId: { type: String, required: true, ref: 'User' },
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
     email: { type: String, required: true },
@@ -70,7 +70,7 @@ var ComplaintSchema = new Schema({
 })
 
 var FileSchema = new Schema({
-    userId: { type: String, required: true },
+    userId: { type: String, required: true, ref: 'User' },
     filecode: { type: String, required: true },
     // password: { type: String, required: true },
     firstname: { type: String, required: true },
@@ -111,12 +111,13 @@ var ChatSchema = new Schema({
 });
 
 var InviteeSchema = new Schema({
-    userId: { type: String, required: true },
+    userId: { type: String, required: true, ref: 'User' },
     FullName: { type: String }, //TP means third party
     Email: { type: String, required: true },
     SecretToken: { type: String, required: true },
     CaseId: { type: String, required: true, ref: 'Case' },
     // Key: { type: String },
+    token: { type: String },
     DateInvited: Date
 });
 
@@ -135,7 +136,7 @@ var ConversationSchema = new Schema({
 
 var ProfilePicSchema = new Schema({
     Image: { type: String, required: true },
-    UserId: { type: String, required: true },
+    userId: { type: String, required: true, ref: 'User' },
 });
 
 var MediatorProfileSchema = new Schema({
@@ -148,6 +149,12 @@ var MediatorProfileSchema = new Schema({
     MediatorCertificate: { type: String, required: true },
     MediatorId: { type: String, required: true, ref: 'Mediator' },
     Date: Date,
+});
+
+var ResetPasswordSchema = new Schema({
+    token: { type: String, required: true },
+    userId: { type: String, required: true, ref: 'User' },
+    date: Date,
 });
 
 var User = mongoose.model('User', UserSchema);
@@ -188,3 +195,6 @@ module.exports.ProfilePicModel = ProfilePic;
 
 var MediatorProfile = mongoose.model('MediatorProfile', MediatorProfileSchema);
 module.exports.MediatorProfileModel = MediatorProfile;
+
+var ResetPassword = mongoose.model('ResetPassword', ResetPasswordSchema);
+module.exports.ResetPasswordModel = ResetPassword;

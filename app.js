@@ -47,8 +47,8 @@ app.use(session);
 // "dev": "node app.js",
 //     "start": "node app.js"
 
-// mongoose.connect('mongodb://matta:matta123@ds237409.mlab.com:37409/heroku_24p8v70m', {useMongoClient: true}, (err, database) => {
-mongoose.connect('mongodb://127.0.0.1/mattaDb', (err, database) => {
+mongoose.connect('mongodb://matta:matta123@ds237409.mlab.com:37409/heroku_24p8v70m', {useMongoClient: true}, (err, database) => {
+// mongoose.connect('mongodb://127.0.0.1/mattaDb', (err, database) => {
     if (err) console.log(err.message)
     else {
         // app.listen(3005, function () {
@@ -107,7 +107,6 @@ io.on('connection', function (socket) {
                             'count': data.length,
                             'content': data
                         }
-                        console.log(convo[i].ParticipantId);
                         io.sockets.in(convo[i].ParticipantId).emit('notifyCount', result, sendername, content, convo[i].ParticipantId, allData, currentCount);
                     });
                 else console.error('Something went wrong!!');

@@ -1,5 +1,5 @@
 myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http', '$timeout', '$location', '$anchorScroll', '$window', function ($scope, $state, $stateParams, $http, $timeout, $location, $anchorScroll, $window) {
-
+    var currentId = $stateParams.id;
     // $scope.getUser();
     $scope.checkCode = function () {
         var data = {
@@ -34,7 +34,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
             if (response.data == 1) {
                 window.location.href = '/profile';
             }
-            else{
+            else {
                 $('#btnReg').prop('disabled', false);
                 toastr["error"]("Error," + " " + response.data);
             }
@@ -43,8 +43,6 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
 
 
     $scope.btnLogin = function () {
-        // flash.setMessage(message);
-        // $location.path("/login");
         var data = {
             'username': $scope.username,
             'password': $scope.password
@@ -59,13 +57,11 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
                 else {
                     if (response.data.role === 'user') window.location.href = '/pending';
                     if (response.data.role === 'mediator') window.location.href = '/profile';
-                    if (response.data.role === 'invitee') window.location.href = '/case';
+                    if (response.data.role === 'invitee') window.location.href = '/pending';
                     if (response.data.role === 'admin') window.location.href = '/admin';
                 }
             }
-
-            // toastr.success('Submitted!');
-        })
+        });
     }
 
     $scope.getFileNumber = async function () {
@@ -84,10 +80,83 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
             if (response.data == 1) {
                 toastr.success('Successful!');
                 setTimeout(() => {
-                    window.location.href = '/new-complaint';
+                    $window.location.href = '/new-complaint';
                 }, 1000);
             }
         })
+    }
+
+    $scope.GetInviteeData = function () {
+        $http.get('/getInvitee/' + currentId).then(function (response) {
+            if (response.data.userId.password !== '000000') location.href = '/login';
+            else if (response.data.userId.password === '000000') {
+                $scope.InviteeData = response.data;
+                $scope.secretToken = response.data.SecretToken;
+            }
+        });
+    }
+
+    $scope.GetUserData = function () {
+        $http.get('/GetUserDataByToken/' + currentId).then(function (response) {
+            if (response.data === 0) location.href = '/login';
+            else {
+                $scope.userData = response.data;
+            }
+        });
+    }
+
+    $scope.btnRegInvitee = function () {
+        var data = {
+            'password': $scope.password,
+        };
+        $('#btnRegInvitee').prop('disabled', true);
+        $http.post('/regInvitee/' + currentId, data).then(function (response) {
+            if (response.data === 0) {
+                $('#btnRegInvitee').prop('disabled', false);
+                toastr["error"]("Error, Something went wrong!");
+            }
+            else {
+                toastr.success('Successful!');
+                setTimeout(() => {
+                    location.href = '/case/' + response.data;
+                }, 1000);
+            }
+        });
+    }
+
+    $scope.btnForgotPassword = function () {
+        var data = {
+            'username': $scope.username,
+        };
+        $('#btnForgotPassword').prop('disabled', true);
+        $http.post('/forgotpassword', data).then(function (response) {
+            if (response.data === 0) {
+                $('#btnForgotPassword').prop('disabled', false);
+                toastr["error"]("Error, Something went wrong!");
+            }
+            else {
+                toastr.success('Successful! Please check your mail for the password reset link.');
+            }
+        });
+    }
+
+    $scope.btnResetPassword = function () {
+        var data = {
+            'password': $scope.password,
+        };
+        $('#btnResetPassword').prop('disabled', true);
+        $http.post('/resetpassword/' + currentId, data).then(function (response) {
+            if (response.data === 0) {
+                $('#btnResetPassword').prop('disabled', false);
+                toastr["error"]("Error, Something went wrong!");
+            }
+            else {
+                toastr.success('Successfully Reset!');
+                setTimeout(() => {
+                    location.href = '/login';
+                }, 1000);
+            }
+        });
     }
 }]);
 

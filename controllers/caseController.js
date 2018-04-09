@@ -8,6 +8,9 @@ var mail = require('../Helpers/mail');
 var crypto = require('crypto');
 var path = require('path');
 var caseService = require('../services/caseService');
+var bcrypt = require('bcrypt-nodejs')
+var SALT_WORK_FACTOR = 10;
+var passport = index.myPassport;
 
 module.exports.viewCase = function (req, res) {
     var ID = req.params.id;
@@ -27,7 +30,7 @@ module.exports.chat = function (req, res) {
 }
 
 module.exports.caseDetails = async function (req, res) {
-   await model.CaseModel.findById(req.params.id)
+    await model.CaseModel.findById(req.params.id)
         .populate('ComplaintId')
         .exec(function (err, data) {
             // if (err) console.log(err.message);
@@ -138,6 +141,49 @@ module.exports.DeleteChatContent = async function (req, res) {
     });
 }
 
+module.exports.getInvitee = async function (req, res) {
+    var Id = req.params.id;
+    caseService.getInviteeByToken(Id, cb => {
+        res.json(cb);
+    });
+}
+
+module.exports.validateInvitee = async (req, res, next) => {
+    var Id = req.params.id;
+    caseService.getInviteeByToken(Id, cb => {
+        if (cb.userId.password !== '000000') res.redirect('/login');
+        next();
+    });
+}
+
+module.exports.regInvitee = async function (req, res, next) {
+    var Id = req.params.id;
+    await model.InviteeModel.findOne({ token: Id }).populate('userId').exec(async (err, data) => {
+        if (data) {
+            if (data.userId.password === '000000') {
+                bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+                    if (err) return next(err);
+                    bcrypt.hash(req.body.password, salt, null, async (err, hash) => {
+                        if (err) return next(err);
+                        await model.UserModel.findByIdAndUpdate(data.userId.id, { password: hash }, async (err, user) => {
+                            if (user) {
+                                await passport.authenticate('local-sign-in', {});
+                                await req.login(user, loginErr => {
+                                    if (loginErr) { }
+                                    else {
+                                        req.session.role = 'invitee';
+                                        res.json(data.CaseId);
+                                        next();
+                                    }
+                                });
+                            }
+                        });
+                    });
+                });
+            }
+        }
+    });
+}
 
 
 //UPDATE ANY DATA

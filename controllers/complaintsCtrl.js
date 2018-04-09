@@ -58,16 +58,10 @@ module.exports.addcomplaintpayment = function (req, res, ) {
 module.exports.pendingcomplaint = async function (req, res) {
     var filecode = req.session.code;
     await model.ComplaintModel.findOne({ FileCode: filecode }, function (err, complaintData) {
-        if (complaintData) {
-            res.sendFile(rootPath + '/views/layout.html')
-            // complaintService.getComplaintStatus(complaintData, function (data) {
-            //     if (data == 2 || data == 3) res.redirect('/error');
-            //     res.sendFile(rootPath + '/views/layout.html')
-            // });
-        }
-        else {
+        if (!complaintData && req.session.role === 'user') {
             res.redirect('/new-complaint')
         }
+        res.sendFile(rootPath + '/views/layout.html')
     });
 }
 
