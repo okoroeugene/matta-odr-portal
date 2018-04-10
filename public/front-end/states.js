@@ -158,7 +158,7 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
                 pageTitle: 'Open file'
             },
             templateUrl: '../views/open-file.html',
-            controller: 'portalController'
+            controller: 'authController'
         })
 
         //route for new blog post

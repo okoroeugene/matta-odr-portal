@@ -43,6 +43,8 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
 
 
     $scope.btnLogin = function () {
+        $('#btnLogin').prop('disabled', true);
+        $('#btnLogin').addClass('active');
         var data = {
             'username': $scope.username,
             'password': $scope.password
@@ -50,6 +52,8 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
         $http.post('/login', data).then(function (response) {
             if (response.data.success == false) {
                 toastr["error"]("Error," + " " + "Invalid Username or Password");
+                $('#btnLogin').prop('disabled', false);
+                $('#btnLogin').removeClass('active');
             }
             if (response.data.success == true) {
                 if (response.data.url != undefined)
