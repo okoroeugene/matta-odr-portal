@@ -33,6 +33,7 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                     $scope.NotAssignedPayment = true;
                 }
                 if (response.data.status == 2) {
+                    $scope.userData = true;
                     $scope.AssignedPayment = true;
                     $scope.result = response.data.result;
                 }
