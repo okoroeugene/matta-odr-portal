@@ -24,6 +24,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
 
     $scope.btnReg = function () {
         $('#btnReg').prop('disabled', true);
+        $('#btnReg').addClass('active');
         var data = {
             'email': $scope.email,
             'password': $scope.password,
@@ -34,11 +35,13 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
             if (response.data == 1) {
                 window.location.href = '/profile';
             }
+            else if (response.data === 401) toastr["error"]("Error, UserName already exists!!");
             else {
-                $('#btnReg').prop('disabled', false);
                 toastr["error"]("Error," + " " + response.data);
             }
-        })
+            $('#btnReg').prop('disabled', false);
+            $('#btnReg').removeClass('active');
+        });
     }
 
 
@@ -77,6 +80,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
 
     $scope.btnOpenFile = function () {
         $('#btnOpenFile').prop('disabled', true);
+        $('#btnOpenFile').addClass('active');
         var a = {
             'password': $scope.password
         }
@@ -87,7 +91,9 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
                     $window.location.href = '/new-complaint';
                 }, 1000);
             }
-        })
+            if (response.data === 401) toastr["error"]("Error, UserName already exists!!");
+            $('#btnOpenFile').removeClass('active');
+        });
     }
 
     $scope.GetInviteeData = function () {

@@ -22,9 +22,9 @@
                         placeholder="Confirm Password" required>
                 </div>
                 <div class="form-group">
-                    <button type="submit" style="padding: 15px;" class="btn btn-success btn-block" ng-disabled="!password || confirmpassword !== password || password.length <= 5" ng-click="btnOpenFile()"
+                    <button type="submit" style="padding: 15px;" class="btn btn-success btn-block has-spinner" ng-disabled="!password || confirmpassword !== password || password.length <= 5" ng-click="btnOpenFile()"
                         id="btnOpenFile">
-                        <i class="ti-unlock m-r-5"></i>Confirm Registration</button>
+                        <i class="ti-unlock m-r-5"></i>Confirm Registration <span class="spinner"><img src="../Images/blue_loading.gif"></span></button></button>
                 </div>
                 <p>Don't have a code?
                     <a href="/open-file"> Open file here</a>

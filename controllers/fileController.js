@@ -26,29 +26,30 @@ module.exports.genFileNumber = async function (req, res) {
     res.json(1);
 }
 
-module.exports.openFile = async function (req, res) {
+//STATUS CODE 401 - USER ALREADY EXISTS
+module.exports.openFile = async function (req, res, next) {
     utility.createuser(req.session.fileNumber, req.session.email, req.body.password, 'user', async cb => {
         var key = crypto.randomBytes(16).toString("hex");
+        if (cb === 0) {
+            res.json(401);
+            next();
+        }
         await model.FileModel.create({
             filecode: req.session.fileNumber,
             firstname: req.session.firstname,
             lastname: req.session.lastname,
             email: req.session.email,
             phone: req.session.phone,
-            // password: req.body.password,
             date: currentDate,
             userId: cb._id
-        }, async function (err, data) {
+        }, async (err, data) => {
             if (data) {
                 await passport.authenticate('local-sign-in', {});
                 req.session.code = req.session.fileNumber;
                 req.session.role = 'user';
-                // req.session.name = req.session.fullname;
             }
             req.login(cb, loginErr => {
-                if (loginErr) {
-                    // return next(loginErr);
-                }
+                if (loginErr) { }
                 else res.json(1);
             });
         });

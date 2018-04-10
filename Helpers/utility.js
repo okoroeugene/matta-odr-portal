@@ -284,7 +284,7 @@ module.exports.createuser = async function (username, email, password, role, cal
     await model.UserModel.findOne({ username: username }, async function (err, user) {
         if (err) console.log(err.message);
         else {
-            if (user) { res.json("User already exists!"); }
+            if (user) { callback(0); }
             else {
                 var _user = await new model.UserModel({
                     username: username,
