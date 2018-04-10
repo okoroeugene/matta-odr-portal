@@ -205,7 +205,7 @@
                             if (response == 1) {
                                 toastr.success('Payment Successful!');
                                 setTimeout(() => {
-                                    window.location.href = '/pending';
+                                    window.location.href = '/dashboard';
                                 }, 2000);
                             }
                             else toastr["error"]("Sorry," + 'Something went wrong!');
