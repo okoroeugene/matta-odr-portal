@@ -138,8 +138,8 @@
                     <ul class="dropdown-menu dropdown-menu-right">
                         <a ng-if="role === 'mediator'" class="dropdown-item" href="/profile">
                             <i class="ti-user"></i>Profile</a>
-                        <!-- <a class="dropdown-item" href="~/manage">
-                            <i class="ti-settings"></i>Settings</a> -->
+                        <a ng-if="role !== 'mediator'" class="dropdown-item" href="/change-password">
+                            <i class="ti-settings"></i>Manage</a>
                         <!-- <li class="dropdown-divider"></li> -->
                         <a class="dropdown-item" href="javascript:void(0)" ng-click="logout()">
                             <i class="ti-power-off"></i>Logout</a>

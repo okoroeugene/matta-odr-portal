@@ -115,6 +115,15 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
             controller: 'authController'
         })
 
+        .state('changepassword', {
+            url: '/change-password',
+            data: {
+                pageTitle: 'Change Password'
+            },
+            templateUrl: '../views/change-password.html',
+            controller: 'portalController'
+        })
+
         .state('resetpassword', {
             url: '/reset-password/:id',
             data: {
@@ -181,9 +190,9 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
         })
 
         .state('pending', {
-            url: '/pending',
+            url: '/dashboard',
             data: {
-                pageTitle: 'Analysing Case'
+                pageTitle: 'Dashboard'
             },
             templateUrl: '../views/pending.html',
             controller: 'portalController'

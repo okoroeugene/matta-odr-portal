@@ -155,67 +155,34 @@ module.exports.GetUserNameByUserIdAndRole = async function (req, id, role, callb
 
 module.exports.Authorize = {
     user: async function (req, res, next) {
-        try {
-            var url = req.url;
-            req.session.returnUrl = url;
-            if (req.user === undefined) res.redirect('/login?returnUrl=' + url);
-            else {
-                await model.UserModel.findById(req.user.id, function (err, data) {
-                    var url = req.url;
-                    if (data.role !== 'user') res.redirect('/login?returnUrl=' + url);
-                    else next();
-                });
-            }
-        } catch (error) {
-            console.log(error);
-        }
+        var url = req.url;
+        req.session.returnUrl = url;
+        if (req.session.role !== 'user') res.redirect('/login?returnUrl=' + url);
+        else next();
     },
     mediator: async function (req, res, next) {
-        try {
-            var url = req.url;
+        var url = req.url;
             req.session.returnUrl = url;
-            if (req.user === undefined) res.redirect('/login?returnUrl=' + url);
-            else {
-                await model.UserModel.findById(req.user.id, function (err, data) {
-                    if (data.role !== 'mediator' || !data) res.redirect('/login?returnUrl=' + url);
-                    else next();
-                });
-            }
-        } catch (error) {
-            console.log(error);
-        }
+            if (req.session.role !== 'mediator') res.redirect('/login?returnUrl=' + url);
+            else next();
     },
     invitee: async function (req, res, next) {
-        try {
-            var url = req.url;
+        var url = req.url;
             req.session.returnUrl = url;
-            if (req.user === undefined) res.redirect('/login?returnUrl=' + url);
-            else {
-                await model.UserModel.findById(req.user.id, function (err, data) {
-                    var url = req.url;
-                    if (data.role !== 'invitee') res.redirect('/login?returnUrl=' + url);
-                    else next();
-                });
-            }
-        } catch (error) {
-            console.log(error);
-        }
+            if (req.session.role !== 'invitee') res.redirect('/login?returnUrl=' + url);
+            else next();
+    },
+    userandinvitee: async function (req, res, next) {
+        var url = req.url;
+            req.session.returnUrl = url;
+            if (req.session.role !== 'user' && req.session.role !== 'invitee') res.redirect('/login?returnUrl=' + url);
+            else next();
     },
     admin: async function (req, res, next) {
-        try {
-            var url = req.url;
-            req.session.returnUrl = url;
-            if (req.user === undefined) res.redirect('/login?returnUrl=' + url);
-            else {
-                await model.UserModel.findById(req.user.id, function (err, data) {
-                    var url = req.url;
-                    if (data.role !== 'admin') res.redirect('/login?returnUrl=' + url);
-                    else next();
-                });
-            }
-        } catch (error) {
-            console.log(error);
-        }
+        var url = req.url;
+        req.session.returnUrl = url;
+        if (req.session.role !== 'admin') res.redirect('/login?returnUrl=' + url);
+        else next();
     },
     all: function (req, res, next) {
         if (req.user === undefined) {

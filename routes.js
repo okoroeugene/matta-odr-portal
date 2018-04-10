@@ -58,6 +58,9 @@ app.get('/login', function (req, res) {
 app.get('/forgot-password', function (req, res) {
     res.sendFile(__dirname + '/public/views/auth.html')
 });
+app.get('/change-password', utility.Authorize.all, function (req, res) {
+    res.sendFile(__dirname + '/public/views/layout.html')
+});
 app.get('/reset-password/:id', function (req, res) {
     res.sendFile(__dirname + '/public/views/auth.html')
 });
@@ -97,7 +100,7 @@ app.post('/createcase', caseCtrl.acceptCase);
 app.post('/InviteThirdParty', caseCtrl.inviteUser);
 app.get('/checkinvite/:id', caseCtrl.checkinvite);
 app.post('/uploadfile/:id', upload.array('uploadfile', 6), utility.Authorize.all, caseCtrl.uploadfile)
-app.get('/pending', complaintsCtrl.pendingcomplaint); //
+app.get('/dashboard', utility.Authorize.userandinvitee, complaintsCtrl.pendingcomplaint); //
 app.get('/allcomplaints', complaintsCtrl.allcomplaints);
 
 app.get('/validate', function (req, res) {
@@ -148,6 +151,8 @@ app.post('/regInvitee/:id', caseCtrl.regInvitee);
 app.post('/forgotpassword', authCtrl.forgotpassword);
 app.get('/GetUserDataByToken/:id', authCtrl.GetUserDataByToken);
 app.post('/resetpassword/:id', authCtrl.resetpassword);
+app.post('/changepassword', authCtrl.changepassword);
+
 
 
 

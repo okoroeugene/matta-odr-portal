@@ -32,7 +32,7 @@ module.exports.GetMediatorDataById = async function (req, res) {
 module.exports.getmediatordata = async function (req, res) {
     var id = utility.getCurrentLoggedInUser.id(req, res);
     await model.MediatorModel.findOne({ userId: id }).exec(async function (err, data) {
-        await model.ProfilePicModel.findOne({ UserId: id }).sort({ _id: -1 }).exec(function (err, img) {
+        await model.ProfilePicModel.findOne({ userId: id }).sort({ _id: -1 }).exec(function (err, img) {
             var p = {
                 'MedProfileData': data,
                 'Image': img
@@ -56,7 +56,7 @@ module.exports.uploadMediatorImage = async function (req, res) {
         utility.uploadFile.myUpload(req);
     await model.ProfilePicModel.create({
         Image: req.file.filename,
-        UserId: req.user._id
+        userId: req.user.id
     });
     res.redirect('/profile');
     // console.log('Invalid Credentials!');

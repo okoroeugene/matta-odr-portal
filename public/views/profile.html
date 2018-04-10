@@ -99,9 +99,27 @@
                     </div>
                     <br>
                     <h5 style="font-size: 23px;font-weight: 400!important;" class="font-strong m-b-10 m-t-10">{{showUserName}}</h5>
-                    <img ng-if="mediatorData.MedProfileData.IsVerified === true" src="../Images/icon-41-512.png" width="40" style="display:block; margin:0 auto;">
-                    <img ng-if="mediatorData.MedProfileData.IsVerified === false || !mediatorData.MedProfileData.IsVerified" src="../Images/Red_Cross.png"
-                        width="60" style="display:block; margin:0 auto;">
+                    <div>
+                        <div class="media">
+                            <div class="media-img" style="display:block;margin:0 auto;">
+                                <span ng-if="mediatorData.MedProfileData.IsVerified === false" class="badge badge-success badge-circle-big" style="background-color:#ff3547;width: 40px;height: 40px;position: relative;
+                                                    left: 5px;">
+                                    <i style="position: relative;top: 7.5px;
+                                                        left: .17px;
+                                                        font-size: 20px;" class="ti-na"></i>
+                                </span>
+                                <span ng-if="mediatorData.MedProfileData.IsVerified === true" class="badge badge-success badge-circle-big" style="background-color:#00c851;width: 40px;height: 40px;position: relative;
+                                                    left: 5px;">
+                                    <i style="position: relative;top: 7.5px;
+                                                    left: .17px;
+                                                    font-size: 20px;" class="ti-check"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <img ng-if="mediatorData.MedProfileData.IsVerified === true" src="../Images/icon-41-512.png" width="40" style="display:block; margin:0 auto;"> -->
+                    <!-- <img ng-if="mediatorData.MedProfileData.IsVerified === false || !mediatorData.MedProfileData.IsVerified" src="../Images/Red_Cross.png"
+                        width="60" style="display:block; margin:0 auto;"> -->
                     <div ng-if="mediatorData.MedProfileData.IsVerified === true" class="m-b-20 text-muted">Verified</div>
                     <div ng-if="mediatorData.MedProfileData.IsVerified === false || !mediatorData.MedProfileData.IsVerified" class="m-b-20 text-muted">Not Verified</div>
                     <!-- @*<div class="profile-social m-b-20"><a href="javascript:;"><i class="fa fa-twitter"></i></a><a href="javascript:;"><i class="fa fa-facebook"></i></a><a href="javascript:;"><i class="fa fa-pinterest"></i></a><a href="javascript:;"><i class="fa fa-dribbble"></i></a></div>*@ -->

@@ -10,7 +10,7 @@ module.exports.viewNewComplaints = async function (req, res) {
     var fileCode = req.session.code;
     await model.ComplaintModel.findOne({ FileCode: fileCode }, function (err, data) {
         if (data) {
-            res.redirect('/pending');
+            res.redirect('/dashboard');
         }
         else res.sendFile(rootPath + '/views/layout.html')
     });

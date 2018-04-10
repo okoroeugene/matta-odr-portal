@@ -46,6 +46,27 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
         $scope.verifyPayment();
     }
 
+    
+    $scope.btnChangePassword = function () {
+        $('#btnChangePassword').prop('disabled', true);
+        $('#btnChangePassword').addClass('active');
+        var a = {
+            'oldpassword': $scope.oldpassword,
+            'newpassword': $scope.newpassword
+        }
+        $http.post('/changepassword', a).then(function (response) {
+            if (response.data == 1) {
+                toastr.success('Password Changed Successfully!');
+                setTimeout(() => {
+                    $window.location.href = '/dashboard';
+                }, 1000);
+            }
+            if (response.data === 0) toastr["error"]("Error, Wrong Password");
+            $('#btnChangePassword').prop('disabled', false);
+            $('#btnChangePassword').removeClass('active');
+        });
+    }
+
     $scope.getRole = async function () {
         await $http.get('/userrole').then(function (response) {
             $scope.role = response.data;
