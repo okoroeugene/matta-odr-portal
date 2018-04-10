@@ -94,7 +94,7 @@ var complaintRepo = module.exports = {
         });
     },
 
-    ValidatePaymentUser: async function (req, res, callback) {
+    ValidatePaymentUser: async function (req, res, code, callback) {
         await complaintRepo.GetComplaintByFileCode(code, async data => {
             if (data) {
                 if (data.Status == 0) res.json({ status: 0 });

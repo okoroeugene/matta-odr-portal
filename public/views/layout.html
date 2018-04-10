@@ -130,7 +130,7 @@
                
                 <li class="dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
-                        <span ng-cloak>{{showUserName}}</span>
+                        <span class="ng-cloak" ng-cloak>{{showUserName}}</span>
                         <img ng-if="profilePic === null" src="../Images/avatar_1.png" />
                         <img ng-if="profilePic !== null" class="img-circle" style="width: 30px; height: 30px;object-fit: contain;" src="../uploads/{{profilePic.Image}}"
                         />
@@ -178,10 +178,10 @@
     </form> -->
     <!-- END SEARCH PANEL-->
 
-    <div class="sidenav-backdrop backdrop"></div>
+    <!-- <div class="sidenav-backdrop backdrop"></div>
     <div class="preloader-backdrop">
         <div class="page-preloader">Loading</div>
-    </div>
+    </div> -->
     <!-- END PAGA BACKDROPS-->
     <!-- Session-timeout modal-->
     <div class="modal fade" id="session-dialog">

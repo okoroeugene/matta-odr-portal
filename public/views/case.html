@@ -441,26 +441,22 @@
     </div>
 
     <div class="modal fade" id="myEditContentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="border-radius:3px;padding-right: 17px;">
-        <div class="modal-dialog cascading-modal modal-avatar modal-md" role="document">
+        <div class="modal-dialog cascading-modal modal-avatar modal-lg" role="document">
             <div class="modal-content">
-                <!-- <div class="modal-header">
-                    <img ng-if="mediatordata.Image === null" class="img-circle" style="width: 100px; height: 100px; margin:0 auto;" src="../Images/u1.png"
-                    />
-                    <img ng-if="mediatordata.Image !== null" width="120" height="120" style="margin:0 auto;" src="../uploads/{{mediatordata.Image.Image}}"
-                        class="rounded-circle img-responsive" alt="Avatar photo">
-                </div> -->
-                <div class="modal-body text-center mb-1">
-                    <div class="text-center mt-4">
+                <div class="modal-body mb-1">
+                    <div class="mt-4">
                         <div class="form-group">
                             <div id="summernote2" id="contentUpdate" data-plugin="summernote2" data-air-mode="true">
                             </div>
                             <!-- <input id="contentUpdate" type="text" value="{{chatData.Content}}" class="form-control"> -->
                             <!-- <textarea rows="8" id="contentUpdate" class="form-control"></textarea> -->
                         </div>
-                        <button ng-click="btnUpdateContent(chatData._id)" class="btn btn-success waves-effect waves-light">Update
-                            <i class="fa fa-sign-in ml-1"></i>
-                        </button>
-                        <button type="button" style="padding: .6rem 1.5rem;" class="btn btn-cyan waves-effect waves-light" data-dismiss="modal">Cancel</button>
+                        <div class="text-center">
+                                <button ng-click="btnUpdateContent(chatData._id)" class="btn btn-success waves-effect waves-light">Update
+                                        <i class="fa fa-sign-in ml-1"></i>
+                                    </button>
+                                    <button type="button" style="padding: .6rem 1.5rem;" class="btn btn-cyan waves-effect waves-light" data-dismiss="modal">Cancel</button>
+                        </div>
                     </div>
                 </div>
             </div>

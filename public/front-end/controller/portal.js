@@ -21,6 +21,7 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                 $scope.divHide = false;
                 $scope.divShow = true;
                 if (response.data.status == 1) {
+                    $scope.userData = true;
                     $scope.result = response.data.result;
                     $scope.mediatorname = response.data.mediator;
                     $scope.caseId = response.data.caseId;
@@ -28,6 +29,7 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                     $scope.Paid = true;
                 }
                 if (response.data.status == 0) {
+                    $scope.userData = true;
                     $scope.NotAssignedPayment = true;
                 }
                 if (response.data.status == 2) {

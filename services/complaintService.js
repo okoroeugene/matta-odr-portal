@@ -33,7 +33,7 @@ module.exports.VerifyAndReturnPaymentData = function (req, res, code) {
     var userId = req.user.id;
     var role = req.session.role;
     if (role == 'user') {
-        complaintRepo.ValidatePaymentUser(req, res, async (newData, result, data) => {
+        complaintRepo.ValidatePaymentUser(req, res, code, async (newData, result, data) => {
             if (newData.IsPaymentMade == true) {
                 await model.CaseModel.findOne({ ComplaintId: data._id }, function (err, casedata) {
                     if (casedata) {

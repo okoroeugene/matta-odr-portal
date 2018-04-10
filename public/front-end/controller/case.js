@@ -31,6 +31,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
         $scope.searchButtonText = "chat";
         // $scope.start();
         var content = $('.note-editable').html();
+        var textareaValue = $('#summernote').summernote('code');
         if ($.trim($(".note-editable").html()) == '') {
             toastr["error"]("Error," + " " + "Please enter a valid text...");
             $('#btnChat').prop('disabled', false);
@@ -38,7 +39,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
         }
 
         var data = {
-            'Content': content,
+            'Content': textareaValue,
         };
         $http.post('/addchat/' + currentId, data).then(function (response) {
             if (response.data.status == 1) {
@@ -444,7 +445,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.btnEditContent = function (e) {
         $http.get('/GetChatDataById/' + e).then(function (response) {
             $scope.chatData = response.data;
-            $("#contentUpdate").innerHTML(response.data.Content);
+            $(".note-editable").html(response.data.Content);
         });
     }
 
@@ -465,16 +466,19 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     }
 
     $scope.btnUpdateContent = function (e) {
+        var textareaValue = $('#summernote2').summernote('code');
         var p = {
-            'Content': $('.note-editable').html()
+            'Content': textareaValue
         }
         $http.post('/updatechatcontent/' + e, p).then(function (response) {
             if (response.data === 1) {
+                $('#summernote').summernote('reset');
+                $('#summernote2').summernote('reset');
                 toastr.success('Updated!');
                 $('#myEditContentModal').modal('hide');
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
-                document.getElementById("txtChatContent_" + e).innerHTML = $('#contentUpdate').val();
+                document.getElementById("txtChatContent_" + e).innerHTML = textareaValue;
                 // console.log($('#contentUpdate').val())
                 // document.getElementById(response.data._id).scrollIntoView();
             }
