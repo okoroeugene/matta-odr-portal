@@ -5,36 +5,57 @@ var currentDate = new Date();
 var rootPath = index.myPath;
 var complaintRepo = require('../repositories/complaintRepository');
 
-module.exports.getComplaintStatus = async function (response, callback) {
-    await model.ComplaintModel.findById(response, function (err, data) {
-        if (data) {
-            callback(data.Status);
+
+var complaintService = module.exports = {
+    getComplaintStatus: async function (response, callback) {
+        await model.ComplaintModel.findById(response, function (err, data) {
+            if (data) {
+                callback(data.Status);
+            }
+            else {
+                callback(401);
+            }
+        })
+    },
+
+    AddComplaint: async function (req, res, callback) {
+        await complaintRepo.AddComplaint(req, res, function (data) {
+            callback(data);
+        });
+    },
+
+    AddCasePayment: function (req, res, callback) {
+        complaintRepo.AddCasePayment(req, res, function (data) {
+            callback(data);
+        });
+    },
+
+    //GET USER DATE ON DASHBOARD, STATUS CODE 3 IS FOR INVITEE
+    VerifyAndReturnPaymentData: async function (req, res, code) {
+        var userId = req.user.id;
+        var role = req.session.role;
+        if (role == 'user') {
+            complaintService.ValidateUserDashboard(req, res, code, () => { });
         }
-        else {
-            callback(401);
+        if (role == 'invitee') {
+            model.InviteeModel.findOne({ userId: req.user.id }).populate('CaseId').exec(async (err, data) => {
+                await model.ComplaintModel.findById(data.CaseId.ComplaintId, function (err, complaintData) {
+                    if (complaintData) {
+                        res.json({ status: 3, invData: data, complaintData: complaintData });
+                    }
+                });
+            });
         }
-    })
-}
+    },
 
-module.exports.AddComplaint = async function (req, res, callback) {
-    await complaintRepo.AddComplaint(req, res, function (data) {
-        callback(data);
-    });
-}
-
-module.exports.AddCasePayment = function (req, res, callback) {
-    complaintRepo.AddCasePayment(req, res, function (data) {
-        callback(data);
-    });
-}
-
-//GET USER DATE ON DASHBOARD, STATUS CODE 3 IS FOR INVITEE
-module.exports.VerifyAndReturnPaymentData = async function (req, res, code) {
-    var userId = req.user.id;
-    var role = req.session.role;
-    if (role == 'user') {
+    ValidateUserDashboard: async (req, res, code) => {
         await complaintRepo.ValidatePaymentUser(req, res, code, async (casePaymentData) => {
             if (casePaymentData === 0) res.json({ status: 0 });
+            else if (casePaymentData === 401) {
+                await model.FileModel.findOne({ userId: req.user.id }, (err, user) => {
+                    res.json({ status: 4, result: user });
+                });
+            }
             else if (casePaymentData) {
                 if (casePaymentData.IsPaymentMade == true) {
                     await model.CaseModel.findOne({ ComplaintId: casePaymentData.ComplaintId._id }, function (err, casedata) {
@@ -46,20 +67,12 @@ module.exports.VerifyAndReturnPaymentData = async function (req, res, code) {
                 else res.json({ status: 2, result: casePaymentData });
             }
         });
-    }
-    if (role == 'invitee') {
-        model.InviteeModel.findOne({ userId: req.user.id }).populate('CaseId').exec(async (err, data) => {
-            await model.ComplaintModel.findById(data.CaseId.ComplaintId, function (err, complaintData) {
-                if (complaintData) {
-                    res.json({ status: 3, invData: data, complaintData: complaintData });
-                }
-            });
-        });
-    }
-}
+    },
 
-module.exports.AddCaseAndUpdate = function (mediatorId, mediatorName, ID, userId, callback) {
-    complaintRepo.AddCase(mediatorId, mediatorName, ID, userId, function (data) {
-        callback(data);
-    });
-};
+    AddCaseAndUpdate: function (mediatorId, mediatorName, ID, userId, callback) {
+        complaintRepo.AddCase(mediatorId, mediatorName, ID, userId, function (data) {
+            callback(data);
+        });
+    },
+
+}

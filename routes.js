@@ -153,6 +153,7 @@ app.post('/forgotpassword', authCtrl.forgotpassword);
 app.get('/GetUserDataByToken/:id', authCtrl.GetUserDataByToken);
 app.post('/resetpassword/:id', authCtrl.resetpassword);
 app.post('/changepassword', authCtrl.changepassword);
+app.get('/filedetails', fileCtrl.filedetails);
 
 
 

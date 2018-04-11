@@ -22,6 +22,7 @@ var complaintRepo = module.exports = {
     GetComplaintByFileCode: async function (code, callback) {
        await model.ComplaintModel.findOne({ FileCode: code }, function (err, complaintData) {
             if (complaintData) callback(complaintData);
+            else callback(0);
         });
     },
 
@@ -99,7 +100,8 @@ var complaintRepo = module.exports = {
 
     ValidatePaymentUser: async function (req, res, code, callback) {
         await complaintRepo.GetComplaintByFileCode(code, async data => {
-            if (data) {
+            if (data === 0) callback(401);
+            else if (data) {
                 await complaintRepo.GetCasePaymentByComplaintId(data._id, async function (casePaymentData) {
                     if (casePaymentData === 0) callback(0);
                     callback(casePaymentData);

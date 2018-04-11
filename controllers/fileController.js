@@ -60,3 +60,9 @@ module.exports.getNewRegData = function (req, res) {
     var fileCode = req.session.fileNumber;
     res.json(fileCode);
 }
+
+module.exports.filedetails = async (req, res) => {
+    await model.FileModel.findOne({ userId: req.user.id }, (err, data) => {
+        res.json(data);
+    });
+}

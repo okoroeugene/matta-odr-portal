@@ -72,14 +72,11 @@ var ComplaintSchema = new Schema({
 var FileSchema = new Schema({
     userId: { type: String, required: true, ref: 'User' },
     filecode: { type: String, required: true },
-    // password: { type: String, required: true },
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
     email: { type: String, required: true },
     phone: { type: String, required: true },
-    // Key: { type: String, required: true },
     date: Date,
-    // NotificationLastRead: Date
 });
 
 var CaseSchema = new Schema({

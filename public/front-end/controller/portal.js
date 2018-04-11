@@ -18,9 +18,13 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
     $scope.PaymentStatusInit = function () {
         $scope.verifyPayment = async function () {
             await $http.get('/verifypayment').then(function (response) {
-                $scope.divHide = false;
-                $scope.divShow = true;
-                if (response.data.status == 1) {
+                $scope.divLoader = false;
+                $scope.divContent = true;
+                if (response.data.status == 0) {
+                    $scope.userData = true;
+                    $scope.NotAssignedPayment = true;
+                }
+                else if (response.data.status == 1) {
                     $scope.userData = true;
                     $scope.result = response.data.result;
                     $scope.mediatorname = response.data.mediator;
@@ -28,26 +32,26 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                     $scope.PaidandAccepted = true;
                     $scope.Paid = true;
                 }
-                if (response.data.status == 0) {
-                    $scope.userData = true;
-                    $scope.NotAssignedPayment = true;
-                }
-                if (response.data.status == 2) {
+                else if (response.data.status == 2) {
                     $scope.userData = true;
                     $scope.AssignedPayment = true;
                     $scope.result = response.data.result;
                 }
-                if (response.data.status == 3) {
+                else if (response.data.status == 3) {
                     $scope.InviteeData = true;
                     $scope.invData = response.data.invData;
                     $scope.complaintData = response.data.complaintData;
+                }
+                else if (response.data.status == 4) {
+                    $scope.showAll = true;
+                    $scope.result = response.data.result;
                 }
             });
         }
         $scope.verifyPayment();
     }
 
-    
+
     $scope.btnChangePassword = function () {
         $('#btnChangePassword').prop('disabled', true);
         $('#btnChangePassword').addClass('active');
@@ -68,6 +72,15 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
         });
     }
 
+    $scope.getFileDetails = async function () {
+        await $http.get('/filedetails').then(function (response) {
+            $scope.userfullname = response.data.firstname + ' ' + response.data.lastname;
+            $scope.useremail = response.data.email;
+            $scope.userphone = response.data.phone;
+        });
+    }
+    $scope.getFileDetails();
+
     $scope.getRole = async function () {
         await $http.get('/userrole').then(function (response) {
             $scope.role = response.data;
@@ -83,7 +96,7 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
         $('#btnDecline').prop('disabled', false);
         $('#btnDecline').removeClass('active');
     }
-    
+
     $scope.DeclineCase = function (e) {
         $('#btnDecline').prop('disabled', true);
         $('#btnDecline').addClass('active');

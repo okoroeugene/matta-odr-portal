@@ -6,7 +6,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
             'FileCode': $scope.filecode
         };
         $http.post('/checkcode', data).then(function (response) {
-            if (response.data == 1) $window.location = '/new-complaint';
+            if (response.data == 1) $window.location = '/dashboard';
             if (response.data.status == 2) $window.location = '/case/' + response.data.id;
             if (response.data.status == 3) $window.location = response.data.url;
             if (response.data.status == 4) $window.location = '/case/' + response.data.caseId;
@@ -88,7 +88,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
             if (response.data == 1) {
                 toastr.success('Successful!');
                 setTimeout(() => {
-                    $window.location.href = '/new-complaint';
+                    $window.location.href = '/dashboard';
                 }, 1000);
             }
             if (response.data === 401) toastr["error"]("Error, UserName already exists!!");

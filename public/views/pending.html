@@ -1,4 +1,4 @@
-<div class="page-content" ng-show="divHide">
+<div class="page-content" ng-show="divLoader">
     <div class="row">
         <!-- <div class="col-lg-3 col-md-4">
             <div class="ibox">
@@ -36,7 +36,7 @@
 
 
 <!--Display DIV after page is fully LOADED-->
-<div class="page-content" style="font-size: 12px;" ng-show="divShow">
+<div class="page-content" style="font-size: 12px;" ng-show="divContent">
     <div data-ng-init="PaymentStatusInit()"></div>
     <div class="page-content fade-in-up">
 
@@ -135,7 +135,8 @@
                             </button>
                         </div>
                         <div class="col-md-6">
-                            <button style="width:100%;padding: 15px;" ng-click="DeclineCase(result.ComplaintId._id)" class="btn btn-default btn-lg has-spinner" id="btnDecline">Decline
+                            <button style="width:100%;padding: 15px;" ng-click="DeclineCase(result.ComplaintId._id)" class="btn btn-default btn-lg has-spinner"
+                                id="btnDecline">Decline
                                 <span class="spinner">
                                     <img src="../Images/blue_loading.gif">
                                 </span>
@@ -177,6 +178,35 @@
                             type="button">Proceed to Case Portal</button>
                     </div>
                 </div>
+            </div>
+        </div>
+
+
+        <div ng-show="showAll" class="col-sm-12 col-sm-offset-3">
+            <div class="card card-1 col-md-6 text-md-center" id="card1">
+                <br>
+                <p>
+                    <h2>
+                        <span style="font-weight:300;">Hello</span>, {{result.firstname}}
+                    </h2>
+                    <br>
+                    <h4 style="font-weight:300;">Get started by laying a new Complaint!</h4>
+                </p>
+                <a ng-href="/new-complaint">
+                    <div class="media">
+                        <div class="media-img">
+                            <span class="badge badge-success badge-circle-big" style="background-color:#00c851;width: 50px;
+                                height: 50px;">
+                                <!-- <img src="../Images/img_105412.png"> -->
+                                <i style="margin-top: 16px;
+                                    margin-left: 1px;" class="fa fa-plus"></i>
+                            </span>
+                        </div>
+                        <div class="media-body" style="flex: 0.21;">
+                            <div class="font-13" style="margin-top: 14px;">New Complaint</div>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
