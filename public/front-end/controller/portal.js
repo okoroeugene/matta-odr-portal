@@ -74,9 +74,9 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
 
     $scope.getFileDetails = async function () {
         await $http.get('/filedetails').then(function (response) {
-            $scope.userfullname = response.data.firstname + ' ' + response.data.lastname;
-            $scope.useremail = response.data.email;
-            $scope.userphone = response.data.phone;
+            $('#userfullname').val(response.data.firstname + ' ' + response.data.lastname);
+            $('#useremail').val(response.data.email);
+            $('#userphone').val(response.data.phone);
         });
     }
     $scope.getFileDetails();
