@@ -11,6 +11,7 @@
     <title update-title></title>
     <!-- GLOBAL MAINLY STYLES-->
     <!-- loadingbar -->
+    <link rel="shortcut icon" href="../Images/LOGO2.ico" />
     <link href='../content/loader/loading-bar.css' rel='stylesheet' />
     <link href="../content/dashboard/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../content/dashboard/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
@@ -92,9 +93,24 @@
                     </a>
                 </li> -->
                 <li class="dropdown dropdown-inbox">
-                    <a id="readNotification" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-bell rel"></i>
-                        <span style="display:none;" class="notification-counter">{{notificationData.count}}</span>
+                    <a ng-href="/dashboard" style="line-height: 0.6;text-align: center;position: relative;
+                                        bottom: 4.8px;" ng-if="role !== 'mediator'" class="nav-link dropdown-toggle">
+                        <i style="font-size: 22px" class="fa fa-home"></i>
+                        <br>
+                        <span style="font-size:9px!Important;">Dashboard</span>
+                    </a>
+                </li>
+                <li class="dropdown dropdown-inbox">
+                        <a ng-href="/profile" style="line-height: 0.6;text-align: center;position: relative;
+                        bottom: 4.8px;" ng-if="role === 'mediator'" class="nav-link dropdown-toggle">
+                            <i style="font-size: 22px;" class="fa fa-user"></i><br><span style="font-size:9px!Important;">Profile</span>
+                        </a>
+                </li>
+                <li class="dropdown dropdown-inbox">
+                    <a style="line-height: 0.6;text-align: center;position: relative;
+                    bottom: 3px;" id="readNotification" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                        <i style="font-size: 20px;" class="fa fa-bell rel"></i>
+                        <span style="display:none;" class="notification-counter">{{notificationData.count}}</span><br><span style="font-size:9px!Important;">Notification</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                         <li class="dropdown-menu-header">
