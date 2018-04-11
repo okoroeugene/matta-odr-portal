@@ -65,7 +65,7 @@
   top: 10px;
   left: 10px;
 } */
-
+/* 
 #loading-bar-spinner .spinner-icon {
   width: 14px;
   height: 14px;
@@ -80,7 +80,7 @@
   -ms-animation:     loading-bar-spinner 400ms linear infinite;
   -o-animation:      loading-bar-spinner 400ms linear infinite;
   animation:         loading-bar-spinner 400ms linear infinite;
-}
+} */
 
 @-webkit-keyframes loading-bar-spinner {
   0%   { -webkit-transform: rotate(0deg);   transform: rotate(0deg); }
