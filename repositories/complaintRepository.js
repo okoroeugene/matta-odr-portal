@@ -104,7 +104,7 @@ var complaintRepo = module.exports = {
             else if (data) {
                 await complaintRepo.GetCasePaymentByComplaintId(data._id, async function (casePaymentData) {
                     if (casePaymentData === 0) callback(0);
-                    callback(casePaymentData);
+                    else callback(casePaymentData);
                 });
             }
         });

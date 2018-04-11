@@ -42,72 +42,72 @@
 
 
         <!--USER TAB-->
-        <div class="row" ng-show="userData" ng-if="role === 'user'">
-            <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="NotAssignedPayment">
-                <div ng-show="NotAssignedPayment" class="loader loaderP" style="width: 220px; height: 220px; left: 44.4%; top: 30%;"></div>
-                <div class="ibox" id="container">
-                    <div class="ibox-body" style="min-height: 500px;">
-                        <div ng-show="NotAssignedPayment">
-                            <h2 class="text-center">Analysisng Case</h2>
-                            <hr>
-                            <h1 class="text-center">1%</h1>
-                            <h1 class="pendText" style="position:relative; top:280px; padding-left:150px;padding-right:150px; text-align:center;" class="text-center">
-                                Be Patient, we are Analyzing your case. We will get back to you shortly.
-                            </h1>
-                            <div class="cd-timeline-dark center-orientation timeline-2" id="cd-timeline">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="ibox-footer">
-                    <div class="col-md-12">
-                        <div class="alert alert-info">
-                            <i class="fa fa-info-circle"></i>
-                            <b>PS: The system would carefully analyze every bit of the case and would evaluate the COST for
-                                your case.</b>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-
-            <div ng-show="NotAssignedPayment" class="col-sm-12 col-sm-offset-3">
-                    <div class="card card-1 col-md-6 text-md-center" id="card1">
+        <div class="row" ng-if="role === 'user'">
+            <div class="col-sm-12 col-sm-offset-3" id="divDashboard">
+                <div class="card card-1 col-md-6 text-md-center" id="card1">
+                    <br>
+                    <p>
+                        <h2>
+                            <span style="font-weight:300;">Hello</span>, {{user.firstname}}
+                        </h2>
                         <br>
-                        <p>
-                            <h2>
-                                <span style="font-weight:300;">Hello</span>, {{user.firstname}}
-                            </h2>
-                            <br>
-                            <h4 style="font-weight:300;">Get started by laying a new Complaint!</h4>
-                        </p>
-                        <a ng-href="/new-complaint" class="parentDisable">
-                            <div class="media">
-                                <div class="media-img">
-                                    <span class="badge badge-danger badge-circle-big" style="width: 50px;
-                                        height: 50px;">
-                                        <i style="margin-top: 16px;
-                                            margin-left: 1px;" class="fa fa-plus"></i>
-                                    </span>
-                                </div>
-                                <div class="font-13" style="margin-top: 15px;">New Complaint</div>
-                            </div>
-                        </a>
-                        <br>
+                        <h4 style="font-weight:300;">Get started today with our seamless services!</h4>
+                    </p>
+                    <!-- parentDisable -->
+                    <a ng-href="/new-complaint" id="divNewComplaint" class="parentDisable">
                         <div class="media">
-                                <div class="media-img">
-                                    <span class="badge badge-success badge-circle-big" style="background-color:#00c851;width: 50px;
+                            <div class="media-img">
+                                <span class="badge badge-danger badge-circle-big" style="width: 50px;
                                         height: 50px;">
-                                        <i style="margin-top: 16px;
-                                            margin-left: 1px;" class="fa fa-user"></i>
-                                    </span>
-                                </div>
-                                <div class="font-13" style="margin-top: 15px;">Case is Awaiting Approval from our Mediators</div>
+                                    <i style="margin-top: 16px;
+                                            margin-left: 1px;" class="fa fa-plus"></i>
+                                </span>
                             </div>
+                            <div class="font-13" style="margin-top: 15px;">New Complaint</div>
+                        </div>
+                    </a>
+                    <br>
+                    <div class="media parentDisable" id="divApproval">
+                        <div class="media-img">
+                            <span class="badge badge-success badge-circle-big" style="background-color:#00c851;width: 50px;
+                                        height: 50px;">
+                                <i style="margin-top: 16px;
+                                            margin-left: 1px;" class="fa fa-user"></i>
+                            </span>
+                        </div>
+                        <div class="font-13" style="margin-top: 15px;">Awaiting Approval from our Mediators</div>
                     </div>
-                </div>
+                    <br>
+                    <a href="javascript:void(0)" ng-click="AssignedPayment === true && btnMakePayment()" id="divPayment" class="parentDisable">
+                        <div class="media">
+                            <div class="media-img">
+                                <span class="badge badge-success badge-circle-big" style="background-color:#d7da38;width: 50px;
+                                                height: 50px;">
+                                    <i style="margin-top: 16px;
+                                                    margin-left: 1px;" class="fa fa-check"></i>
+                                </span>
+                            </div>
+                            <div class="font-13" style="margin-top: 15px;">Click to Make Payment</div>
+                        </div>
+                    </a>
 
-            <div ng-show="Paid" class="col-sm-12 col-sm-offset-3">
+                    <br>
+                    <a href="javascript:void(0)" ng-click="Paid === true && btnProceed()" ng-click="btnProceed()" id="divProceed" class="parentDisable">
+                        <div class="media">
+                            <div class="media-img">
+                                <span class="badge badge-success badge-circle-big" style="background-color:#b93bd0;width: 50px;
+                                            height: 50px;">
+                                    <i style="margin-top: 16px;
+                                                margin-left: 1px;" class="fa fa-arrow-right"></i>
+                                </span>
+                            </div>
+                            <div class="font-13" style="margin-top: 15px;">Proceed to Mediation Portal</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div style="display:none;" class="col-sm-12 col-sm-offset-3" id="divPaid">
                 <div class="card card-1 col-md-6 text-md-center" id="card1">
                     <br>
                     <p>
@@ -124,11 +124,11 @@
                         </h6>
                         <hr>
                         <h6>Payment Status:
-                            <span ng-show="NotAssignedPayment" class="badge badge-warning badge-pill m-r-5 m-b-5">Pending</span>
-                            <span ng-show="Paid" style="background-color:#00c851;" class="badge badge-success badge-pill m-r-5 m-b-5">Confirmed</span>
+                            <!-- <span ng-show="NotAssignedPayment" class="badge badge-warning badge-pill m-r-5 m-b-5">Pending</span> -->
+                            <span style="background-color:#00c851;" class="badge badge-success badge-pill m-r-5 m-b-5">Confirmed</span>
                         </h6>
                         <hr>
-                        <div ng-show="Paid">
+                        <div>
                             <h6>Assigned Mediator:
                                 <span style="font-weight:300;">{{mediatorname}}</span>
                             </h6>
@@ -137,13 +137,14 @@
 
                     <br>
                     <br>
-                    <div class="text-center" ng-show="Paid">
+                    <div class="text-center">
                         <button style="padding: 1.2rem 3rem;" class="btn btn-success btn-lg col-md-12" ng-click="btnGotoCase(caseId)" type="button">Proceed to Case Portal</button>
                     </div>
                 </div>
             </div>
 
-            <div ng-show="AssignedPayment" class="col-sm-12 col-sm-offset-3">
+            <!-- AssignedPayment -->
+            <div style="display:none;" class="col-sm-12 col-sm-offset-3" id="divAssignedPayment">
                 <div class="card card-1 col-md-6 text-md-center" id="card1">
                     <h2 class="text-center">Make Payment</h2>
                     <br>
@@ -218,7 +219,7 @@
         </div>
 
 
-        <div ng-show="showAll" class="col-sm-12 col-sm-offset-3">
+        <!-- <div ng-show="showAll" class="col-sm-12 col-sm-offset-3">
             <div class="card card-1 col-md-6 text-md-center" id="card1">
                 <br>
                 <p>
@@ -233,7 +234,6 @@
                         <div class="media-img">
                             <span class="badge badge-success badge-circle-big" style="background-color:#00c851;width: 50px;
                                 height: 50px;">
-                                <!-- <img src="../Images/img_105412.png"> -->
                                 <i style="margin-top: 16px;
                                     margin-left: 1px;" class="fa fa-plus"></i>
                             </span>
@@ -244,7 +244,7 @@
                     </div>
                 </a>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 

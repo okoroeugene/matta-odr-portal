@@ -51,7 +51,7 @@ var complaintService = module.exports = {
     ValidateUserDashboard: async (req, res, code) => {
         await model.FileModel.findOne({ userId: req.user.id }, async (err, user) => {
             await complaintRepo.ValidatePaymentUser(req, res, code, async (casePaymentData) => {
-                if (casePaymentData === 0) res.json({ status: 0 });
+                if (casePaymentData === 0) res.json({ status: 0, user: user });
                 else if (casePaymentData === 401) {
                     res.json({ status: 4, user: user });
                 }
@@ -67,7 +67,6 @@ var complaintService = module.exports = {
                 }
             });
         });
-        
     },
 
     AddCaseAndUpdate: function (mediatorId, mediatorName, ID, userId, callback) {

@@ -22,21 +22,23 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                 $scope.divContent = true;
                 $scope.user = response.data.user;
                 if (response.data.status == 0) {
-                    $scope.userData = true;
-                    $scope.NotAssignedPayment = true;
+                    // $scope.userData = true;
+                    // $scope.NotAssignedPayment = true;
+                    $('#divApproval').removeClass('parentDisable');
                 }
                 else if (response.data.status == 1) {
-                    $scope.userData = true;
+                    // $scope.userData = true;
                     $scope.result = response.data.result;
                     $scope.mediatorname = response.data.mediator;
                     $scope.caseId = response.data.caseId;
-                    $scope.PaidandAccepted = true;
+                    $('#divProceed').removeClass('parentDisable');
                     $scope.Paid = true;
                 }
                 else if (response.data.status == 2) {
                     $scope.userData = true;
-                    $scope.AssignedPayment = true;
                     $scope.result = response.data.result;
+                    $scope.AssignedPayment = true;
+                    $('#divPayment').removeClass('parentDisable');
                 }
                 else if (response.data.status == 3) {
                     $scope.InviteeData = true;
@@ -44,13 +46,13 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                     $scope.complaintData = response.data.complaintData;
                 }
                 else if (response.data.status == 4) {
-                    $scope.showAll = true;
+                    $('#divNewComplaint').removeClass('parentDisable');
+                    $scope.NewComplaint = true;
                 }
             });
         }
         $scope.verifyPayment();
     }
-
 
     $scope.btnChangePassword = function () {
         $('#btnChangePassword').prop('disabled', true);
@@ -74,6 +76,9 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
 
     $scope.getFileDetails = async function () {
         await $http.get('/filedetails').then(function (response) {
+            // $scope.userfullname = response.data.firstname + ' ' + response.data.lastname;
+            // $scope.email = response.data.email;
+            // $scope.phone = response.data.phone;
             $('#userfullname').val(response.data.firstname + ' ' + response.data.lastname);
             $('#useremail').val(response.data.email);
             $('#userphone').val(response.data.phone);
@@ -128,6 +133,19 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
         });
     }
 
+    $scope.btnMakePayment = () => {
+        $('#divDashboard').fadeOut();
+        setTimeout(() => {
+            $('#divAssignedPayment').fadeIn().delay(1000);
+        }, 500);
+    }
+
+    $scope.btnProceed = () => {
+        $('#divDashboard').fadeOut();
+        setTimeout(() => {
+            $('#divPaid').fadeIn();
+        }, 500);
+    }
     // $scope.CheckStatus = function () {
     //     $http.post('/pendingcomplaint').then(function (response) {
     //         if (response.data == 1) {
