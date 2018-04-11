@@ -110,14 +110,14 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                 $scope.showBtn = false;
             }
             else if (userRole === 'user') {
-                // div.removeClass('btnRadius');
-                $scope.userBtn = true;
+                if (response.data.ComplaintId.Status === '2') $scope.userBtn = false;
+                else $scope.userBtn = true;
             }
             else {
                 $('#statusBtn').addClass('btn-default');
             }
             $scope.userLoader = false;
-            $scope.userData = true;
+            // $scope.userData = true;
         });
     }
     $scope.getCaseData();
@@ -295,9 +295,9 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
         $http.get('/getroles').then(function (response) {
             $scope.role = response.data.role;
             userRole = response.data.role;
-            if (response.data.role === 'user') {
-                $scope.userBtn = true;
-            }
+            // if (response.data.role === 'user') {
+            //     $scope.userBtn = true;
+            // }
         });
     }
     $scope.getrole();

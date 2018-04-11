@@ -29,19 +29,22 @@ module.exports.AddCasePayment = function (req, res, callback) {
 }
 
 //GET USER DATE ON DASHBOARD, STATUS CODE 3 IS FOR INVITEE
-module.exports.VerifyAndReturnPaymentData = function (req, res, code) {
+module.exports.VerifyAndReturnPaymentData = async function (req, res, code) {
     var userId = req.user.id;
     var role = req.session.role;
     if (role == 'user') {
-        complaintRepo.ValidatePaymentUser(req, res, code, async (newData, result, data) => {
-            if (newData.IsPaymentMade == true) {
-                await model.CaseModel.findOne({ ComplaintId: data._id }, function (err, casedata) {
-                    if (casedata) {
-                        res.json({ status: 1, result: result, caseId: casedata._id, mediator: casedata.Mediator_Name });
-                    }
-                });
+        await complaintRepo.ValidatePaymentUser(req, res, code, async (casePaymentData) => {
+            if (casePaymentData === 0) res.json({ status: 0 });
+            else if (casePaymentData) {
+                if (casePaymentData.IsPaymentMade == true) {
+                    await model.CaseModel.findOne({ ComplaintId: casePaymentData.ComplaintId._id }, function (err, casedata) {
+                        if (casedata) {
+                            res.json({ status: 1, result: casePaymentData, caseId: casedata._id, mediator: casedata.Mediator_Name });
+                        }
+                    });
+                }
+                else res.json({ status: 2, result: casePaymentData });
             }
-            else res.json({ status: 2, result: result });
         });
     }
     if (role == 'invitee') {

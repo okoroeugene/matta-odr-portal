@@ -79,6 +79,42 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
         window.location.href = '/case/' + res;
     }
 
+    $scope.btnEnableDecline = () => {
+        $('#btnDecline').prop('disabled', false);
+        $('#btnDecline').removeClass('active');
+    }
+    
+    $scope.DeclineCase = function (e) {
+        $('#btnDecline').prop('disabled', true);
+        $('#btnDecline').addClass('active');
+        setTimeout(() => {
+            $('#divLoading').css('display', 'none');
+            $('#modalConfirmDiscard').modal('show');
+            $('#modalConfirmDiscard').modal('toggle');
+        }, 2000);
+        $scope.casePaymentId = e;
+    }
+
+    $scope.btnDeclineCase = function (e) {
+        $('#btnDecline').prop('disabled', true);
+        $http.post('/declinecase/' + e).then(function (response) {
+            if (response.data == 1) {
+                toastr.success('Case Declined Successfully! You will be Assigned to another Mediator shortly');
+                $state.transitionTo($state.current, $stateParams, {
+                    reload: true,
+                    inherit: false,
+                    notify: true
+                });
+                $('#modalConfirmDiscard').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            }
+            else {
+                toastr["error"]("Error," + " " + "Something went wrong!!!");
+            }
+        });
+    }
+
     // $scope.CheckStatus = function () {
     //     $http.post('/pendingcomplaint').then(function (response) {
     //         if (response.data == 1) {

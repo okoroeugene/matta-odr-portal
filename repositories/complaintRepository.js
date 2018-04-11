@@ -26,8 +26,11 @@ var complaintRepo = module.exports = {
     },
 
     GetCasePaymentByComplaintId: async function (id, callback) {
-        await model.CasePaymentModel.findOne({ ComplaintId: id }, function (err, data) {
+        await model.CasePaymentModel.findOne({ ComplaintId: id })
+        .populate('ComplaintId')
+        .exec((err, data) => {
             if (data) callback(data);
+            else callback(0);
         });
     },
 
@@ -97,20 +100,9 @@ var complaintRepo = module.exports = {
     ValidatePaymentUser: async function (req, res, code, callback) {
         await complaintRepo.GetComplaintByFileCode(code, async data => {
             if (data) {
-                if (data.Status == 0) res.json({ status: 0 });
-                await complaintRepo.GetCasePaymentByComplaintId(data._id, async function (newData) {
-                    if (newData) {
-                        var result = {
-                            'CasePaymentId': newData._id,
-                            'Email': data.UEmail,
-                            'Phone': data.UPhone,
-                            'UName': data.UName,
-                            'TPName': data.TPName,
-                            'FileCode': code,
-                            'Amount': newData.Amount
-                        };
-                        callback(newData, result, data);
-                    }
+                await complaintRepo.GetCasePaymentByComplaintId(data._id, async function (casePaymentData) {
+                    if (casePaymentData === 0) callback(0);
+                    callback(casePaymentData);
                 });
             }
         });

@@ -76,18 +76,18 @@
                     <br>
                     <p>
                         <h6>Name:
-                            <span style="font-weight:300;">{{result.UName}}</span>
+                            <span style="font-weight:300;">{{result.ComplaintId.UName}}</span>
                         </h6>
                         <hr>
                         <h6>File Number:
-                            <span style="font-weight:300;">{{result.FileCode}}</span>
+                            <span style="font-weight:300;">{{result.ComplaintId.FileCode}}</span>
                         </h6>
                         <hr>
                         <h6>Third Party Name:
-                            <span style="font-weight:300;">{{result.TPName}}</span>
+                            <span style="font-weight:300;">{{result.ComplaintId.TPName}}</span>
                         </h6>
                         <hr>
-                        <h6>Status:
+                        <h6>Payment Status:
                             <span ng-show="NotAssignedPayment" class="badge badge-warning badge-pill m-r-5 m-b-5">Pending</span>
                             <span ng-show="Paid" style="background-color:#00c851;" class="badge badge-success badge-pill m-r-5 m-b-5">Confirmed</span>
                         </h6>
@@ -113,30 +113,34 @@
                     <br>
                     <p>
                         <h6>Name:
-                            <span style="font-weight:300;">{{result.UName}}</span>
+                            <span style="font-weight:300;">{{result.ComplaintId.UName}}</span>
                         </h6>
                         <hr>
                         <h6>File Number:
-                            <span style="font-weight:300;">{{result.FileCode}}</span>
+                            <span style="font-weight:300;">{{result.ComplaintId.FileCode}}</span>
                         </h6>
                         <hr>
                         <h6>Third Party Name:
-                            <span style="font-weight:300;">{{result.TPName}}</span>
+                            <span style="font-weight:300;">{{result.ComplaintId.TPName}}</span>
                         </h6>
                         <hr>
                         <h6>Amount Due:
                             <span style="color:rgb(131, 133, 135); font-size: 25px;">&#8358;{{result.Amount}}</span>
                         </h6>
-                        <hr>
-                        <div ng-show="Paid">
-                            <h6>Assigned Mediator:
-                                <span style="font-weight:300;">{{mediatorname}}</span>
-                            </h6>
-                        </div>
                     </p>
-                    <div class="col-md-12 text-center">
-                        <script src="https://js.paystack.co/v1/inline.js"></script>
-                        <button class="btn btn-info btn-lg" id="btnPayment" onclick="payWithPaystack()">Make Payment</button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <script src="https://js.paystack.co/v1/inline.js"></script>
+                            <button style="width:100%;padding: 15px;" class="btn btn-info btn-lg" id="btnPayment" onclick="payWithPaystack()">Make Payment
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button style="width:100%;padding: 15px;" ng-click="DeclineCase(result.ComplaintId._id)" class="btn btn-default btn-lg has-spinner" id="btnDecline">Decline
+                                <span class="spinner">
+                                    <img src="../Images/blue_loading.gif">
+                                </span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,9 +173,35 @@
                     <br>
                     <br>
                     <div class="text-center">
-                        <button style="padding: 1.2rem 3rem;" class="btn btn-success btn-lg col-md-12" ng-click="btnGotoCase(invData.CaseId._id)" type="button">Proceed to Case Portal</button>
+                        <button style="padding: 1.2rem 3rem;" class="btn btn-success btn-lg col-md-12" ng-click="btnGotoCase(invData.CaseId._id)"
+                            type="button">Proceed to Case Portal</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalConfirmDiscard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+        <div class="modal-content text-center">
+            <div class="modal-header d-flex justify-content-center" style="background-color: #ff3547;">
+                <h4 class="modal-title w-100" style="color:white;">Are you sure?</h4>
+            </div>
+            <div class="modal-body">
+                <i style="color: #ff3547;" class="fa fa-times fa-4x animated rotateIn"></i>
+                <p>
+                    By Clicking
+                    <b>Yes</b>, you hereby choose to cancel this case.
+                    <br>
+                    <b>PS</b>: Another Mediator may be re-assgned to you.
+                </p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button id="btnDecline" type="button" style="padding: .6rem 1.5rem;background-color: #ff3547!important;border-color:#ff3547;color: #fff!important;"
+                    class="btn btn-success" ng-click="btnDeclineCase(result._id)">Yes
+                </button>
+                <button type="button" ng-click="btnEnableDecline()" style="padding: .6rem 1.5rem;" class="btn btn-default" data-dismiss="modal">No</button>
             </div>
         </div>
     </div>
@@ -183,8 +213,8 @@
         $('#btnPayment').prop('disabled', true);
         $.get("/verifypayment", function (response) {
             if (response.status == 2) {
-                var MyEmail = response.result.Email;
-                var Phone = response.result.Phone;
+                var MyEmail = response.result.ComplaintId.UEmail;
+                var Phone = response.result.ComplaintId.UPhone;
                 var Value = response.result.Amount * 100;
                 var handler = PaystackPop.setup({
                     key: 'pk_test_c7fae17b0fc0dc90a958362549dd64ea8fb43a53',
@@ -201,7 +231,7 @@
                         ]
                     },
                     callback: function (data) {
-                        $.post("/makecomplaintpayment/" + response.result.CasePaymentId, function (response) {
+                        $.post("/makecomplaintpayment/" + response.result._id, function (response) {
                             if (response == 1) {
                                 toastr.success('Payment Successful!');
                                 setTimeout(() => {

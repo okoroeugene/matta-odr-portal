@@ -114,6 +114,14 @@ module.exports.declinecase = async function (req, res) {
     });
 };
 
+// module.exports.DeclineCaseByComplaintId = async (req, res) => {
+//     await model.ComplaintModel.findByIdAndUpdate(req.params.id, { Status: 0 }, async (err, result) => {
+//         if (result) {
+//             res.json(1);
+//         }
+//     });
+// };
+
 //UPDATE ANY DATA
 app.get('/d', (req, res) => {
     model.CasePaymentModel.findByIdAndUpdate('5ac8f646c4d6f80f0089c1d6', { IsPaymentMade: false },
