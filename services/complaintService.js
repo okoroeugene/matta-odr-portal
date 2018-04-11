@@ -49,24 +49,25 @@ var complaintService = module.exports = {
     },
 
     ValidateUserDashboard: async (req, res, code) => {
-        await complaintRepo.ValidatePaymentUser(req, res, code, async (casePaymentData) => {
-            if (casePaymentData === 0) res.json({ status: 0 });
-            else if (casePaymentData === 401) {
-                await model.FileModel.findOne({ userId: req.user.id }, (err, user) => {
-                    res.json({ status: 4, result: user });
-                });
-            }
-            else if (casePaymentData) {
-                if (casePaymentData.IsPaymentMade == true) {
-                    await model.CaseModel.findOne({ ComplaintId: casePaymentData.ComplaintId._id }, function (err, casedata) {
-                        if (casedata) {
-                            res.json({ status: 1, result: casePaymentData, caseId: casedata._id, mediator: casedata.Mediator_Name });
-                        }
-                    });
+        await model.FileModel.findOne({ userId: req.user.id }, async (err, user) => {
+            await complaintRepo.ValidatePaymentUser(req, res, code, async (casePaymentData) => {
+                if (casePaymentData === 0) res.json({ status: 0 });
+                else if (casePaymentData === 401) {
+                    res.json({ status: 4, user: user });
                 }
-                else res.json({ status: 2, result: casePaymentData });
-            }
+                else if (casePaymentData) {
+                    if (casePaymentData.IsPaymentMade == true) {
+                        await model.CaseModel.findOne({ ComplaintId: casePaymentData.ComplaintId._id }, function (err, casedata) {
+                            if (casedata) {
+                                res.json({ status: 1, result: casePaymentData, user: user, caseId: casedata._id, mediator: casedata.Mediator_Name });
+                            }
+                        });
+                    }
+                    else res.json({ status: 2, result: casePaymentData, user: user });
+                }
+            });
         });
+        
     },
 
     AddCaseAndUpdate: function (mediatorId, mediatorName, ID, userId, callback) {

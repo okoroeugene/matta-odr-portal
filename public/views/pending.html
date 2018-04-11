@@ -43,7 +43,7 @@
 
         <!--USER TAB-->
         <div class="row" ng-show="userData" ng-if="role === 'user'">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="NotAssignedPayment">
+            <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="NotAssignedPayment">
                 <div ng-show="NotAssignedPayment" class="loader loaderP" style="width: 220px; height: 220px; left: 44.4%; top: 30%;"></div>
                 <div class="ibox" id="container">
                     <div class="ibox-body" style="min-height: 500px;">
@@ -69,7 +69,43 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
+
+            <div ng-show="NotAssignedPayment" class="col-sm-12 col-sm-offset-3">
+                    <div class="card card-1 col-md-6 text-md-center" id="card1">
+                        <br>
+                        <p>
+                            <h2>
+                                <span style="font-weight:300;">Hello</span>, {{user.firstname}}
+                            </h2>
+                            <br>
+                            <h4 style="font-weight:300;">Get started by laying a new Complaint!</h4>
+                        </p>
+                        <a ng-href="/new-complaint" class="parentDisable">
+                            <div class="media">
+                                <div class="media-img">
+                                    <span class="badge badge-danger badge-circle-big" style="width: 50px;
+                                        height: 50px;">
+                                        <i style="margin-top: 16px;
+                                            margin-left: 1px;" class="fa fa-plus"></i>
+                                    </span>
+                                </div>
+                                <div class="font-13" style="margin-top: 15px;">New Complaint</div>
+                            </div>
+                        </a>
+                        <br>
+                        <div class="media">
+                                <div class="media-img">
+                                    <span class="badge badge-success badge-circle-big" style="background-color:#00c851;width: 50px;
+                                        height: 50px;">
+                                        <i style="margin-top: 16px;
+                                            margin-left: 1px;" class="fa fa-user"></i>
+                                    </span>
+                                </div>
+                                <div class="font-13" style="margin-top: 15px;">Case is Awaiting Approval from our Mediators</div>
+                            </div>
+                    </div>
+                </div>
 
             <div ng-show="Paid" class="col-sm-12 col-sm-offset-3">
                 <div class="card card-1 col-md-6 text-md-center" id="card1">
@@ -187,7 +223,7 @@
                 <br>
                 <p>
                     <h2>
-                        <span style="font-weight:300;">Hello</span>, {{result.firstname}}
+                        <span style="font-weight:300;">Hello</span>, {{user.firstname}}
                     </h2>
                     <br>
                     <h4 style="font-weight:300;">Get started by laying a new Complaint!</h4>

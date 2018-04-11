@@ -20,6 +20,7 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
             await $http.get('/verifypayment').then(function (response) {
                 $scope.divLoader = false;
                 $scope.divContent = true;
+                $scope.user = response.data.user;
                 if (response.data.status == 0) {
                     $scope.userData = true;
                     $scope.NotAssignedPayment = true;
@@ -44,7 +45,6 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                 }
                 else if (response.data.status == 4) {
                     $scope.showAll = true;
-                    $scope.result = response.data.result;
                 }
             });
         }
