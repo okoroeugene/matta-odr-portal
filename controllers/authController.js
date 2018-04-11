@@ -130,7 +130,7 @@ var authCtrl = module.exports = {
     //GET USER PROFILE PICTURE
     getprofilepic: async function (req, res) {
         var id = utility.getCurrentLoggedInUser.id(req, res);
-        await model.ProfilePicModel.findOne({ UserId: id }).sort({ _id: -1 }).exec(function (err, data) {
+        await model.ProfilePicModel.findOne({ userId: id }).sort({ _id: -1 }).exec(function (err, data) {
             res.json(data);
         });
     },
