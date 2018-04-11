@@ -152,7 +152,7 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
     $scope.getRole();
 
     $scope.btnGotoDashboard = function () {
-        window.location.href = '/pending';
+        window.location.href = '/dashboard';
     }
 
     $scope.btnGotoProfile = function (res) {

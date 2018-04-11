@@ -89,7 +89,7 @@
 					<li ng-if="showUserName === 'No User'">
 						<a class="external" href="javascript:void()" ng-click="btnOpenFile()">Open File</a>
 					</li>
-					<li ng-if="showUserName !== 'No User'">
+					<li ng-if="role == 'user'">
 						<a class="external" href="javascript:void()" ng-click="btnGotoDashboard()">Dashboard</a>
 					</li>
 					<li ng-if="role == 'mediator'">
