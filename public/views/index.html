@@ -93,8 +93,11 @@
 						<a class="external" href="javascript:void()" ng-click="btnGotoDashboard()">Dashboard</a>
 					</li>
 					<li ng-if="role == 'mediator'">
-							<a class="external" href="javascript:void()" ng-click="btnGotoProfile()">Profile</a>
-						</li>
+						<a class="external" href="javascript:void()" ng-click="btnGotoProfile()">Profile</a>
+					</li>
+					<li ng-if="showUserName === 'No User'">
+						<a class="external" href="javascript:void()" ng-click="btnLogin()">Login</a>
+					</li>
 					<li ng-if="showUserName !== 'No User'">
 						<a class="external" href="javascript:void()" ng-click="logout()">Logout</a>
 					</li>

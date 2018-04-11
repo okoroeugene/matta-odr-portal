@@ -163,6 +163,10 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
         window.location.href = '/open-file';
     }
 
+    $scope.btnLogin = function () {
+        window.location.href = '/login';
+    }
+
     $scope.start = function () {
         cfpLoadingBar.start();
     };
