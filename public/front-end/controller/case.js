@@ -304,7 +304,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
 
     $scope.checkInvite = function () {
         $http.get('/checkinvite/' + currentId).then(function (response) {
-            if (response.data == 1) $scope.IsInvited = true;
+            if (response.data === 1) $scope.IsInvited = true;
             else $scope.IsInvited = false;
         });
     }
