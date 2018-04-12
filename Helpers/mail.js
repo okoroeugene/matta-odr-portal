@@ -13,10 +13,9 @@ var password = 'history2'
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     host: 'smtp.gmail.com',
-    port: 587,
+    port: 465,
     secure: true,
-    ignoreTLS: true,
-    requireTLS:false,
+    requireTLS: true,
     auth: {
         user: sender,
         pass: password
