@@ -22,7 +22,8 @@
                                         <tbody>
                                             <tr ng-repeat="data in errors">
                                                 <td>{{$index + 1}}</td>
-                                                <td>{{data.error}}</td>
+                                                <td style="color: red;
+                                                width: 80%;">{{data.error}}</td>
                                                 <td>{{data.date | date : "MMM d, y h:mm a"}}</td>
                                                 <td></td>
                                             </tr>
