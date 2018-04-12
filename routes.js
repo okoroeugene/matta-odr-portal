@@ -72,6 +72,9 @@ app.post('/register', authCtrl.createMediator);
 app.get('/error', function (req, res) {
     res.sendFile(__dirname + '/public/views/error.html')
 });
+app.get('/error-log', utility.Authorize.admin, function (req, res) {
+    res.sendFile(__dirname + '/public/views/admin/adminlayout.html')
+});
 app.post('/logout', (req, res) => {
     req.logout();
     req.session.destroy();
@@ -154,6 +157,7 @@ app.get('/GetUserDataByToken/:id', authCtrl.GetUserDataByToken);
 app.post('/resetpassword/:id', authCtrl.resetpassword);
 app.post('/changepassword', authCtrl.changepassword);
 app.get('/filedetails', fileCtrl.filedetails);
+app.get('/getErrorLogs', authCtrl.getErrorLogs);
 
 
 

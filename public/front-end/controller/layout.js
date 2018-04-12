@@ -39,8 +39,8 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
 
     socket.on('notifyCount', function (data, sendername, content, participantId, allData, currentCount) {
         var myContent;
-        $('#toBottom_' + participantId).css('display', 'block');
-        $('#showCount_' + participantId).val(currentCount);
+        // $('#toBottom_' + participantId).css('display', 'block');
+        // $('#showCount_' + participantId).val(currentCount);
         // console.log(currentCount);
         if (content === null) myContent = 'Sent an Attachment';
         else myContent = content;

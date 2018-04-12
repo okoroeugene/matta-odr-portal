@@ -1,0 +1,38 @@
+<div data-ng-init="GetAllErrorLogs()"></div>
+<div class="page-content" style="font-size: 12px;">
+    <div class="page-content fade-in-up">
+        <div class="row">
+            <div class="col-sm-12 col-sm-offset-3">
+                <div class="col-sm-12 col-sm-offset-3">
+                    <div class="card card-1 col-md-12 text-md-center" id="card1">
+                        <div class="ibox" style="font-size:12px;">
+                            <div class="ibox-head">
+                                <div class="ibox-title">Error Log</div>
+                            </div>
+                            <div class="ibox-body">
+                                <div class="table-responsive">
+                                    <table class="table table-stripped">
+                                        <thead>
+                                            <tr>
+                                                <th>S/N</th>
+                                                <th>Error</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="data in errors">
+                                                <td>{{$index + 1}}</td>
+                                                <td>{{data.error}}</td>
+                                                <td>{{data.date | date : "MMM d, y h:mm a"}}</td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

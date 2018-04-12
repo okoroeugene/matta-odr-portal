@@ -105,7 +105,7 @@ var authCtrl = module.exports = {
 
     //GETS USER DATA AND DISPLAYS IN POP-OVER
     popoverdata: async function (req, res) {
-        await model.ProfilePicModel.findOne({ UserId: req.params.id }).sort({ _id: -1 }).exec(function (err, data) {
+        await model.ProfilePicModel.findOne({ userId: req.params.id }).sort({ _id: -1 }).exec(function (err, data) {
             utility.UserRole.GetRoleNameByUserId(req.params.id, function (result) {
                 var src;
                 if (data)
@@ -130,13 +130,15 @@ var authCtrl = module.exports = {
     //GET USER PROFILE PICTURE
     getprofilepic: async function (req, res) {
         var id = utility.getCurrentLoggedInUser.id(req, res);
-        await model.ProfilePicModel.findOne({ userId: id }).sort({ _id: -1 }).exec(function (err, data) {
-            res.json(data);
-        });
+        if (id !== undefined) {
+            await model.ProfilePicModel.findOne({ userId: id }).sort({ _id: -1 }).exec(function (err, data) {
+                res.json(data);
+            });
+        }
     },
 
     //RETRIEVE USER PASSWORD
-    forgotpassword: async function (req, res) {
+    forgotpassword: async function (req, res, next) {
         var username = req.body.username;
         var path = rootPath + '/views/ForgotPasswordTemplate.html';
         var token = utility.randomNumber.generateRan(30);
@@ -149,7 +151,7 @@ var authCtrl = module.exports = {
                             if (data) res.json(1);
                         });
                     }
-                    else res.json(0);
+                    else next(cb);
                 });
             });
         });
@@ -206,6 +208,12 @@ var authCtrl = module.exports = {
                     else callback(0);
                 });
             });
+        });
+    },
+
+    getErrorLogs: async (req, res) => {
+        await model.ErrorStackModel.find().sort({ _id: -1 }).exec((err, data) => {
+            res.json(data);
         });
     },
 }

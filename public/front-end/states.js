@@ -261,6 +261,16 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
             templateUrl: '../views/admin/files.html',
             controller: 'adminController'
         })
+
+        .state('errorlog', {
+            url: '/error-log',
+            data: {
+                pageTitle: 'Error Log'
+            },
+            templateUrl: '../views/error-log.html',
+            controller: 'portalController'
+        })
+
         .state('error', {
             url: '/error',
             data: {

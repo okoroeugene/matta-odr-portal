@@ -154,6 +154,11 @@ var ResetPasswordSchema = new Schema({
     date: Date,
 });
 
+var ErrorStackSchema = new Schema({
+    error: { type: String, required: true },
+    date: Date,
+});
+
 var User = mongoose.model('User', UserSchema);
 module.exports.UserModel = User;
 
@@ -195,3 +200,6 @@ module.exports.MediatorProfileModel = MediatorProfile;
 
 var ResetPassword = mongoose.model('ResetPassword', ResetPasswordSchema);
 module.exports.ResetPasswordModel = ResetPassword;
+
+var ErrorStack = mongoose.model('ErrorStack', ErrorStackSchema);
+module.exports.ErrorStackModel = ErrorStack;

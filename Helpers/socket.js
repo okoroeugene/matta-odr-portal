@@ -1,54 +1,62 @@
 var app = require('../app');
 var model = require('../models/entitymodels');
-var session = require('express-session');
-var io = app.io;
+var session = require('../Helpers/session');
+var sharedsession = require("express-socket.io-session");
+var server = app.server;
+var io = require('socket.io').listen(server);
+io.use(sharedsession(session, {
+    autoSave: true,
+}));
 
-module.exports = function (socket) {
-    // console.info(`Client connected [id=${socket.id}]`);
-    var allConnectedUsers = [];
+var allConnectedUsers = [];
+io.on('connection', function (socket) {
     var userId;
-    if (socket.handshake.session)
-        if (socket.handshake.session.key)
-            userId = socket.handshake.session.key;
-        else if (socket.handshake.session.passport)
-            if (socket.handshake.session.passport.user)
-                userId = socket.handshake.session.passport.user;
+    if (socket.handshake.session.passport)
+        if (socket.handshake.session.passport.user)
+            userId = socket.handshake.session.passport.user;
 
-    // allConnectedUsers.push({
-    //     'userId': userId,
-    //     'socketId': socket.id
-    // })
-    // console.log(allConnectedUsers)
 
-    // socket.on('notify', function (currentUserId) {
-    //     io.sockets.emit('notifyCount', currentUserId);
-    // });
+    socket.join(userId); // We are using room of socket io
 
-    socket.on('notify', function (currentUserId) {
-        getUserNotificationData(currentUserId, function (data) {
-            let result = {
+    var currentCount = 0;
+    socket.on('notify', function (caseId, userId, sendername, content, allData) {
+        currentCount = currentCount + 1;
+        getChatParticipants(caseId, userId, sendername, content, allData, function (data) {
+            var result = {
                 'count': data.length,
                 'content': data
             }
-            io.sockets.emit('notifyCount', result);
+            // io.sockets.emit('notifyCount', result);
         });
     });
 
-    let chatData = [];
-    function getUserNotificationData(response, callback) {
-        model.NotificationModel.find({ ReceiverId: response, IsRead: false }, function (err, data) {
-            if (data)
-                for (let i = 0; i < data.length; i++) {
-                    model.ChatModel.findById(data[i].ChatId, function (err, _chat) {
-                        let lastLoop = data.length - 1;
-                        if (_chat)
-                            chatData.push(_chat);
-                        if (i == lastLoop)
-                            callback(chatData);
+    //Gets active chat Participants
+    var participants = null;
+    var participants = [];
+    function getChatParticipants(caseId, userId, sendername, content, allData, callback) {
+        var clients = socket.handshake.session.allClients;
+        model.ConversationModel.find({ CaseId: caseId, ParticipantId: { $ne: userId } }, function (err, convo) {
+            for (let i = 0; i < convo.length; i++) {
+                let lastLoop = convo.length - 1;
+                if (convo)
+                    // var result = check(convo[i].ParticipantId);
+                    getUserNotificationData(convo[i].ParticipantId, function (data) {
+                        var result = {
+                            'count': data.length,
+                            'content': data
+                        }
+                        io.sockets.in(convo[i].ParticipantId).emit('notifyCount', result, sendername, content, convo[i].ParticipantId, allData, currentCount);
                     });
-                }
-        })
+                else console.error('Something went wrong!!');
+            }
+        });
     }
-};
 
-// model.ChatModel.find().and([{ _id: { $ne: Id }, SenderId: { $ne: response } }])
+    // var chatData = [];
+    function getUserNotificationData(response, callback) {
+        model.NotificationModel.find({ ReceiverId: response, IsRead: false }).populate('ChatId').exec(function (err, data) {
+            if (data)
+                callback(data);
+        });
+    }
+});

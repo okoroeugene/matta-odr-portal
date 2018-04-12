@@ -79,9 +79,11 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
             // $scope.userfullname = response.data.firstname + ' ' + response.data.lastname;
             // $scope.email = response.data.email;
             // $scope.phone = response.data.phone;
-            $('#userfullname').val(response.data.firstname + ' ' + response.data.lastname);
-            $('#useremail').val(response.data.email);
-            $('#userphone').val(response.data.phone);
+            if (response.data !== null) {
+                $('#userfullname').val(response.data.firstname + ' ' + response.data.lastname);
+                $('#useremail').val(response.data.email);
+                $('#userphone').val(response.data.phone);
+            }
         });
     }
     $scope.getFileDetails();
@@ -145,6 +147,12 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
         setTimeout(() => {
             $('#divPaid').fadeIn();
         }, 500);
+    }
+
+    $scope.GetAllErrorLogs = function () {
+        $http.get('/getErrorLogs').then(function (response) {
+            $scope.errors = response.data;
+        });
     }
     // $scope.CheckStatus = function () {
     //     $http.post('/pendingcomplaint').then(function (response) {
