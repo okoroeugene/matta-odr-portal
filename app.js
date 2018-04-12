@@ -70,7 +70,7 @@ app.get('/CreateAdminUser', async function (req, res) {
 });
 
 async function logErrors(err, req, res, next) {
-   await model.ErrorStackModel.create({ error: err.stack, date: currentDate });
+   await model.ErrorStackModel.create({ error: err.stack, date: Date.now() });
     next(err);
 }
 
