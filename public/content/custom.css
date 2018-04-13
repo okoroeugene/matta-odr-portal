@@ -17,6 +17,15 @@ img.center {
     opacity: 0.2;
 }
 
+a.parentDisable
+{
+    pointer-events: none;
+    opacity: 0.2;
+}
+a.parentDisable:hover { text-decoration: none; }
+a.parentDisable:focus { text-decoration: none; }
+a.parentDisable:active { text-decoration: none; }
+
 .loader {
     position: absolute;
     left: 50%;

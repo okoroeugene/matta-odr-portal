@@ -54,6 +54,24 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
         $scope.verifyPayment();
     }
 
+    $scope.btnGoToNewComplaint = function () {
+        if ($scope.NewComplaint === true) {
+            $state.transitionTo('newcomplaint', {
+                reload: true,
+                notify: true
+            });
+        }
+    }
+
+    $scope.btnProceed = function () {
+        if ($scope.Paid === true) {
+            $('#divDashboard').fadeOut();
+            setTimeout(() => {
+                $('#divPaid').fadeIn();
+            }, 500);
+        }
+    }
+
     $scope.btnChangePassword = function () {
         $('#btnChangePassword').prop('disabled', true);
         $('#btnChangePassword').addClass('active');
@@ -139,13 +157,6 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
         $('#divDashboard').fadeOut();
         setTimeout(() => {
             $('#divAssignedPayment').fadeIn().delay(1000);
-        }, 500);
-    }
-
-    $scope.btnProceed = () => {
-        $('#divDashboard').fadeOut();
-        setTimeout(() => {
-            $('#divPaid').fadeIn();
         }, 500);
     }
 
