@@ -7,8 +7,8 @@ var fs = require('fs');
 var nodemailer = require('nodemailer');
 var EmailTemplate = require('email-templates').EmailTemplate;
 
-var sender = 'eugy45@gmail.com'
-var password = 'history2'
+var sender = 'teamresolv@gmail.com'
+var password = 'resolv123'
 // 465
 var transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
