@@ -3,7 +3,8 @@ var app = index.myApp;
 var model = require('../models/entitymodels');
 var utility = require('../Helpers/utility');
 var passport = index.myPassport;
-var currentDate = new Date();
+var twilio = require('../Helpers/twilio');
+var currentDate = Date.now();
 var crypto = require('crypto');
 var fileService = require('../services/fileService');
 
@@ -16,40 +17,41 @@ module.exports.verifyCode = function (req, res) {
 }
 
 module.exports.genFileNumber = async function (req, res) {
-    var code = 'MATTA/' + await utility.randomNumber.generateNum(4) + '-' + await utility.randomNumber.generateNum(4);
-    req.session.fileNumber = code;
-    req.session.firstname = req.body.firstname;
-    req.session.lastname = req.body.lastname;
-    req.session.email = req.body.email;
-    req.session.phone = req.body.phone;
-    req.session.role = req.body.role;
-    res.json(1);
+    // var code = 'MATTA/' + await utility.randomNumber.generateNum(4) + '-' + await utility.randomNumber.generateNum(4);
+    // req.session.fileNumber = code;
+    // req.session.firstname = req.body.firstname;
+    // req.session.lastname = req.body.lastname;
+    // req.session.email = req.body.email;
+    // req.session.phone = req.body.phone;
+    // req.session.role = req.body.role;
+    // res.json(1);
 }
 
 //STATUS CODE 401 - USER ALREADY EXISTS
 module.exports.openFile = async function (req, res, next) {
-    utility.createuser(req.session.fileNumber, req.session.email, req.body.password, 'user', async cb => {
+    var code = 'MATTA/' + await utility.randomNumber.generateNum(4) + '-' + await utility.randomNumber.generateNum(4);
+    utility.createuser(code, req.body.email, req.body.password, 'user', async cb => {
         var key = crypto.randomBytes(16).toString("hex");
         if (cb === 0) {
             res.json(401);
             next();
         }
         await model.FileModel.create({
-            filecode: req.session.fileNumber,
-            firstname: req.session.firstname,
-            lastname: req.session.lastname,
-            email: req.session.email,
-            phone: req.session.phone,
-            date: currentDate,
-            userId: cb._id
+            filecode: code, firstname: req.body.firstname, lastname: req.body.lastname,
+            email: req.body.email, phone: req.body.phone, date: currentDate, userId: cb._id
         }, async (err, data) => {
             if (data) {
+                var phone;
+                phone = '+234' + req.body.phone;
+                // if (!phone.substring(1, 3).includes('234') || !phone.substring(1, 4).includes('+234')) phone = '+234' + req.body.phone;
+                var smsBody = 'Hello, ' + req.body.firstname + '. Welcome to MATTA ODR Portal. Your File Number is: ' + code;
+                await twilio.Twilio.SendSMS(phone, smsBody);
                 await passport.authenticate('local-sign-in', {});
-                req.session.code = req.session.fileNumber;
+                req.session.code = code;
                 req.session.role = 'user';
             }
             req.login(cb, loginErr => {
-                if (loginErr) { }
+                if (loginErr) next(loginErr);
                 else res.json(1);
             });
         });
