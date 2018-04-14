@@ -26,27 +26,30 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                     // $scope.NotAssignedPayment = true;
                     $('#divApproval').removeClass('parentDisable');
                 }
-                else if (response.data.status == 1) {
+                else if (response.data.status === 1) {
                     // $scope.userData = true;
                     $scope.result = response.data.result;
                     $scope.mediatorname = response.data.mediator;
                     $scope.caseId = response.data.caseId;
                     $('#divProceed').removeClass('parentDisable');
+                    angular.element(document.querySelector("#divProceed")).removeClass("parentDisable");
                     $scope.Paid = true;
                 }
-                else if (response.data.status == 2) {
+                else if (response.data.status === 2) {
                     $scope.userData = true;
                     $scope.result = response.data.result;
                     $scope.AssignedPayment = true;
                     $('#divPayment').removeClass('parentDisable');
+                    angular.element(document.querySelector("#divPayment")).removeClass("parentDisable");
                 }
-                else if (response.data.status == 3) {
+                else if (response.data.status === 3) {
                     $scope.InviteeData = true;
                     $scope.invData = response.data.invData;
                     $scope.complaintData = response.data.complaintData;
                 }
-                else if (response.data.status == 4) {
+                else if (response.data.status === 4) {
                     $('#divNewComplaint').removeClass('parentDisable');
+                    angular.element(document.querySelector("#divNewComplaint")).removeClass("parentDisable");
                     $scope.NewComplaint = true;
                 }
             });
