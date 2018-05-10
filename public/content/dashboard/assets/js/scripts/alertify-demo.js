@@ -29,7 +29,6 @@ $(function(){
                   alertify.error("You've clicked Cancel");
                 }
             )
-        
     });
     
     // Button Lables

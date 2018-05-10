@@ -14,18 +14,18 @@ myApp.controller('adminController', ['$scope', '$state', '$stateParams', '$http'
 
     // $scope.getUser();
 
-    $scope.getAllCases = async function () {
-        await $http.get('/allcomplaints').then(function (response) {
+    $scope.getAllCases = function () {
+        $http.get('/allcomplaints').then(function (response) {
             $scope.complaints = response.data;
         });
-    }
+    };
     $scope.getAllCases();
 
-    $scope.getMediators = async function () {
-        await $http.get('/allmediators').then(function (response) {
+    $scope.getMediators = function () {
+        $http.get('/allmediators').then(function (response) {
             $scope.mediators = response.data;
         });
-    }
+    };
     $scope.getMediators();
 
     // $scope.getMediatorName = function (res) {
@@ -48,27 +48,27 @@ myApp.controller('adminController', ['$scope', '$state', '$stateParams', '$http'
                 $scope.mediatordata = response.data;
             }
         });
-    }
+    };
 
     $scope.btnViewComplaint = function (res) {
         $http.get('/getcomplaintdata/' + res).then(function (response) {
             $scope.complaintdata = response.data;
             // $scope.mediatorName = response.data.MedaiatorName;
         });
-    }
+    };
 
-    $scope.getCounts = async function() {
-        await $http.get('/getcounts').then(function(response){
+    $scope.getCounts = function() {
+        $http.get('/getcounts').then(function(response){
             $scope.counts = response.data;
         });
-    }
+    };
     $scope.getCounts();
 
-    $scope.getAllFiles = async function() {
-        await $http.get('/admin/allfiles').then(function(response){
+    $scope.getAllFiles = function() {
+        $http.get('/admin/allfiles').then(function(response){
             $scope.files = response.data;
         });
-    }
+    };
     $scope.getAllFiles();
     
     $scope.btnAssignPayment = function (res) {
@@ -89,10 +89,10 @@ myApp.controller('adminController', ['$scope', '$state', '$stateParams', '$http'
                 document.getElementById(response.key).scrollIntoView();
             }
             else {
-                toastr["error"]("Error," + " " + "Something went wrong!!!");
+                toastr["error"]('Error,' + ' ' + 'Something went wrong!!!');
             }
         });
-    }
+    };
 
     $scope.btnVerify = function (e) {
         $http.post('/verifymediator/' + e).then(function (response) {
@@ -107,9 +107,9 @@ myApp.controller('adminController', ['$scope', '$state', '$stateParams', '$http'
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
             }
-            else toastr["error"]("Error," + " " + "Something went wrong!!!");
+            else toastr["error"]('Error,' + ' ' + 'Something went wrong!!!');
         });
-    }
+    };
 
     $scope.btnUnVerify = function (e) {
         $http.post('/unverifymediator/' + e).then(function (response) {
@@ -124,9 +124,9 @@ myApp.controller('adminController', ['$scope', '$state', '$stateParams', '$http'
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
             }
-            else toastr["error"]("Error," + " " + "Something went wrong!!!");
+            else toastr["error"]('Error,' + ' ' + 'Something went wrong!!!');
         });
-    }
+    };
 
     $scope.myImg = function (imgSrc) {
         // $('#divLoading').css('display', 'block');
@@ -134,14 +134,14 @@ myApp.controller('adminController', ['$scope', '$state', '$stateParams', '$http'
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
         var modal = document.getElementById('myImgModal');
-        var modalImg = document.getElementById("img01");
-        var captionText = document.getElementById("caption");
-        modal.style.display = "block";
+        var modalImg = document.getElementById('img01');
+        var captionText = document.getElementById('caption');
+        modal.style.display = 'block';
         modalImg.src = '../uploads/' + imgSrc;
-        var span = document.getElementsByClassName("close")[0];
+        var span = document.getElementsByClassName('close')[0];
         span.onclick = function () {
-            modal.style.display = "none";
+            modal.style.display = 'none';
         }
-    }
+    };
     // $scope.complete();
 }]);

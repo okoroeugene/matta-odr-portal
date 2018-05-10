@@ -11,8 +11,8 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
     // });
 
     $scope.allcomplaints = [];
-    $scope.Complaints = async function () {
-        await $http.get('/allcomplaints').then(function (response) {
+    $scope.Complaints = function () {
+        $http.get('/allcomplaints').then(function (response) {
             // console.log(response.data);
             if (response.data === 0) window.location = '/';
             else {
@@ -24,36 +24,36 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
                 $scope.divHide = false;
                 $scope.divShow = true;
             }
-        })
-    }
+        });
+    };
 
     $scope.Complaints();
 
-    $scope.MediatorCase = async function () {
-        await $http.get('/complaints').then(function (response) {
+    $scope.MediatorCase = function () {
+        $http.get('/complaints').then(function (response) {
             // console.log(response.data);
             if (response.data === 0) window.location = '/';
             else {
                 $scope.mediatorCase = response.data;
             }
-        })
-    }
+        });
+    };
 
     $scope.MediatorCase();
 
-    $scope.getallcases = async function () {
-        await $http.get('/getallcases').then(function (response) {
+    $scope.getallcases = function () {
+        $http.get('/getallcases').then(function (response) {
             $scope.allcases = response.data;
         });
-    }
+    };
 
     $scope.getallcases();
 
-    $scope.getawaitingpayment = async function () {
-        await $http.get('/getawaitingpayment').then(function (response) {
+    $scope.getawaitingpayment = function () {
+        $http.get('/getawaitingpayment').then(function (response) {
             $scope.awaitingPayment = response.data;
         });
-    }
+    };
 
     $scope.getawaitingpayment();
 
@@ -89,7 +89,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
                 ev.preventDefault();
                 alertify.error("You've Cancelled Request");
             });
-    }
+    };
 
     $scope.btnCase = function (caseId) {
         $scope.start();
@@ -98,7 +98,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
             // inherit: false,
             notify: true
         });
-    }
+    };
 
     $scope.UploadPic = function (complaintId) {
         var req = {
@@ -116,7 +116,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
                 toastr["error"]("Error," + response.data.message);
             }
         });
-    }
+    };
     $scope.UploadPic();
 
     $scope.btnGetComplaintData = function (e) {
@@ -124,7 +124,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
             return x._id == e
         });
         $scope.displayComplaintData = newArray;
-    }
+    };
 
     $scope.AcceptCase = function (e) {
         $('#divLoading').css('display', 'block');
@@ -134,7 +134,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
             $('#AcceptanceModal').modal('toggle');
         }, 2000);
         $scope.complaintId = e;
-    }
+    };
 
     $scope.btnAcceptCase = function (e) {
         var a = {
@@ -158,7 +158,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
                 toastr["error"]("Error," + " " + "Something went wrong!!!");
             }
         });
-    }
+    };
 
     $scope.DeclineCase = function (e) {
         $('#divLoading').css('display', 'block');
@@ -168,7 +168,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
             $('#modalConfirmDiscard').modal('toggle');
         }, 2000);
         $scope.casePaymentId = e;
-    }
+    };
 
     $scope.btnDeclineCase = function (e) {
         $('#btnDecline').prop('disabled', true);
@@ -189,16 +189,16 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
                 toastr["error"]("Error," + " " + "Something went wrong!!!");
             }
         });
-    }
+    };
 
-    $scope.getUser = async function () {
-        await $http.get('/user').then(function (response) {
+    $scope.getUser = function () {
+        $http.get('/user').then(function (response) {
             if (response.data === 0) $scope.showUserName = 'Fake User';
             else {
                 $scope.showUserName = response.data;
             }
-        })
-    }
+        });
+    };
 
     $scope.btnUploadMedCert = function () {
         var x = document.getElementById("medCert");
@@ -224,17 +224,17 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
             }
         })
         return false;
-    }
+    };
 
-    $scope.getMediatorData = async function () {
-        await $http.get('/getmediatordata').then(function (response) {
+    $scope.getMediatorData = function () {
+        $http.get('/getmediatordata').then(function (response) {
             $scope.mediatorData = response.data;
         });
-    }
+    };
     $scope.getMediatorData();
 
-    $scope.getExistingMediatorProfile = async function () {
-        await $http.get('/existingmediatorprofile').then(function (response) {
+    $scope.getExistingMediatorProfile = function () {
+        $http.get('/existingmediatorprofile').then(function (response) {
             $scope.existingProfile = response.data;
             if (response.data !== null) {
                 $scope.firstname = response.data.FirstName;
@@ -245,7 +245,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
                 $scope.address = response.data.Address;
             }
         });
-    }
+    };
     $scope.getExistingMediatorProfile();
 
     $scope.btnSaveMediatorProfile = function () {
@@ -286,7 +286,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
                 }
             }
         });
-    }
+    };
 
     $scope.getUser();
 
@@ -295,7 +295,7 @@ myApp.controller('profileController', ['$scope', '$state', '$stateParams', 'cfpL
     };
     $scope.complete = function () {
         cfpLoadingBar.complete();
-    }
+    };
     // $scope.start();
     // $scope.fakeIntro = true;
     // $timeout(function () {

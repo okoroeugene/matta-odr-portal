@@ -41,7 +41,7 @@ var complaintService = module.exports = {
             model.InviteeModel.findOne({ userId: req.user.id }).populate('CaseId').exec(async (err, data) => {
                 await model.ComplaintModel.findById(data.CaseId.ComplaintId, function (err, complaintData) {
                     if (complaintData) {
-                        res.json({ status: 3, invData: data, complaintData: complaintData });
+                        res.json({ status: 4, invData: data, complaintData: complaintData });
                     }
                 });
             });
@@ -51,18 +51,22 @@ var complaintService = module.exports = {
     ValidateUserDashboard: async (req, res, code) => {
         await model.FileModel.findOne({ userId: req.user.id }, async (err, user) => {
             await complaintRepo.ValidatePaymentUser(req, res, code, async (casePaymentData) => {
-                if (casePaymentData === 0) res.json({ status: 0, user: user });
+                //Awaiting Approval from Mediators
+                if (casePaymentData === 0) res.json({ status: 1, user: user });
                 else if (casePaymentData === 401) {
-                    res.json({ status: 4, user: user });
+                    //New Complaint
+                    res.json({ status: 0, user: user });
                 }
                 else if (casePaymentData) {
                     if (casePaymentData.IsPaymentMade == true) {
                         await model.CaseModel.findOne({ ComplaintId: casePaymentData.ComplaintId._id }, function (err, casedata) {
                             if (casedata) {
-                                res.json({ status: 1, result: casePaymentData, user: user, caseId: casedata._id, mediator: casedata.Mediator_Name });
+                                //Proceed to Portal after payment has been made
+                                res.json({ status: 3, result: casePaymentData, user: user, caseId: casedata._id, mediator: casedata.Mediator_Name });
                             }
                         });
                     }
+                    //Proceed to Payment
                     else res.json({ status: 2, result: casePaymentData, user: user });
                 }
             });

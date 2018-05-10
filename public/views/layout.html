@@ -39,20 +39,20 @@
     <link href="../content/dashboard/assets/css/pages/ecommerce.css" rel="stylesheet" />
     <link href="../content/custom.css" rel="stylesheet" />
     <!-- PAGE LEVEL STYLES-->
+
+    <style>
+            .content-wrapper {
+                margin-left: 0px;
+            }
+
+            /* .slimScrollDiv {
+            height: auto !important;
+        }
+        .scroller {
+            height: auto !important;
+        } */
+    </style>
 </head>
-
-<style>
-    .content-wrapper {
-        margin-left: 0px;
-    }
-
-    /* .slimScrollDiv {
-        height: auto !important;
-    }
-    .scroller {
-        height: auto !important;
-    } */
-</style>
 <!-- style="overflow: hidden" -->
 
 <body class="fixed-navbar has-animation drawer-sidebar">
@@ -101,10 +101,10 @@
                     </a>
                 </li>
                 <li class="dropdown dropdown-inbox">
-                        <a href="/profile" style="line-height: 0.6;text-align: center;position: relative;
+                    <a href="/profile" style="line-height: 0.6;text-align: center;position: relative;
                         bottom: 5px;" ng-if="role === 'mediator'" class="nav-link dropdown-toggle">
-                            <i style="font-size: 18px;" class="fa fa-user"></i><br><span style="font-size:9px!Important;">Profile</span>
-                        </a>
+                        <i style="font-size: 18px;" class="fa fa-user"></i><br><span style="font-size:9px!Important;">Profile</span>
+                    </a>
                 </li>
                 <li class="dropdown dropdown-inbox">
                     <a style="line-height: 0.6;text-align: center;position: relative;
@@ -116,7 +116,8 @@
                         <li class="dropdown-menu-header">
                             <div>
                                 <span>
-                                    <strong>{{notificationData.count}} New</strong> Messages</span>
+                                    <strong>{{notificationData.count}} New</strong> Messages
+                                </span>
                                 <!-- <a class="pull-right" href="mailbox.html">view all</a> -->
                             </div>
                         </li>
@@ -124,7 +125,7 @@
                             <p ng-if="notificationData.count === 0" style="color: rgb(204, 35, 35); text-align:center">No new Notifications</p>
                             <div>
                                 <a href="/case/{{data.ChatId.CaseId}}?ref={{data.ChatId._id}}" style="padding: 5px 9px 2px;" ng-repeat="data in notificationData.content"
-                                    class="list-group-item">
+                                   class="list-group-item">
                                     <div class="media">
                                         <div class="media-img">
                                             <img class="img-circle" src="../content/dashboard/assets/img/users/u1.jpg" />
@@ -132,7 +133,8 @@
                                         <div class="media-body">
                                             <div class="font-strong" ng-if="data.ChatId.SenderName != null">{{data.ChatId.SenderName}}</div>
                                             <div class="font-13" ng-if="data.ChatId.File == null" style="font-size:11px;">{{data.ChatId.Content | removeHTMLTags}}</div>
-                                            <div class="font-13" ng-if="data.ChatId.File != null" style="font-size:11px;">{{data.ChatId.SenderName}}
+                                            <div class="font-13" ng-if="data.ChatId.File != null" style="font-size:11px;">
+                                                {{data.ChatId.SenderName}}
                                                 <span style="font-style:italic; font-weight:bold;">sent an attachment</span>
                                             </div>
                                             <small class="text-muted">{{data.ChatId.Date | date : "MMM d, y h:mm a"}}</small>
@@ -148,17 +150,19 @@
                     <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
                         <span class="ng-cloak" ng-cloak>{{showUserName}}</span>
                         <img ng-if="profilePic === null" src="../Images/avatar_1.png" />
-                        <img ng-if="profilePic !== null" class="img-circle" style="width: 30px; height: 30px;object-fit: contain;" src="../uploads/{{profilePic.Image}}"
-                        />
+                        <img ng-if="profilePic !== null" class="img-circle" style="width: 30px; height: 30px;object-fit: contain;" src="../uploads/{{profilePic.Image}}" />
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right">
                         <a ng-if="role === 'mediator'" class="dropdown-item" href="/profile">
-                            <i class="ti-user"></i>Profile</a>
+                            <i class="ti-user"></i>Profile
+                        </a>
                         <a ng-if="role !== 'mediator'" class="dropdown-item" href="/change-password">
-                            <i class="ti-settings"></i>Manage</a>
+                            <i class="ti-settings"></i>Manage
+                        </a>
                         <!-- <li class="dropdown-divider"></li> -->
                         <a class="dropdown-item" href="javascript:void(0)" ng-click="logout()">
-                            <i class="ti-power-off"></i>Logout</a>
+                            <i class="ti-power-off"></i>Logout
+                        </a>
                     </ul>
                 </li>
             </ul>
@@ -254,25 +258,8 @@
     <!-- <script src="http://localhost:3005/scripts/socket.io.js" type="text/javascript"></script> -->
     <script src="https://matta.herokuapp.com/scripts/socket.io.js" type="text/javascript"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js" type="text/javascript"></script> -->
-
     <!--Angular-->
-    <script src="../scripts/angular.js"></script>
-    <script src="../front-end/states.js"></script>
-    <script src="../scripts/ui-bootstrap-tpls.min.js" type="text/javascript"></script>
-    <script src="../scripts/angular-animate.js"></script>
-    <script src="../scripts/angular-ui-routerV0.48.min.js"></script>
-    <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <!-- <script src="../scripts/ngInfiniteScroll.min.js" type="text/javascript"></script> -->
-    <!-- <script src="../scripts/angular-spinner.min.js"></script> -->
-    <script src="../scripts/angular-flash.js"></script>
-    <script src="../scripts/loading-bar.js"></script>
-    <!-- <script src="../scripts/SweetAlert.min.js"></script>
-    <script src="../content/sweetalert/sweet-alert.min.js"></script> -->
-    <script src="../front-end/controller/layout.js"></script>
-    <script src="../front-end/controller/portal.js"></script>
-    <script src="../front-end/controller/case.js"></script>
-    <script src="../front-end/controller/profile.js"></script>
-    <script src="../front-end/controller/complaint.js"></script>
+    <script src="../compiled/js/odr.js"></script>
 
     <script src="../content/dashboard/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
     <script src="../content/dashboard/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>

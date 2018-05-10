@@ -1,5 +1,4 @@
 
-
 img.center {
     display: block;
     margin: 0 auto;
@@ -15,6 +14,18 @@ img.center {
 {
     pointer-events: none;
     opacity: 0.2;
+}
+
+.parentDisableUnDo
+{
+    pointer-events: visible!Important;
+    opacity: 1!Important;
+}
+
+a.parentDisableUnDo
+{
+    pointer-events: visible!Important;
+    opacity: 1!Important;
 }
 
 a.parentDisable
@@ -617,3 +628,4 @@ blink {
             max-width: 50px;
             /* More than it will ever come, notice that this affects on animation duration */
         }
+

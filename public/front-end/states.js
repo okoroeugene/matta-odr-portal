@@ -1,7 +1,7 @@
 var myApp = angular.module('myApp', ['ui.router', 'ui.bootstrap', 'ngSanitize', 'angular-loading-bar', 'ngAnimate', 'ngFlash'])
     .config(function (cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeSpinner = true;
-    })
+    });
     // oitozero.ngSweetAlert
 myApp.filter('removeHTMLTags', function () {
     return function (text) {
@@ -58,8 +58,8 @@ myApp.directive('schrollBottom', function () {
                 }
             });
         }
-    }
-})
+    };
+});
 
 
 
@@ -278,11 +278,11 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'Flas
             },
             templateUrl: '../views/error.html',
             controller: 'authController'
-        })
+        });
 
     $urlRouterProvider
         .otherwise('/');
-}])
+}]);
 
 myApp.run(['$rootScope', '$location', '$anchorScroll', function ($rootScope, $location, $anchorScroll) {
     // $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {

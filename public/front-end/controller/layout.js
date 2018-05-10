@@ -13,8 +13,8 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
     }
 
     var currentId = $stateParams.id;
-    $scope.getUser = async function () {
-        await $http.get('/user').then(function (response) {
+    $scope.getUser = function () {
+        $http.get('/user').then(function (response) {
             if (response.data === 0) $scope.showUserName = 'Fake User';
             else {
                 $scope.showUserName = response.data;
@@ -23,8 +23,8 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
     }
     $scope.getUser();
 
-    $scope.getuserId = async function () {
-        await $http.get('/getuserid').then(function (response) {
+    $scope.getuserId = function () {
+        $http.get('/getuserid').then(function (response) {
             $scope.userId = response.data;
         });
     }
@@ -106,13 +106,13 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
             $scope.notificationData = response.data;
             if (response.data.count > 0)
                 $('.notification-counter').css('display', 'block');
-        })
+        });
         // var socket = io.connect('http://localhost:3005');
         // socket.on('notifyCount', function (data) {
 
         //     socket.emit('notify');
         // });
-    }
+    };
 
     $('#readNotification').click(function () {
         $http.post('/markasread').then(function (response) {
@@ -127,7 +127,7 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
 
     $scope.btnHome = function () {
         $window.location.href = '/';
-    }
+    };
 
     // $scope.navigateToChat = function (e, caseId) {
     //     $state.transitionTo('case', { id: e, ref: caseId });
@@ -148,31 +148,31 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
         $http.get('/userrole').then(function (response) {
             $scope.role = response.data;
         });
-    }
+    };
     $scope.getRole();
 
     $scope.btnGotoDashboard = function () {
         window.location.href = '/dashboard';
-    }
+    };
 
     $scope.btnGotoProfile = function (res) {
         window.location.href = '/profile';
-    }
+    };
 
     $scope.btnOpenFile = function () {
         window.location.href = '/open-file';
-    }
+    };
 
     $scope.btnLogin = function () {
         window.location.href = '/login';
-    }
+    };
 
     $scope.start = function () {
         cfpLoadingBar.start();
     };
     $scope.complete = function () {
         cfpLoadingBar.complete();
-    }
+    };
     // fake the initial load so first time users can see it right away:
 
     // $scope.start();
@@ -185,4 +185,4 @@ myApp.controller('layoutController', ['$scope', '$state', '$stateParams', 'cfpLo
     // $scope.getUser();
     // $scope.complete();
 
-}])
+}]);

@@ -42,7 +42,7 @@ var adminCtrl = require('./controllers/adminController');
 //   };
 app.use(flash())
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/public/views/index.html')
+    res.sendFile(__dirname + '/public/views/homelayout.html')
 });
 app.get('/verify/:id', caseCtrl.validateInvitee, function (req, res) {
     if (req.params.id === undefined) res.redirect('/login');

@@ -16,46 +16,47 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
     // });
 
     $scope.PaymentStatusInit = function () {
-        $scope.verifyPayment = async function () {
-            await $http.get('/verifypayment').then(function (response) {
+        $scope.verifyPayment = function () {
+            $http.get('/verifypayment').then(function (response) {
                 $scope.divLoader = false;
                 $scope.divContent = true;
                 $scope.user = response.data.user;
                 if (response.data.status == 0) {
-                    // $scope.userData = true;
-                    // $scope.NotAssignedPayment = true;
-                    $('#divApproval').removeClass('parentDisable');
+                    $('#divNewComplaint').removeClass('parentDisable');
+                    $('#divNewComplaint').addClass('parentDisableUnDo');
+                    angular.element(document.querySelector("#divNewComplaint")).removeClass("parentDisable");
+                    $scope.NewComplaint = true;
                 }
                 else if (response.data.status === 1) {
-                    // $scope.userData = true;
-                    $scope.result = response.data.result;
-                    $scope.mediatorname = response.data.mediator;
-                    $scope.caseId = response.data.caseId;
-                    $('#divProceed').removeClass('parentDisable');
-                    angular.element(document.querySelector("#divProceed")).removeClass("parentDisable");
-                    $scope.Paid = true;
+                    $('#divApproval').removeClass('parentDisable');
+                    $('#divApproval').addClass('parentDisableUnDo');
                 }
                 else if (response.data.status === 2) {
                     $scope.userData = true;
                     $scope.result = response.data.result;
                     $scope.AssignedPayment = true;
                     $('#divPayment').removeClass('parentDisable');
+                    $('#divPayment').addClass('parentDisableUnDo');
                     angular.element(document.querySelector("#divPayment")).removeClass("parentDisable");
                 }
                 else if (response.data.status === 3) {
+                    $scope.result = response.data.result;
+                    $scope.mediatorname = response.data.mediator;
+                    $scope.caseId = response.data.caseId;
+                    $('#divProceed').removeClass('parentDisable');
+                    $('#divProceed').addClass('parentDisableUnDo');
+                    angular.element(document.querySelector("#divProceed")).removeClass("parentDisable");
+                    $scope.Paid = true;
+                }
+                else if (response.data.status === 4) {
                     $scope.InviteeData = true;
                     $scope.invData = response.data.invData;
                     $scope.complaintData = response.data.complaintData;
                 }
-                else if (response.data.status === 4) {
-                    $('#divNewComplaint').removeClass('parentDisable');
-                    angular.element(document.querySelector("#divNewComplaint")).removeClass("parentDisable");
-                    $scope.NewComplaint = true;
-                }
             });
-        }
+        };
         $scope.verifyPayment();
-    }
+    };
 
     $scope.btnGoToNewComplaint = function () {
         if ($scope.NewComplaint === true) {
@@ -64,7 +65,7 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                 notify: true
             });
         }
-    }
+    };
 
     $scope.btnProceed = function () {
         if ($scope.Paid === true) {
@@ -73,7 +74,7 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                 $('#divPaid').fadeIn();
             }, 500);
         }
-    }
+    };
 
     $scope.btnChangePassword = function () {
         $('#btnChangePassword').prop('disabled', true);
@@ -93,10 +94,10 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
             $('#btnChangePassword').prop('disabled', false);
             $('#btnChangePassword').removeClass('active');
         });
-    }
+    };
 
-    $scope.getFileDetails = async function () {
-        await $http.get('/filedetails').then(function (response) {
+    $scope.getFileDetails = function () {
+        $http.get('/filedetails').then(function (response) {
             // $scope.userfullname = response.data.firstname + ' ' + response.data.lastname;
             // $scope.email = response.data.email;
             // $scope.phone = response.data.phone;
@@ -106,24 +107,24 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                 $('#userphone').val(response.data.phone);
             }
         });
-    }
+    };
     $scope.getFileDetails();
 
-    $scope.getRole = async function () {
-        await $http.get('/userrole').then(function (response) {
+    $scope.getRole = function () {
+        $http.get('/userrole').then(function (response) {
             $scope.role = response.data;
         });
-    }
+    };
     $scope.getRole();
 
     $scope.btnGotoCase = function (res) {
         window.location.href = '/case/' + res;
-    }
+    };
 
     $scope.btnEnableDecline = () => {
         $('#btnDecline').prop('disabled', false);
         $('#btnDecline').removeClass('active');
-    }
+    };
 
     $scope.DeclineCase = function (e) {
         $('#btnDecline').prop('disabled', true);
@@ -134,7 +135,7 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
             $('#modalConfirmDiscard').modal('toggle');
         }, 2000);
         $scope.casePaymentId = e;
-    }
+    };
 
     $scope.btnDeclineCase = function (e) {
         $('#btnDecline').prop('disabled', true);
@@ -154,20 +155,20 @@ myApp.controller('portalController', ['$scope', '$state', '$stateParams', '$http
                 toastr["error"]("Error," + " " + "Something went wrong!!!");
             }
         });
-    }
+    };
 
     $scope.btnMakePayment = () => {
         $('#divDashboard').fadeOut();
         setTimeout(() => {
             $('#divAssignedPayment').fadeIn().delay(1000);
         }, 500);
-    }
+    };
 
     $scope.GetAllErrorLogs = function () {
         $http.get('/getErrorLogs').then(function (response) {
             $scope.errors = response.data;
         });
-    }
+    };
     // $scope.CheckStatus = function () {
     //     $http.post('/pendingcomplaint').then(function (response) {
     //         if (response.data == 1) {

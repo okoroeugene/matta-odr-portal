@@ -10,7 +10,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
             if (response.data.status == 2) $window.location = '/case/' + response.data.id;
             if (response.data.status == 3) $window.location = response.data.url;
             if (response.data.status == 4) $window.location = '/case/' + response.data.caseId;
-            else toastr["error"]("Error, Invalid Code!");
+            else toastr["error"]('Error, Invalid Code!');
             // toastr.success('Submitted!');
         })
             .catch(function (err) {
@@ -20,7 +20,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
                 // Hide loading spinner whether our call succeeded or failed.
                 // usSpinnerService.stop();
             });
-    }
+    };
 
     $scope.btnReg = function () {
         $('#btnReg').prop('disabled', true);
@@ -35,14 +35,14 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
             if (response.data == 1) {
                 window.location.href = '/profile';
             }
-            else if (response.data === 401) toastr["error"]("Error, UserName already exists!!");
+            else if (response.data === 401) toastr["error"]('Error, UserName already exists!!');
             else {
-                toastr["error"]("Error," + " " + response.data);
+                toastr["error"]('Error,' + ' ' + response.data);
             }
             $('#btnReg').prop('disabled', false);
             $('#btnReg').removeClass('active');
         });
-    }
+    };
 
 
     $scope.btnLogin = function () {
@@ -54,7 +54,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
         };
         $http.post('/login', data).then(function (response) {
             if (response.data.success == false) {
-                toastr["error"]("Error," + " " + "Invalid Username or Password");
+                toastr["error"]('Error,' + ' ' + 'Invalid Username or Password');
                 $('#btnLogin').prop('disabled', false);
                 $('#btnLogin').removeClass('active');
             }
@@ -69,10 +69,10 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
                 }
             }
         });
-    }
+    };
 
-    $scope.getFileNumber = async function () {
-        await $http.get('/getNewRegData').then(function (response) {
+    $scope.getFileNumber = function () {
+        $http.get('/getNewRegData').then(function (response) {
             $scope.newFileCode = response.data;
         });
     };
@@ -91,10 +91,10 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
                     $window.location.href = '/dashboard';
                 }, 1000);
             }
-            if (response.data === 401) toastr["error"]("Error, UserName already exists!!");
+            if (response.data === 401) toastr["error"]('Error, UserName already exists!!');
             $('#btnOpenFile').removeClass('active');
         });
-    }
+    };
 
     $scope.GetInviteeData = function () {
         $http.get('/getInvitee/' + currentId).then(function (response) {
@@ -104,7 +104,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
                 $scope.secretToken = response.data.SecretToken;
             }
         });
-    }
+    };
 
     $scope.GetUserData = function () {
         $http.get('/GetUserDataByToken/' + currentId).then(function (response) {
@@ -123,7 +123,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
         $http.post('/regInvitee/' + currentId, data).then(function (response) {
             if (response.data === 0) {
                 $('#btnRegInvitee').prop('disabled', false);
-                toastr["error"]("Error, Something went wrong!");
+                toastr["error"]('Error, Something went wrong!');
             }
             else {
                 toastr.success('Successful!');
@@ -132,7 +132,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
                 }, 1000);
             }
         });
-    }
+    };
 
     $scope.btnForgotPassword = function () {
         var data = {
@@ -142,13 +142,13 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
         $http.post('/forgotpassword', data).then(function (response) {
             if (response.data === 0) {
                 $('#btnForgotPassword').prop('disabled', false);
-                toastr["error"]("Error, Something went wrong!");
+                toastr["error"]('Error, Something went wrong!');
             }
             else {
                 toastr.success('Successful! Please check your mail for the password reset link.');
             }
         });
-    }
+    };
 
     $scope.btnResetPassword = function () {
         var data = {
@@ -158,7 +158,7 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
         $http.post('/resetpassword/' + currentId, data).then(function (response) {
             if (response.data === 0) {
                 $('#btnResetPassword').prop('disabled', false);
-                toastr["error"]("Error, Something went wrong!");
+                toastr["error"]('Error, Something went wrong!');
             }
             else {
                 toastr.success('Successfully Reset!');
@@ -167,6 +167,6 @@ myApp.controller('authController', ['$scope', '$state', '$stateParams', '$http',
                 }, 1000);
             }
         });
-    }
+    };
 }]);
 

@@ -7,33 +7,33 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     // $scope.userLoader = true;
     var currentId = $stateParams.id;
 
-    $scope.Complaints = async function () {
-        await $http.get('/complaints').then(function (response) {
+    $scope.Complaints = function () {
+        $http.get('/complaints').then(function (response) {
             if (response.data === 0) window.location = '/';
             else {
                 $scope.allcomplaints = response.data;
             }
-        })
-    }
+        });
+    };
 
     $scope.Complaints();
 
     $scope.divHide = true;
     // $scope.divImageHide = true;
     // $scope.divContentHide = true;
-    // $scope.$on('$viewContentLoaded', async function () {
+    // $scope.$on('$viewContentLoaded', function () {
     //     $scope.divHide = false;
     //     $scope.divShow = true;
     // });
 
     $scope.btnChat = function () {
         $('#btnChat').prop('disabled', true);
-        $scope.searchButtonText = "chat";
+        $scope.searchButtonText = 'chat';
         // $scope.start();
         var content = $('.note-editable').html();
         var textareaValue = $('#summernote').summernote('code');
-        if ($.trim($(".note-editable").html()) == '') {
-            toastr["error"]("Error," + " " + "Please enter a valid text...");
+        if ($.trim($('.note-editable').html()) == '') {
+            toastr["error"]('Error,' + ' ' + 'Please enter a valid text...');
             $('#btnChat').prop('disabled', false);
             return;
         }
@@ -62,15 +62,15 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                 // document.getElementById(response.data.result._id).scrollIntoView()
             }
 
-            if (response.data.status == 0) toastr["error"]("Error," + response.data.message);
+            if (response.data.status == 0) toastr["error"]('Error,' + response.data.message);
         });
     };
 
     $scope.btnChat2 = function () {
-        // $scope.searchButtonText = "chat";
+        // $scope.searchButtonText = 'chat';
         var content = $('#txtContent2').val();
         if ($.trim($('#txtContent2').val()) == '') {
-            toastr["error"]("Error," + " " + "Please enter a valid text...");
+            toastr["error"]('Error,' + ' ' + 'Please enter a valid text...');
             return;
         }
 
@@ -92,12 +92,12 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                     document.getElementById(response.data.result._id).scrollIntoView();
                 }, 0);
             }
-            if (response.data.status == 0) toastr["error"]("Error," + response.data.message);
+            if (response.data.status == 0) toastr["error"]('Error,' + response.data.message);
         });
     };
 
-    $scope.getCaseData = async function () {
-        await $http.get('/casedata/' + currentId).then(function (response) {
+    $scope.getCaseData = function () {
+        $http.get('/casedata/' + currentId).then(function (response) {
             // $timeout(function () {
 
             // }, 6000);
@@ -119,7 +119,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
             $scope.userLoader = false;
             // $scope.userData = true;
         });
-    }
+    };
     $scope.getCaseData();
 
     $scope.allData = [];
@@ -127,12 +127,12 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.itemsPerPage = 10;
     $scope.currentPage = 1;
     $scope.chats = [];
-    $scope.getCaseChat = async function () {
-        await $http.get('/casechat/' + currentId).then(function (response) {
+    $scope.getCaseChat = function () {
+        $http.get('/casechat/' + currentId).then(function (response) {
             $scope.chats = response.data;
             $scope.chatDisplay();
         });
-    }
+    };
     $scope.getCaseChat();
 
     var sIndex = 11, offSet = 10, isPreviousEventComplete = true, isDataAvailable = true;
@@ -153,7 +153,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     $scope.showMyPopover = function (e) {
         $scope.showPopoverIndex = false;
         $('#pop_' + e).css('display', 'none');
-    }
+    };
     $scope.getPopOverData = function (e, name, index) {
         $http.get('/getpopoverdata/' + e).then(function (response) {
             $scope.showPopoverIndex = true;
@@ -165,7 +165,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                 role: response.data.role
             };
         });
-    }
+    };
 
     // $scope.showNotificationData = function (e, caseId) {
     //     $state.transitionTo('case', { id: caseId }, {
@@ -223,12 +223,12 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     // $scope.makeTodos = function () {
     //     $scope.todos = [];
     //     for (i = 1; i <= 1000; i++) {
-    //         $scope.todos.push({ text: "todo " + i, done: false });
+    //         $scope.todos.push({ text: 'todo ' + i, done: false });
     //     }
     // };
     // $scope.makeTodos();
 
-    // $scope.$watch("currentPage + numPerPage", function () {
+    // $scope.$watch('currentPage + numPerPage', function () {
     //     var begin = (($scope.currentPage - 1) * $scope.numPerPage)
     //         , end = begin + $scope.numPerPage;
 
@@ -268,27 +268,27 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
             }
-            if (response.data.status == 0) toastr["error"]("Error," + " " + response.data.message);
+            if (response.data.status == 0) toastr["error"]('Error,' + ' ' + response.data.message);
         });
-    }
+    };
 
     $scope.myImg = function (imgSrc) {
         var modal = document.getElementById('myImgModal');
-        // Get the image and insert it inside the modal - use its "alt" text as a caption
-        var modalImg = document.getElementById("img01");
-        var captionText = document.getElementById("caption");
-        modal.style.display = "block";
+        // Get the image and insert it inside the modal - use its 'alt' text as a caption
+        var modalImg = document.getElementById('img01');
+        var captionText = document.getElementById('caption');
+        modal.style.display = 'block';
         modalImg.src = '../uploads/' + imgSrc;
         // captionText.innerHTML = this.alt;
 
         // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
+        var span = document.getElementsByClassName('close')[0];
 
         // When the user clicks on <span> (x), close the modal
         span.onclick = function () {
-            modal.style.display = "none";
+            modal.style.display = 'none';
         }
-    }
+    };
 
     var userRole = null;
     $scope.getrole = function () {
@@ -299,7 +299,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
             //     $scope.userBtn = true;
             // }
         });
-    }
+    };
     $scope.getrole();
 
     $scope.checkInvite = function () {
@@ -307,7 +307,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
             if (response.data === 1) $scope.IsInvited = true;
             else $scope.IsInvited = false;
         });
-    }
+    };
     $scope.checkInvite();
 
     // var files = [];
@@ -356,7 +356,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
         xhr.send(formData);
         $.ajax({
             url: '/uploadfile/' + caseId,
-            type: "POST",
+            type: 'POST',
             data: formData,
             cache: false,
             contentType: false,
@@ -376,29 +376,29 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                     $('.modal-backdrop').remove();
                     document.getElementById(response.key).scrollIntoView();
                 }
-                if (response.status == 0) toastr["error"]("Error," + response.message);
+                if (response.status == 0) toastr["error"]('Error,' + response.message);
             }
-        })
+        });
         return false;
     });
 
     $scope.btnCloseCase = function () {
         alertify
-            .okBtn("Accept")
-            .cancelBtn("Deny")
-            .confirm("Are you sure you want to close this case?", function (ev) {
+            .okBtn('Accept')
+            .cancelBtn('Deny')
+            .confirm('Are you sure you want to close this case?', function (ev) {
                 ev.preventDefault();
-                alertify.success("Case closed successful");
+                alertify.success('Case closed successful');
                 // setTimeout(() => {
                 //     var req = {
                 //         'complaintId': complaintId
                 //     };
                 //     $http.post('/createcase', req).then(function (response) {
                 //         if (response.data.status == 1) {
-                //             $window.location = "/case/" + response.data.message;
+                //             $window.location = '/case/' + response.data.message;
                 //         }
                 //         if (response.data.status == 0) {
-                //             toastr["error"]("Error," + response.data.message);
+                //             toastr["error"]('Error,' + response.data.message);
                 //         }
                 //     });
                 // }, 2000);
@@ -406,17 +406,17 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                 ev.preventDefault();
                 alertify.error("You've Cancelled Request");
             });
-    }
+    };
 
     $scope.btnMarkCaseAsResolved = function (e, caseId) {
         alertify
-            .okBtn("Accept")
-            .cancelBtn("Deny")
-            .confirm("Are you sure you want to mark this case as RESOLVED?", function (ev) {
+            .okBtn('Accept')
+            .cancelBtn('Deny')
+            .confirm('Are you sure you want to mark this case as RESOLVED?', function (ev) {
                 ev.preventDefault();
                 $http.post('/MarkAsResolved/' + e).then(function (response) {
                     if (response.data === 1) {
-                        alertify.success("Successful");
+                        alertify.success('Successful');
                         setTimeout(() => {
                             $state.transitionTo('case', { id: caseId }, {
                                 reload: true,
@@ -425,45 +425,45 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                         }, 1000);
                     }
                     if (response.data === 0) {
-                        toastr["error"]("Error," + response.data.message);
+                        toastr["error"]('Error,' + response.data.message);
                     }
                 });
 
             }, function (ev) {
                 ev.preventDefault();
-                alertify.error("You've Cancelled Request");
+                alertify.error('You have Cancelled the Request');
             });
-    }
+    };
 
-    $scope.getuserId = async function () {
-        await $http.get('/getuserid').then(function (response) {
+    $scope.getuserId = function () {
+        $http.get('/getuserid').then(function (response) {
             $scope.userId = response.data;
         });
-    }
+    };
     $scope.getuserId();
 
     $scope.btnEditContent = function (e) {
         $http.get('/GetChatDataById/' + e).then(function (response) {
             $scope.chatData = response.data;
-            $(".note-editable").html(response.data.Content);
+            $('.note-editable').html(response.data.Content);
         });
-    }
+    };
 
     $scope.btnDeleteContent = function (e) {
         alertify
-            .okBtn("Yes, Delete!")
-            .cancelBtn("Deny")
-            .confirm("Are you sure you want to delete this message?", function (ev) {
+            .okBtn('Yes, Delete!')
+            .cancelBtn('Deny')
+            .confirm('Are you sure you want to delete this message?', function (ev) {
                 ev.preventDefault();
                 $http.post('/DeleteChatContent/' + e).then(function (response) {
                     $('#removeChat_' + e).fadeOut();
-                    alertify.success("Deleted successfully");
+                    alertify.success('Deleted successfully');
                 });
             }, function (ev) {
                 ev.preventDefault();
                 alertify.error("You've Cancelled Request");
             });
-    }
+    };
 
     $scope.btnUpdateContent = function (e) {
         var textareaValue = $('#summernote2').summernote('code');
@@ -478,13 +478,13 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
                 $('#myEditContentModal').modal('hide');
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
-                document.getElementById("txtChatContent_" + e).innerHTML = textareaValue;
+                document.getElementById('txtChatContent_' + e).innerHTML = textareaValue;
                 // console.log($('#contentUpdate').val())
                 // document.getElementById(response.data._id).scrollIntoView();
             }
-            else toastr["error"]("Error," + " " + "Something went wrong!");
+            else toastr["error"]('Error,' + ' ' + 'Something went wrong!');
         });
-    }
+    };
 
     // $scope.getRole = function () {
     //     $http.get('/userrole').then(function (response) {
@@ -498,7 +498,7 @@ myApp.controller('caseController', ['$scope', '$state', '$stateParams', 'cfpLoad
     };
     $scope.complete = function () {
         cfpLoadingBar.complete();
-    }
+    };
     // $scope.fakeIntro = true;
     // $timeout(function () {
     //     $scope.complete();
