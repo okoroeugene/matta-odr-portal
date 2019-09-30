@@ -629,3 +629,15 @@ blink {
             /* More than it will ever come, notice that this affects on animation duration */
         }
 
+        @media (max-width:1174px)  { 
+            .ibox-body {
+                background-color: red!Important;
+            }
+            .date-bg {
+                display: hidden!Important;
+            }
+            .date-sm {
+                display: block!Important;
+            }
+         }
+
